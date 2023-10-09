@@ -1,0 +1,43 @@
+
+#userPage {
+    width: 100%;
+    margin-left: 0;
+
+    overflow-y: scroll;
+
+    #hj-user-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        gap: 1rem;
+
+        width: 100%;
+        height: 40vh;
+
+        background: black;
+        color: white;
+
+        padding: 0 5% 7% 15%;
+        margin-bottom: 5vh;
+
+        img {
+            width: 5rem;
+        }
+
+        .badge {
+            width: fit-content;
+        }
+    }
+
+    #hj-user-collections {
+        width: 90%;
+        margin-left: 5%;
+
+        img {
+            width: 6rem;
+            border-radius: 8px;
+        }
+    }
+}

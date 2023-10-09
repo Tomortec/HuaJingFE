@@ -1,0 +1,75 @@
+
+$tableNames: "user", "porcelain";
+
+@each $name in $tableNames {
+    #hj-#{$name}-table_wrapper {
+        th {
+            user-select: none;
+        }
+    
+        tr {
+            vertical-align: middle;
+        }
+    
+        .input-group > .form-control {
+            margin-left: 1rem;
+        }
+        
+        .input-group > .form-select {
+            margin: 0 1rem;
+        }
+    
+        .input-group > .form-control {
+            max-width: 12rem !important;
+        }
+    
+        .input-group > .form-select {
+            max-width: 5rem !important;
+        }
+    
+        .sorting_asc::after, .sorting_desc::after {
+            display: block;
+            float: right;
+            content: "";
+            width: 20px;
+            height: 20px;
+    
+            transform: translateY(5px);
+            background-repeat: no-repeat;
+            background-size: 1rem 1rem;    
+    
+            cursor: pointer;
+        }
+    
+        .sorting_asc::after {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16"><path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/></svg>');
+        }
+    
+        .sorting_desc::after {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
+        }
+    }
+
+    #hj-porcelain-table {
+        // the `scrollX` option autoly add a blank th to the table : (
+        th.sorting_asc::after, .sorting_desc::after {
+            display: none;
+        }
+
+        .small-column {
+            min-width: 6rem;
+        }
+
+        .medium-column {
+            min-width: 8rem;
+        }
+
+        .large-column {
+            min-width: 12rem;
+        }
+
+        .xlarge-column {
+            min-width: 20rem;
+        }
+    }
+}

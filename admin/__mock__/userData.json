@@ -1,0 +1,18 @@
+/**
+ * @url /adminApi/userData
+ */
+
+{
+    "data|60": [
+        {
+            "id": "@id()",
+            "name": "@cname()",
+            "phoneNumber": "@integer(10000000000, 19999999999)",
+            "level": "@integer(0, 5)",
+            "porcelainIds|0-6": [
+                "@integer(0, 30)"
+            ],
+            "lastLoginTime": "@date()"
+        }
+    ]
+}

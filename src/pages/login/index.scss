@@ -1,0 +1,34 @@
+
+$login-poster-height: 50vh;
+
+#loginPage {
+    #hj-login-poster {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        width: 100%;
+        height: $login-poster-height;
+    
+        margin-bottom: 5vh;
+    
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+    
+            width: 100%;
+            height: $login-poster-height;
+    
+            background: #131313;
+    
+            z-index: -999;
+        }
+    
+        & i {
+            color: white;
+            font-size: 3rem;
+        }
+    }    
+}

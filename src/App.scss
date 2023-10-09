@@ -1,0 +1,37 @@
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+$bootstrap-icons-font-dir: "~bootstrap-icons/font/fonts";
+@import "~bootstrap-icons/font/bootstrap-icons.scss";
+
+@import "./components/components.scss";
+
+body {
+    height: 100vh;
+    margin: 0;
+
+    overflow: hidden;
+}
+
+* {
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+#root {
+    height: 100%;
+}
+
+.page-container {
+    width: 90%;
+    margin-left: 5%;
+
+    h1 {
+        margin-bottom: 2vh;
+    }
+}

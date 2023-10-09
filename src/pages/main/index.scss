@@ -1,0 +1,102 @@
+
+#mainPage {
+    width: 100%;
+    margin-left: 0;
+    overflow-y: scroll;
+
+    a {
+        text-decoration: none;
+    }
+
+    video {
+        width: 100%;
+    }
+
+    & > div > div:not(:first-child):not(:last-child) {
+        margin-bottom: 6vh;
+    }
+
+    .horizon-space {
+        width: 90%;
+        margin-left: 5%;
+    }
+
+    .section-header {
+        font-size: 1.3rem;
+        font-weight: 300;
+
+        border-left: 3px solid #000;
+        padding-left: 1rem;
+        margin: 2vh 0;
+    }
+
+    .instructions-container {
+        display: flex;
+        flex-direction: column;
+
+        pre {
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+
+        a {
+            align-self: flex-end;
+        }
+    }
+
+    .introduction-link-card {
+        $card-height: 25vh;
+
+        display: block;
+        width: 100%;
+        height: $card-height;
+
+        font-size: 1.2rem;
+        font-weight: 300;
+        text-align: center;
+        line-height: $card-height;
+
+        color: white;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        margin-bottom: 3vh;
+
+        span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .model-link-card {
+        display: flex;
+        gap: 2rem;
+        justify-content: flex-start;
+        align-items: center;
+
+        color: #3d3d3d;
+        padding: 0.5rem;
+        padding-left: 8%;
+
+        img {
+            width: 6.5rem;
+            aspect-ratio: 1;
+            border-radius: 8px;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .roadmap-container {
+        // TODO
+        img {
+            width: 100%;
+        }
+    }
+}
