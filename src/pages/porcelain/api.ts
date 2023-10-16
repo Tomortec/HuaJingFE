@@ -1,22 +1,42 @@
 
-import {
+import axios from "axios";
+import { 
     PlanePorcelainData,
+    defaultPlanePorcelainData
 } from "../../interfaces";
 
-export async function getPorcelainData(): Promise<PlanePorcelainData> {
-    return new Promise((resolve) => {
-        resolve({
-            id: "0",
-            title: "花鸟纹四方瓶",
-            age: "乾隆年间",
-            images: [
-                "https://images.pexels.com/photos/5683351/pexels-photo-5683351.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
-                "https://images.pexels.com/photos/18418020/pexels-photo-18418020.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
-                "https://images.pexels.com/photos/15590299/pexels-photo-15590299.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"    
-            ],
-            classification: "彩粉瓷器",
-            bottomStamp: "大清乾隆年制",
-            sizeIntroduction: "高：31cm 口径：8.5cm",
-        });
-    });
+interface RawCollectionData {
+    id: number;
+    title: string;
+    cover_img: string;
+    image: string[];
+    category_desc: string;
+    years: string;
+    bottom_desc: string;
+    specification_desc: string;
+    poster: string;
 }
+
+export const getPorcelainData = async (id: string): Promise<PlanePorcelainData> => {
+    try {
+        const result = await axios.get("/api/sku/detail", {
+            params: { "sku_id": id }
+        });
+        const resultData = result["data"];
+
+        const rawData = resultData["data"] as RawCollectionData;
+        return {
+            id: rawData.id.toString(),
+            title: rawData.title,
+            age: rawData.years,
+            classification: rawData.category_desc,
+            bottomStamp: rawData.bottom_desc,
+            sizeIntroduction: rawData.specification_desc,
+            description: rawData.poster,
+            images: [rawData.cover_img, ...rawData.image]
+        };
+    } catch(e) { 
+        console.error(e); 
+        return defaultPlanePorcelainData;
+    }
+};

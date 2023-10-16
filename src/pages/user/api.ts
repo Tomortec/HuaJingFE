@@ -1,46 +1,62 @@
 
-export interface UserInfo {
-    username: string;
-    avatar: string;
-    level: 0|1|2|3|4|5;
-}
+import axios from "axios";
 
-export interface CollectionInfo {
-    id: string;
+import { 
+    UserData, 
+    defaultUserData, 
+
+    CollectionData, 
+    defaultCollectionData 
+} from "../../interfaces";
+
+interface RawCollectionData {
+    id: number;
     title: string;
-    age: string;
-    classification: string;
-    image: string;
+    cover_img: string;
+    image: string[];
+    category_desc: string;
+    years: string;
+    bottom_desc: string;
+    specification_desc: string;
+    poster: string;
 }
 
-export async function getUserInfo(): Promise<UserInfo> {
-    return new Promise((resolve) => {
-        resolve({
-            username: "FOOBAR",
-            avatar: "https://avataaars.io/?avatarStyle=Circle&topType=WinterHat3&accessoriesType=Blank&hatColor=PastelYellow&facialHairType=Blank&clotheType=CollarSweater&clotheColor=PastelYellow&eyeType=Dizzy&eyebrowType=UnibrowNatural&mouthType=Twinkle&skinColor=Yellow",
-            level: 0
+export const getUserData = async (token: string): Promise<UserData> => {
+    try {
+        const result = await axios.get("/api/user/info", {
+            params: { "token": token }
         });
-    });
-}
+        const resultData = result["data"];
+        const rawUserData = resultData["data"];
 
-export async function getUserCollections(): Promise<CollectionInfo[]> {
-    return new Promise((resolve) => {
-        resolve([
-            {
-                id: "0",
-                title: "花鸟纹四方瓶",
-                age: "乾隆年间",
-                classification: "彩粉瓷器",
-                image: ""
-            },
-        ].concat(Array(6).fill(
-            {
-                id: "1",
-                title: "标题",
-                age: "乾隆年间",
-                classification: "彩粉瓷器",
-                image: ""
-            }
-        )));
-    });
-}
+        // TODO: handle error
+        return {
+            name: rawUserData.name,
+            level: rawUserData.vip_level,
+            porcelainIds: defaultUserData.porcelainIds,
+            avatar: defaultUserData.avatar
+        };
+    } catch (e) { 
+        console.error(e); 
+        return defaultUserData;
+    }
+};
+
+export const getCollectionsData = async (token: string): Promise<CollectionData[]> => {
+    try {
+        const result = await axios.get("/api/user/my_sku", {
+            params: { "token": token }
+        });
+        const resultData = result["data"];
+        const rawData = resultData["data"] as RawCollectionData[];
+
+        return rawData.map((v) => ({
+            id: v.id.toString(),
+            title: v.title,
+            image: v.cover_img
+        } as CollectionData));
+    } catch (e) { 
+        console.error(e); 
+        return [defaultCollectionData];
+    }
+};
