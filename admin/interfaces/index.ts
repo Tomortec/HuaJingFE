@@ -1,4 +1,9 @@
 
+export interface AuthData {
+    id: string;
+    phoneNumber: string;
+}
+
 export interface UserData {
     id: string;
     name: string;
