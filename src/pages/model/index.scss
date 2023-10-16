@@ -1,47 +1,89 @@
 
+@import "../../components/variables.scss";
+
 #modelPage {
-    padding-top: 3vh;
+    // if the popup-container is `fixed`, it will cover main contents
+    $main-content-margin-bottom: 0;
+
+    $model-viewer-height: 55vh;
+    $model-viewer-bg-color: transparent;
+    $model-viewer-progressbar-bg-color: rgba(255, 255, 255, 0.5);
+
+    $camera-reset-btn-top: 5%;
+    $camera-reset-btn-right: 6%;
+    $camera-reset-btn-padding: 0.25rem;
+    $camera-reset-btn-bg-color: $highlight-bg-color;
+    $camera-reset-btn-image-size: 1.25rem;
+
+    $popup-container-position-type: relative; // `relative` or `fixed`
+    $popup-container-height: 10vh;
+    $popup-container-margin-bottom: 5vh;
+    $popup-container-bg-color: $page-body-bg-color;
+    $popup-container-shadow: none;
+
+    $popup-size: 85vw;
+    $popup-border-radius: 12px;
+    $popup-bg-color: $highlight-bg-color;
+    $popup-font-color: $highlight-font-color;
+    $popup-mask-opacity: 0.8;
+    $popup-title-font-size: 1.4rem;
+    $popup-title-font-weight: 300;
+    $popup-content-font-color: rgba(255, 255, 255, 0.6);
+    $popup-content-font-size: 0.9rem;
+    $popup-content-font-weight: 300;
+    $popup-content-image-text-gap: 1rem;
+    $popup-content-image-size: 65%;
+    $popup-content-image-border-radius: $popup-border-radius;
+    $popup-close-btn-color: rgba(255, 255, 255, 0.6);
+    $popup-close-btn-size: 1.8rem;
+
+    $popup-button-bg-color: $popup-container-bg-color;
+    $popup-button-font-color: white;
+    $popup-button-font-size: 1rem;
+    $popup-button-font-weight: 300;
+    $popup-button-icon-size: 1.4rem;
+    $popup-button-icon-weight: $popup-button-font-weight;
+    $popup-button-text-icon-gap: 0.5rem;
+    $popup-button-padding: 0.5rem 3rem;
+    $popup-button-border-radius: 4px;
+    $popup-button-border: 1px solid rgba(255, 255, 255, 0.6);
+
+    width: 100%;
+    margin-left: 0;
     overflow-y: scroll;
 
-    .single-page {
-        margin-bottom: 10vh;
+    .content-container {
+        width: 90%;
+        margin-left: 5%;
     }
 
     model-viewer {
         width: 100%;
-        height: 52.5vh;
+        height: $model-viewer-height;
 
-        background-color: lavenderblush;
-    
-        border-radius: 12px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: $model-viewer-bg-color;
 
         &::part(default-progress-bar) {
-            background-color: black;
+            background-color: $model-viewer-progressbar-bg-color;
         }
     }
     
     #camera-reset-button {
-        position: absolute;
-        bottom: 5%;
-        right: 4%;
-    
-        background-color: #fff;
-    
-        z-index: 999;
-    }    
-
-    .navigation-container {
         display: flex;
-        justify-content: space-between;
-        margin-top: 1.8vh;
+        position: absolute;
+        top: $camera-reset-btn-top;
+        right: $camera-reset-btn-right;
+    
+        background-color: $camera-reset-btn-bg-color;
+        padding: $camera-reset-btn-padding;
+        z-index: 999;
 
-        button {
-            background-color: whitesmoke;
-            border-radius: 8px;
-
-            i {
-                margin: 0 0.3rem;
-            }
+        img {
+            width: $camera-reset-btn-image-size;
+            aspect-ratio: 1;
         }
     }
 
@@ -50,32 +92,95 @@
         justify-content: center;
         align-items: center;
 
-        position: fixed;
-        left: 0;
-        bottom: 0;
+        position: $popup-container-position-type;
+        @if $popup-container-position-type == fixed {
+            bottom: 0;
+            left: 0;
+            $main-content-margin-bottom: $popup-container-height;
+            $popup-container-margin-bottom: 0;
+            $popup-container-shadow: 0px -3px 20px 5px $popup-container-bg-color;
+        }
 
         width: 100%;
-        height: 8vh;
+        height: $popup-container-height;
+        margin-bottom: $popup-container-margin-bottom;
 
-        background-color: white;
-        box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.05);
+        background-color: $popup-container-bg-color;
+        box-shadow: $popup-container-shadow;
 
         z-index: 999;
 
         .popup-button {
-            font-size: 1.15rem;
-            font-weight: 400;
-            letter-spacing: 0.2rem;
+            font-size: $popup-button-font-size;
+            font-weight: $popup-button-font-weight;
+
+            padding: $popup-button-padding;
+            border: $popup-button-border;
+            border-radius: $popup-button-border-radius;
+
+            color: $popup-button-font-color;
+            background-color: $popup-button-bg-color;
 
             & > div {
                 display: flex;
                 align-items: center;
+                gap: $popup-button-text-icon-gap;
 
                 & > i {
-                    font-size: 1.8rem;
-                    margin-right: 1rem;
+                    font-size: $popup-button-icon-size;
+                    font-weight: $popup-button-icon-weight;
                 }
             }
         }
+
+        .popup {
+            width: $popup-size;
+            height: $popup-size;
+
+            color: $popup-font-color;
+            background-color: $popup-bg-color;
+            border-radius: $popup-border-radius;
+
+            & + .popup-mask {
+                opacity: $popup-mask-opacity;
+            }
+
+            .popup-close-btn {
+                color: $popup-close-btn-color;
+                font-size: $popup-close-btn-size;
+            }
+
+            .popup-content {
+                height: 100%;
+                justify-content: space-around;
+                align-items: center;
+
+                .popup-title {
+                    font-size: $popup-title-font-size;
+                    font-weight: $popup-title-font-weight;
+                }
+    
+                .popup-body {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: $popup-content-image-text-gap;
+
+                    color: $popup-content-font-color;
+                    font-size: $popup-content-font-size;
+                    font-weight: $popup-content-font-weight;
+
+                    img {
+                        width: $popup-content-image-size;
+                        aspect-ratio: 1;
+                        border-radius: $popup-content-image-border-radius;
+                    }
+                }
+            }
+        }
+    }
+
+    .scrollable {
+        margin-bottom: $main-content-margin-bottom;
     }
 }

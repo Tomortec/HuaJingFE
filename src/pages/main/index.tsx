@@ -125,7 +125,7 @@ export const MainPage = () => {
         <Page pageName="mainPage">
             <div>
                 <div className="video-container">
-                    <video autoPlay={true} muted={true} preload="auto">
+                    <video autoPlay={true} muted={true} preload="auto" playsInline={true}>
                         <source src="https://placehold.co/1920x1080.mp4" type="video/mp4" />
                     </video>
                 </div>

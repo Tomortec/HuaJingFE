@@ -12,7 +12,7 @@ export const Popup = (
     const id = `hj-${props.popupId}-popup`;
 
     const togglePopup = () => {
-        $(`#${id}, #${id} + .popup-mask`).fadeToggle(500);
+        $(`#${id}, #${id} + .popup-mask`).fadeToggle(300);
     };
 
     return (
@@ -25,18 +25,13 @@ export const Popup = (
             <div id={id} className="popup" tabIndex={-1}>
                 <div className="popup-content">
                     <div className="popup-header">
-                        <h5 className="popup-title">{props.popupTitle}</h5>
+                        <span className="popup-title">{props.popupTitle}</span>
                     </div>
                     <div className="popup-body">
                         {props.popupBody}
                     </div>
-                    <div className="popup-footer">
-                        <button 
-                            type="button" className="btn btn-primary"
-                            onClick={togglePopup}
-                        >好的</button>
-                    </div>
                 </div>
+                <div className="popup-close-btn" onClick={togglePopup}></div>
             </div>
 
             <div className="popup-mask" onClick={togglePopup}></div>

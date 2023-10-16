@@ -1,42 +1,48 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import {
-    useLoaderData,
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import {
     Swiper,
-    SwiperSlide,
+    SwiperSlide
 } from "swiper/react";
+import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/scss";
+import "swiper/scss/pagination";
 
-import { PlanePorcelainData } from "../../interfaces";
+import { defaultPlanePorcelainData } from "../../interfaces";
 import { Page } from "../page";
+import { SwiperNavigator } from "../../components/swiper-navigator";
 import { InfoContainer } from "../../components/info-container";
 import { getPorcelainData } from "./api";
 import "./index.scss";
 
-
-export async function loader() {
-    const data = await getPorcelainData();
-    return data;
-}
+import modelBgImage from "../../assets/image-model-bg.png";
 
 export const PorcelainPage = () => {
-    const data = useLoaderData() as PlanePorcelainData;
+    const { porcelainId } = useParams();
+    const [data, setData] = useState(defaultPlanePorcelainData);
+
+    useEffect(() => {
+        getPorcelainData(porcelainId)
+            .then((res) => setData(res));
+    }, []);
 
     return (
         <Page pageName="porcelainPage" authNeeded={true}>
             <div>
-                <h1>{data.title}</h1>
                 <Swiper
-                    loop={true}
+                    modules={[Pagination, Autoplay]}
+                    loop={true} speed={600}
+                    spaceBetween={$(window).width() * 0.1}
+                    autoplay={{ delay: 5000 }}
+                    pagination={{ dynamicBullets: true, dynamicMainBullets: 3 }}
                 >
                     {
                         data.images.length > 0 ?
                         data.images.map((src, i) => 
-                            <SwiperSlide key={i}>
+                            <SwiperSlide key={i} style={{ backgroundImage: `url(${modelBgImage})` }}>
                                 <img src={src} alt="" />
                             </SwiperSlide>
                         ) :
@@ -46,7 +52,10 @@ export const PorcelainPage = () => {
                     }
                 </Swiper>
 
-                <InfoContainer info={data} />
+                <div className="content-container">
+                    <SwiperNavigator title={data.title} buttonsNeeded={false} />
+                    <InfoContainer info={data} />
+                </div>
             </div>
         </Page>
     )

@@ -1,10 +1,7 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import {
-    useLoaderData, 
-    useParams,
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import "@google/model-viewer";
 import { ModelViewerElement } from "@google/model-viewer";
@@ -23,10 +20,13 @@ gsap.registerPlugin(ScrollToPlugin);
 import { SolidPorcelainData } from "../../interfaces";
 import { Page } from "../page";
 import { InfoContainer } from "../../components/info-container";
+import { SwiperNavigator } from "../../components/swiper-navigator";
 import { Popup } from "../../components/popup";
 import { getAllPorcelainData } from "./api";
 import "./index.scss";
 
+import cameraResetIcon from "../../assets/icon-3d.svg";
+import modelBgImage from "../../assets/image-model-bg.png";
 
 declare global {
     namespace JSX {
@@ -36,6 +36,7 @@ declare global {
 
         interface ModelViewerAttributes {
             id?: string;
+            style?: React.CSSProperties,
             children?: React.ReactNode;
             src: string;
             poster?: string;
@@ -43,11 +44,6 @@ declare global {
             exposure?: number;
         }
     }
-}
-
-export async function loader() {
-    const data = await getAllPorcelainData();
-    return data;
 }
 
 const SingleModelPage = (props: { id: string, data: SolidPorcelainData }) => {
@@ -75,10 +71,9 @@ const SingleModelPage = (props: { id: string, data: SolidPorcelainData }) => {
 
     return (
         <div className="single-page">
-            <h1>{props.data.title}</h1>
-
             <model-viewer
                 id={modelViewerId}
+                style={{ backgroundImage: `url(${modelBgImage})` }}
                 src={props.data.model}
                 poster={props.data.poster}
                 exposure={props.data.exposure ?? 1}
@@ -89,44 +84,39 @@ const SingleModelPage = (props: { id: string, data: SolidPorcelainData }) => {
                     type="button" id="camera-reset-button" 
                     className="btn" onClick={resetModelViewCamera}
                 >
-                    <i className="bi-arrow-repeat"></i>
+                    <img src={cameraResetIcon} alt="" />
                 </button>
             </model-viewer>
 
-            {
-                swiper.slides.length > 1 &&
-                <div className="navigation-container">
-                    <button type="button" className="btn"
-                        onClick={toPrevPage}
-                    >
-                        <i className="bi-caret-left-fill"></i>
-                        上一个
-                    </button>
-                    <button type="button" className="btn"
-                        onClick={toNextPage}
-                    >
-                        下一个
-                        <i className="bi-caret-right-fill"></i>
-                    </button>
-                </div>
-            }
-
-            <InfoContainer info={props.data} />
+            <div className="content-container">
+                <SwiperNavigator title={props.data.title} buttonsNeeded
+                    onSlideToPrev={toPrevPage} onSlideToNext={toNextPage} />
+                <InfoContainer info={props.data} />
+            </div>
         </div>
     )
 };
 
 export const ModelPage = () => {
-    const allModelData = useLoaderData() as SolidPorcelainData[];
     const { modelId } = useParams();
-    // if not found, `findIndex` will return -1
-    // but Swiper accepts all numbers, for it will clamp the value to the right range
-    const initialIndex = allModelData.findIndex(data => data.id == modelId);
+    const [allModelData, setAllModelData] = useState([] as SolidPorcelainData[]);
+    const [initialIndex, setInitialIndex] = useState(0);
+
+    useEffect(() => {
+        getAllPorcelainData()
+            .then((res) => {
+                setAllModelData(res);    
+                
+                // if not found, `findIndex` will return -1
+                // but Swiper accepts all numbers, for it will clamp the value to the right range
+                setInitialIndex(res.findIndex(data => data.id == modelId))
+            });
+    }, []);
 
     return (
         <Page pageName="modelPage" authNeeded={true}>
             <>
-                <div>
+                <div className="scrollable">
                     <Swiper
                         initialSlide={initialIndex}
                         loop={true}
@@ -145,7 +135,10 @@ export const ModelPage = () => {
                 <div className="popup-container">
                     <Popup popupId="modal-page" popupTitle="联系我们"
                         popupBody={
-                            <h3>扫码添加微信，了解更多详情</h3>
+                            <>
+                                <img src="https://placehold.co/400" alt="" />
+                                <span>扫码添加微信，了解更多详情</span>
+                            </>
                         }
                         triggerCaption={
                             <div>

@@ -1,14 +1,22 @@
 
-import React, { MouseEvent } from "react";
+import React, { useRef, useState } from "react";
 
 import {
-    Link, Navigate,
+    Navigate,
+    useNavigate
 } from "react-router-dom";
 
 import { Page } from "../page";
 
 import "./index.scss";
 import { useAuth } from "../../hooks/useAuth";
+
+import logoImage from "../../assets/image-logo.png";
+import posterBgImage from "../../assets/image-login-bg.png";
+import { requestVerificationCode } from "./api";
+
+const phoneNumberRegex = /^(?:\+?86)?1(?:3\d{3}|5[^4\D]\d{2}|8\d{3}|7(?:[0-35-9]\d{2}|4(?:0\d|1[0-2]|9\d))|9[0-35-9]\d{2}|6[2567]\d{2}|4[579]\d{2})\d{6}$/;
+const verificationCodeRegex = /^\d{6}$/;
 
 export const LoginPage = () => {
     const { user, login } = useAuth();
@@ -20,6 +28,28 @@ export const LoginPage = () => {
         )
     }
 
+    const [agreementChecked, setAgreementChecked] = useState(false);
+    const [readyForRequestCode, setReadyForRequestCode] = useState(false);
+    const [codeCountdown, setCodeCountdown] = useState(-1);
+    const phoneNumberInputRef = useRef(null);
+
+    const navigate = useNavigate();
+    const navigateToMainPage = () => navigate("/");
+
+    const requestForVerificationCode = () => {
+        if(phoneNumberInputRef && phoneNumberInputRef.current.value) {
+            requestVerificationCode(phoneNumberInputRef.current.value);
+        }
+    };
+
+    const handlePhoneNumberInputChanged = (event: React.FormEvent<HTMLInputElement>) => {
+        setReadyForRequestCode(phoneNumberRegex.test(event.currentTarget.value));
+    };
+
+    const handleAgreementCheckChanged = (event: React.FormEvent<HTMLInputElement>) => {
+        setAgreementChecked(event.currentTarget.checked);
+    };
+
     const handleSubmit = () => {
         console.log("Login!");
         login();
@@ -28,32 +58,47 @@ export const LoginPage = () => {
     return (
         <Page pageName="loginPage">
             <div>
-                <div id="hj-login-poster">
-                    <Link to={"/"}>
-                        <i className="bi-person-circle"></i>
-                    </Link>
+                <div className="login-poster">
+                    <img className="poster-image" src={posterBgImage} alt="" />
+                    <div className="logo-container" onClick={navigateToMainPage}>
+                        <img src={logoImage} alt="" />
+                        <span>华境｜HUAJING</span>
+                    </div>
                 </div>
 
-                <div>
-                    <div className="mb-3">
+                <div className="login-form">
+                    <div>
                         <label htmlFor="phoneNumber" className="form-label">手机号</label>
-                        <input type="number" 
-                            name="phoneNumber" className="form-control"
-                            placeholder="请输入手机号" />
-                        <div className="invalid-feedback">请输入正确手机号</div>
+                        <input type="text" ref={phoneNumberInputRef}
+                            name="phoneNumber" className="form-control" 
+                            placeholder="请输入手机号"
+                            onChange={handlePhoneNumberInputChanged} />
                     </div>
-                    <div className="mb-3">
+                    <div>
                         <label htmlFor="verificationCode" className="form-label">验证码</label>
                         <div className="input-group">
                             <input type="number"
                                 name="verificationCode" className="form-control"
-                                placeholder="请输入验证码" />
-                            <button type="button" className="btn btn-outline-secondary">获取验证码</button>
+                                placeholder="请输入验证码" autoComplete="off"
+                                onClick={requestForVerificationCode}
+                                disabled={!readyForRequestCode} />
+                            <button type="button" className="btn"
+                                disabled={!readyForRequestCode}
+                                onClick={requestForVerificationCode}>获取</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div className="form-check">
+                            <input type="checkbox" id="agreementCheck" 
+                                className="form-check-input" checked={agreementChecked}
+                                onChange={handleAgreementCheckChanged} />
+                            <label htmlFor="agreementCheck" className="form-label">同意用户协议</label>
                         </div>
                     </div>
                     <div>
                         <button 
-                            type="button" className="btn btn-primary"
+                            type="button" className="submit-btn btn"
+                            disabled={!(agreementChecked && readyForRequestCode)}
                             onClick={handleSubmit}
                         >登录</button>
                     </div>

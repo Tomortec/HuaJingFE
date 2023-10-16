@@ -1,39 +1,50 @@
 
 import React from "react";
 
-import { PorcelainData } from "../interfaces";
+import { PorcelainData, defaultPorcelainData } from "../interfaces";
 
-const InfoTextComponent = (
+import ageIcon from "../assets/icon-clock.svg";
+import classIcon from "../assets/icon-classification.svg";
+import sizeIcon from "../assets/icon-list.svg";
+
+const BasicInfoTextComponent = (
     props: { icon: string, title: string, text: string }
 ) => {
     return (
-        <div>
-            <div className="fw-bold mb-2">
-                <i className={`${props.icon} me-1`}></i>
+        <div className="basic-info">
+            <div className="header">
+                { 
+                    props.icon.startsWith("bi") ? 
+                    <i className={props.icon}></i> :
+                    <img src={props.icon} alt="" />
+                }
                 <span>{props.title}</span>
             </div>
-            <span>{props.text}</span>
+            <span className="content">{props.text}</span>
         </div>
     )
 };
 
 export const InfoContainer = (props: { info: PorcelainData }) => {
-    const data = Object.assign({}, {
-        classification: "未知",
-        bottomStamp: "未知",
-        sizeIntroduction: "未知",
-        description: "未知"
-    }, props.info);
+    const data = Object.assign({}, defaultPorcelainData, props.info);
 
     return (
-        <div className="info-container d-flex flex-column justify-contetn-center align-items-center gap-4">
-            <div className="d-flex flex-row justify-content-between text-center">
-                <InfoTextComponent icon="bi-clock" title="年代" text={data.age} />
-                <InfoTextComponent icon="bi-hammer" title="瓷器品类" text={data.classification} />
-                <InfoTextComponent icon="bi-gem" title="底款" text={data.bottomStamp} />
+        <div className="info-container">
+            <div className="basic-info-container">
+                <BasicInfoTextComponent icon={ageIcon} title="年代" text={data.age} />
+                <BasicInfoTextComponent icon={classIcon} title="品类" text={data.classification} />
+                <BasicInfoTextComponent icon="bi-gem" title="底款" text={data.bottomStamp} />
+                <BasicInfoTextComponent icon={sizeIcon} title="尺寸介绍" text={data.sizeIntroduction} />
             </div>
-            <InfoTextComponent icon="bi-rulers" title="尺寸介绍" text={data.sizeIntroduction} />
-            <InfoTextComponent icon="bi-pencil" title="介绍" text={data.description} />
+
+            <div className="description-container">
+                <span className="header">介绍</span>
+                {
+                   ( props.info.description && props.info.description.startsWith("https")) ?
+                   <img className="content" src={props.info.description} alt="" /> :
+                   <pre className="content">{props.info.description}</pre>
+                }
+            </div>
         </div>
     )
 };

@@ -5,17 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "./useCookies";
 
 interface UserAuth {
-    user?: string,
-    login: () => void,
-    logout: () => void
+    /** user token */
+    user?: string;
+    login: () => void;
+    logout: () => void;
 }
 
 const AuthContext = () => {
+    // user token, not user id
     const [user, setUser] = useCookies("user", null);
     const navigate = useNavigate();
 
-    const login = () => {
-        setUser("TEST-0");
+    const login = async () => {
+        const token = "TEST-0";
+        setUser(token);
         navigate("/user");
     };
 
@@ -26,9 +29,9 @@ const AuthContext = () => {
 
     // provides a default context
     return createContext<UserAuth>({
-        user: user,
-        login: login,
-        logout: logout
+        user,
+        login,
+        logout,
     });
 };
 

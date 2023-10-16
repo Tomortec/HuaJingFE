@@ -1,0 +1,15 @@
+
+// Bootstrap variables overriding
+$input-focus-box-shadow: none;
+$form-check-input-border: none;
+$form-check-input-border-radius: 50%;
+$form-check-input-focus-box-shadow: none;
+
+$page-body-bg-color: rgb(18, 18, 18);
+$page-body-font-color: rgb(255, 255, 255);
+
+$page-container-width: 90%;
+$page-container-margin-left: calc((100% - $page-container-width) / 2);
+
+$highlight-bg-color: rgb(49, 49, 49);
+$highlight-font-color: rgb(255, 255, 255);

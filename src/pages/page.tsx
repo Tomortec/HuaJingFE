@@ -1,29 +1,52 @@
 
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 
 import {
-    Navigate
+    Navigate,
 } from "react-router-dom";
 
+import { gsap } from "gsap";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
+gsap.registerPlugin(ScrollToPlugin);
+
 import { useAuth } from "../hooks/useAuth";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface PageProps {
     pageName: string;
     authNeeded?: boolean;
+    resetScroll?: boolean;
     children?: JSX.Element;
+    bgImage?: string;
 }
 
 export const Page = (props: PageProps) => {
-    useEffect(() => {
-        if(!$("#hj-navbar").length) return;
+    const [scrollState, setScrollState] = useLocalStorage(`SCROLL_${props.pageName}`, null);
 
-        const restHeight = $(window).height() - $("#hj-navbar").outerHeight();
-        console.log(restHeight);
-        $(".page-container").css({
-            position: "absolute",
-            top: $("#hj-navbar").outerHeight(),
-            height: restHeight
-        });
+    useLayoutEffect(() => {
+        if($("#hj-navbar").length) {
+            const restHeight = $(window).height() - $("#hj-navbar").outerHeight();
+            console.log(props.pageName, restHeight);
+            $(".page-container").css({
+                position: "absolute",
+                top: $("#hj-navbar").outerHeight(),
+                height: restHeight
+            });
+
+            $(".bg-image").css({ top: $("#hj-navbar").outerHeight() });
+        }
+
+        if(!props.resetScroll && (scrollState as number)) {
+            gsap.to(`#${props.pageName}`, {
+                scrollTo: scrollState as number,
+                duration: 0.5
+            });
+        }
+
+        return () => {
+            const scrollTop = $(`#${props.pageName}`).scrollTop();
+            setScrollState(scrollTop);
+        }
     });
 
     if(props.authNeeded) {
@@ -36,9 +59,12 @@ export const Page = (props: PageProps) => {
     }
 
     return (
-        <div id={props.pageName} className="page-container">
-            {props.children}
-        </div>
+        <>
+            { props.bgImage && <img className="bg-image" src={props.bgImage} alt="" /> } 
+            <div id={props.pageName} className="page-container">
+                {props.children}
+            </div>
+        </>
     )
 };
 

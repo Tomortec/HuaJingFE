@@ -6,13 +6,15 @@ import {
     RouterProvider,
 } from "react-router-dom";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { App } from './App';
 import './App.scss';
 
 import { MainPage } from './pages/main';
-import { UserPage, loader as userLoader } from './pages/user';
-import { PorcelainPage, loader as porcelainLoader } from './pages/porcelain';
-import { ModelPage, loader as modelLoader } from './pages/model';
+import { UserPage } from './pages/user';
+import { PorcelainPage } from './pages/porcelain';
+import { ModelPage } from './pages/model';
 import { LoginPage } from './pages/login';
 import { InstructionsPage } from './pages/instructions';
 import { IntroductionPage, INTRODUCTION_PAGE_PATHS } from './pages/introduction';
@@ -20,6 +22,8 @@ import { IntroductionPage, INTRODUCTION_PAGE_PATHS } from './pages/introduction'
 const rootElement = document.createElement('div');
 rootElement.id = 'root';
 document.body.appendChild(rootElement);
+
+const queryClient = new QueryClient();
 
 const root = createRoot(rootElement as HTMLElement);
 
@@ -34,18 +38,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "/user",
-                element: <UserPage />,
-                loader: userLoader
+                element: <UserPage />
             },
             {
                 path: "/porcelain/:porcelainId",
-                element: <PorcelainPage />,
-                loader: porcelainLoader
+                element: <PorcelainPage />
             },
             {
                 path: "/model/:modelId",
-                element: <ModelPage />,
-                loader: modelLoader
+                element: <ModelPage />
             },
             {
                 path: "/login",
@@ -65,7 +66,9 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-    <React.StrictMode>
-        <RouterProvider router={router} />
-    </React.StrictMode>
+    // <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+        </QueryClientProvider>
+    // </React.StrictMode>
 );

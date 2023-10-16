@@ -1,4 +1,7 @@
 
+// some variables of Bootstrap should be overwritten
+@import "./components/variables.scss";
+
 @import "~bootstrap/scss/bootstrap.scss";
 
 $bootstrap-icons-font-dir: "~bootstrap-icons/font/fonts";
@@ -17,6 +20,10 @@ body {
     scrollbar-width: none;
 }
 
+*:focus {
+    outline: none;
+}
+
 *::-webkit-scrollbar {
     display: none;
     width: 0;
@@ -25,13 +32,17 @@ body {
 
 #root {
     height: 100%;
+    
+    color: $page-body-font-color;
+    background-color: $page-body-bg-color;
 }
 
 .page-container {
-    width: 90%;
-    margin-left: 5%;
+    width: $page-container-width;
+    margin-left: $page-container-margin-left;
+}
 
-    h1 {
-        margin-bottom: 2vh;
-    }
+.bg-image:has(+ .page-container) {
+    position: absolute;
+    width: 100%;
 }

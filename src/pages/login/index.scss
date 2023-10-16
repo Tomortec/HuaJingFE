@@ -1,34 +1,181 @@
 
-$login-poster-height: 50vh;
+@import "../../components/variables.scss";
 
 #loginPage {
-    #hj-login-poster {
+    $login-poster-height: 60vh;
+    $login-poster-image-top: 3vh;
+    
+    $logo-width: 30vw;
+    $logo-title-font-size: 1.3rem;
+    $logo-title-font-weight: 100;
+    $logo-title-letter-space: 0.2rem;
+    $logo-container-gap: 20px;
+    $logo-container-expected-y-center: 25vh;
+    $logo-container-offset: calc(-1 * ($login-poster-height / 2 - $logo-container-expected-y-center));
+    
+    $login-form-expected-top: 50vh;
+    $login-form-offset: calc(-1 * ($login-poster-height - $login-form-expected-top));
+    $login-form-max-height: 60vh;
+    $login-form-height: 50vh;
+    $login-form-div-gaps: 10%, 7%, 10%, 20%;
+    $login-form-horizon-padding: 2.5%;
+
+    $login-form-component-border-width: 1px;
+    $login-form-label-font-size: 1rem;
+    $login-form-label-font-weight: 300;
+    $login-form-input-font-size: 1.15rem;
+    $login-form-input-font-weight: 300;
+    $login-form-input-letter-space: 0.1rem;
+    $login-form-check-size: 1.2rem;
+    $login-form-check-tint-color: $highlight-font-color;
+    $login-form-check-background-color: $highlight-bg-color;
+    $login-form-btn-width: 60%;
+    $login-form-btn-height: 3rem;
+    $login-form-btn-tint-color: $highlight-font-color;
+    $login-form-btn-font-size: $login-form-label-font-size;
+    $login-form-btn-font-weight: $login-form-label-font-weight;
+
+    overflow-x: hidden;
+
+    .login-poster {
         display: flex;
         justify-content: center;
         align-items: center;
     
         width: 100%;
         height: $login-poster-height;
-    
-        margin-bottom: 5vh;
-    
-        &::after {
-            content: "";
+
+        .poster-image {
             position: absolute;
-            top: 0;
-            left: 0;
-    
-            width: 100%;
-            height: $login-poster-height;
-    
-            background: #131313;
-    
-            z-index: -999;
+            top: $login-poster-image-top;
+            width: 100vw;
         }
     
-        & i {
-            color: white;
-            font-size: 3rem;
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            gap: $logo-container-gap;
+
+            transform: translateY($logo-container-offset);
+
+            img {
+                width: $logo-width;
+                aspect-ratio: 1;
+                object-fit: contain;
+
+                border-radius: 50%;
+            }
+
+            span {
+                font-size: $logo-title-font-size;
+                font-weight: $logo-title-font-weight;
+                letter-spacing: $logo-title-letter-space;
+            }
         }
     }    
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        width: 100%;
+        height: $login-form-height;
+        max-height: $login-form-max-height;
+
+        padding: 0 $login-form-horizon-padding;
+        transform: translateY($login-form-offset);
+        
+        @for $i from 1 through 4 {
+            & > div:nth-child(#{$i}) {
+                margin-bottom: nth($list: $login-form-div-gaps, $n: $i);
+            }
+        }
+
+        .form-label {
+            font-size: $login-form-label-font-size;
+            font-weight: $login-form-label-font-weight;
+        }
+
+        .form-control {
+            @mixin common-style {
+                color: $highlight-font-color;            
+                background: transparent;
+
+                border-radius: 0;
+                border: none;
+                border-bottom: $login-form-component-border-width solid rgba($color: #fff, $alpha: 0.6);
+    
+                transition: border-bottom-color 0.5s;    
+            }
+
+            padding-left: 0;
+
+            letter-spacing: $login-form-input-letter-space;
+            font-size: $login-form-input-font-size;
+            font-weight: $login-form-input-font-weight;
+
+            @include common-style();
+
+            &::placeholder {
+                letter-spacing: 0;
+            }
+
+            & + .btn {
+                @include common-style();
+
+                margin: 0; // by default, Bootstrap will add -1 to margin-left
+
+                font-size: $login-form-btn-font-size;
+                font-weight: $login-form-btn-font-weight;
+
+                &:disabled {
+                    opacity: 1; // when disabled, Bootstrap will apply `opacity`
+                }
+            }
+
+            &:focus, &:focus + .btn {
+                border-bottom-color: #fff;
+            }
+        }
+
+        .form-check-input {
+            width: $login-form-check-size;
+            height: $login-form-check-size;
+
+            $border-width: $login-form-component-border-width;
+            border: $border-width solid #fff;
+            margin-right: 0.75rem;
+            transform: translateY(calc(-1 * $border-width));
+
+            transition: background-color 0.5s;
+
+            &:checked {
+                color: $login-form-check-tint-color;
+                background-color: $login-form-check-background-color;
+            }
+        }
+
+        & > div:has(.submit-btn) {
+            display: flex;
+            justify-content: center;
+        }
+
+        .submit-btn {
+            width: $login-form-btn-width;
+            height: $login-form-btn-height;
+
+            color: $login-form-btn-tint-color;
+            font-size: $login-form-btn-font-size;
+            font-weight: $login-form-btn-font-weight;
+
+            border: $login-form-component-border-width solid $login-form-btn-tint-color;
+
+            // when disabled, Bootstrap will apply `opacity`
+            transition: opacity 0.5s;
+        }
+    }
 }
