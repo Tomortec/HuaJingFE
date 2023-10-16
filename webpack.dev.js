@@ -2,6 +2,7 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 const path = require('path');
+const webpack = require("webpack");
 const MockjsWebpackPlugin = require('mockjs-webpack-plugin');
 
 module.exports = merge(common, {
@@ -12,16 +13,24 @@ module.exports = merge(common, {
         static: "./dist",
         hot: true,
         proxy: {
-            "/adminApi": "http://localhost:3000/"
+            "/admin": "http://localhost:3000/",
+            "/api": "http://localhost:3001/"
         }
     },
     output: {
         publicPath: "/"
     },
     plugins: [
+        new webpack.DefinePlugin({
+            "process.env.NODE_ENV": JSON.stringify("development")
+        }),
         new MockjsWebpackPlugin({
             path: path.join(__dirname, "./admin/__mock__"),
             port: 3000
+        }),
+        new MockjsWebpackPlugin({
+            path: path.join(__dirname, "./src/__mock__"),
+            port: 3001
         })
     ]
 });
