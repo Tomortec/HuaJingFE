@@ -1,31 +1,109 @@
 
 import React from "react";
 
+import { Tooltip } from "bootstrap";
+
 import "datatables.net-responsive-bs5";
-import language from "datatables.net-plugins/i18n/zh.mjs";
 import "datatables.net-plugins/sorting/chinese-string";
 
 import { Table } from "./table";
 import { UserData } from "../interfaces";
-import { showDialog } from "../utilities";
+import { useModal } from "../hooks/useModal";
+import { getPorcelainById } from "../api";
+import { UserModalId } from "./user-modal";
 
 export const UserTable = () => {
-    const showModal = (info?: UserData) => {
-        showDialog("#user-modal", info);
+    const tableId = "hj-user-table";
+
+    const { showModal } = useModal();
+
+    const showDialog = (info?: UserData) => {
+        showModal(`#${UserModalId}`, info);
+    };
+
+    const showDeletionConfirm = (info?: UserData) => {
+        window.confirm(`
+            ${"!".repeat(40)}
+            请注意：删除后不可恢复！\n
+            确认删除该用户记录？\n
+            用户ID：${info.id}
+            用户名称：${info.name}
+            手机号：${info.phoneNumber}
+            等级：${info.level ?? 0}
+            藏品个数：${info.porcelainIds.length ?? 0}
+            ${"!".repeat(40)}
+        `);
     };
 
     const bindButtonsEvents = () => {
-        $(document).on("click", ".modify-btn", (event) => {
+        const getRowData = (
+            event: JQuery.ClickEvent | JQuery.MouseOverEvent
+        ) => {
             try {
-                const userInfo = JSON.parse(
+                return JSON.parse(
                     $(event.target).closest("td[data-row-object]")
                         .attr("data-row-object")
                 ) as UserData;
-                showModal(userInfo);
             } catch(error) {
                 console.error(error);
+                return null;
             }
+        };
+
+        $(document).on("click", `#${tableId} .modify-btn`, (event) => {
+            showDialog(getRowData(event));
         });
+
+        $(document).on("mouseover", `#${tableId} .delete-btn`, (event) => {
+            const rowData = getRowData(event);
+            Tooltip.getOrCreateInstance($(event.target)[0], {
+                title: `用户ID：${rowData.id}
+                    用户名称：${rowData.name}
+                    手机号：${rowData.phoneNumber}
+                    等级：${rowData.level}
+                `,
+                placement: "bottom"
+            }).show();
+        });
+
+        $(document).on("mouseleave", `#${tableId} .delete-btn`, (event) => {
+            Tooltip.getInstance($(event.target)[0]).hide();
+        });
+
+        $(document).on("click", `#${tableId} .delete-btn`, (event) => {
+            showDeletionConfirm(getRowData(event));
+        });
+
+        $(document).on("click", "a.porcelain-link", (event) => {
+            const porcelainId = $(event.target).attr("data-porcelain-id");
+            getPorcelainById(porcelainId)
+                .then((data) => alert(`
+                    藏品 ID：${data.id}
+                    藏品名称：${data.name}
+                    年代：${data.age}
+                    品类：${data.classification}
+                    图片个数：${data.images.length}
+                `));
+        });
+    };
+
+    const porcelainIdsRenderer = (data: string[]) => {
+        const comparator = (a: string, b: string) => (
+            a.toString().localeCompare(b, undefined, {
+                numeric: true,
+                sensitivity: "base"
+            })
+        );
+        return `
+            <div style="overflow-y: scroll;">
+                ${
+                    data.sort(comparator).map((value) => (
+                        `<a class="porcelain-link text-decoration-none link-primary" 
+                            href="#" data-porcelain-id="${value}">${value}</a>`
+                    )).join("<span class='user-select-none'>&nbsp;｜&nbsp;</span>")
+                }
+            </div>
+        `
     };
 
     const dataTableOptions: DataTables.Settings = {
@@ -34,8 +112,6 @@ export const UserTable = () => {
             dataSrc: "data"
         },
         responsive: true,
-        language,
-        ordering: true,
         columns: [
             { data: "id", title: "用户 ID" },
             { data: "name", title: "用户名" },
@@ -49,6 +125,15 @@ export const UserTable = () => {
             {
                 targets: 1,
                 type: "chinese-string"
+            },
+            {
+                targets: 4,
+                render: (data, type) => {
+                    if(type == "display" && (data as string[])) {
+                        return porcelainIdsRenderer(data);
+                    }
+                    return data;
+                } 
             },
             {
                 data: null,
@@ -70,9 +155,9 @@ export const UserTable = () => {
 
     return (
         <>
-            <Table id="hj-user-table" 
+            <Table id={tableId} 
                 newButtonCaption="新增用户" 
-                newButtonHandler={showModal}
+                newButtonHandler={showDialog}
                 dataTableOptions={dataTableOptions}
                 afterRender={bindButtonsEvents} />
         </>
