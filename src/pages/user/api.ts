@@ -30,12 +30,12 @@ export const getUserData = async (token: string): Promise<UserData> => {
         const rawUserData = resultData["data"];
 
         // TODO: handle error
-        return {
+        return rawUserData ? {
             name: rawUserData.name,
             level: rawUserData.vip_level,
             porcelainIds: defaultUserData.porcelainIds,
             avatar: defaultUserData.avatar
-        };
+        } : defaultUserData;
     } catch (e) { 
         console.error(e); 
         return defaultUserData;
@@ -50,11 +50,11 @@ export const getCollectionsData = async (token: string): Promise<CollectionData[
         const resultData = result["data"];
         const rawData = resultData["data"] as RawCollectionData[];
 
-        return rawData.map((v) => ({
+        return rawData ? rawData.map((v) => ({
             id: v.id.toString(),
             title: v.title,
             image: v.cover_img
-        } as CollectionData));
+        } as CollectionData)) : [defaultCollectionData];
     } catch (e) { 
         console.error(e); 
         return [defaultCollectionData];

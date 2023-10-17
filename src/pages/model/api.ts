@@ -60,7 +60,7 @@ const getSolidPorcelainData = async (id: string): Promise<SolidPorcelainData> =>
         const resultData = result["data"];
 
         const rawData = resultData["data"] as RawSolidPorcelainData;
-        return {
+        return rawData ? {
             id: rawData.id.toString(),
             title: rawData.title,
             age: rawData.years,
@@ -71,9 +71,10 @@ const getSolidPorcelainData = async (id: string): Promise<SolidPorcelainData> =>
             model: rawData.threed_img,
             poster: rawData.cover_img,
             exposure: rawData.threed_exposure
-        };    
+        } : defaultSolidPorcelainData;    
     } catch(error) {
         console.error(error);
+        return defaultSolidPorcelainData;
     }
 };
 
@@ -85,7 +86,7 @@ export const getAllPorcelainData = async (): Promise<SolidPorcelainData[]> => {
             for await (let id of porcelainIds) {
                 solidPorcelainData.push(await getSolidPorcelainData(id));
             }
-            return solidPorcelainData || [defaultSolidPorcelainData];
+            return solidPorcelainData.filter(Boolean) || [defaultSolidPorcelainData];
         } else {
             throw "Cannot get solid porcelain's ID !";
         }

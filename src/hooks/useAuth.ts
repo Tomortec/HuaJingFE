@@ -7,7 +7,7 @@ import { useCookies } from "./useCookies";
 interface UserAuth {
     /** user token */
     user?: string;
-    login: () => void;
+    login: (token: string) => void;
     logout: () => void;
 }
 
@@ -16,8 +16,7 @@ const AuthContext = () => {
     const [user, setUser] = useCookies("user", null);
     const navigate = useNavigate();
 
-    const login = async () => {
-        const token = "TEST-0";
+    const login = async (token: string) => {
         setUser(token);
         navigate("/user");
     };

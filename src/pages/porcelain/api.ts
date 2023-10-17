@@ -25,7 +25,7 @@ export const getPorcelainData = async (id: string): Promise<PlanePorcelainData> 
         const resultData = result["data"];
 
         const rawData = resultData["data"] as RawCollectionData;
-        return {
+        return rawData ? {
             id: rawData.id.toString(),
             title: rawData.title,
             age: rawData.years,
@@ -34,7 +34,7 @@ export const getPorcelainData = async (id: string): Promise<PlanePorcelainData> 
             sizeIntroduction: rawData.specification_desc,
             description: rawData.poster,
             images: [rawData.cover_img, ...rawData.image]
-        };
+        } : defaultPlanePorcelainData;
     } catch(e) { 
         console.error(e); 
         return defaultPlanePorcelainData;

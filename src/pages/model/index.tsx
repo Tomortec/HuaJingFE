@@ -114,7 +114,7 @@ export const ModelPage = () => {
     }, []);
 
     return (
-        <Page pageName="modelPage" authNeeded={true}>
+        <Page pageName="modelPage" authNeeded={true} resetScroll>
             <>
                 <div className="scrollable">
                     <Swiper

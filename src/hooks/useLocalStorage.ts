@@ -12,7 +12,7 @@ export const useLocalStorage = (keyName: string, defaultValue: any) => {
                 return defaultValue;
             }
         } catch(error) {
-            console.error(error);
+            // console.error(error);
             return defaultValue;
         }
     });

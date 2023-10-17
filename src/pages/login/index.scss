@@ -26,6 +26,7 @@
     $login-form-input-font-size: 1.15rem;
     $login-form-input-font-weight: 300;
     $login-form-input-letter-space: 0.1rem;
+    $login-form-input-invalid-color: #a32832;
     $login-form-check-size: 1.2rem;
     $login-form-check-tint-color: $highlight-font-color;
     $login-form-check-background-color: $highlight-bg-color;
@@ -109,7 +110,7 @@
                 border: none;
                 border-bottom: $login-form-component-border-width solid rgba($color: #fff, $alpha: 0.6);
     
-                transition: border-bottom-color 0.5s;    
+                transition: border-bottom-color 0.5s, color 0.5s;    
             }
 
             padding-left: 0;
@@ -121,6 +122,7 @@
             @include common-style();
 
             &::placeholder {
+                color: rgba($color: $page-body-font-color, $alpha: 0.2);
                 letter-spacing: 0;
             }
 
@@ -129,16 +131,29 @@
 
                 margin: 0; // by default, Bootstrap will add -1 to margin-left
 
+                font-variant-numeric: tabular-nums;
                 font-size: $login-form-btn-font-size;
                 font-weight: $login-form-btn-font-weight;
 
                 &:disabled {
+                    color: rgba($color: $page-body-font-color, $alpha: 0.2);
                     opacity: 1; // when disabled, Bootstrap will apply `opacity`
                 }
             }
 
             &:focus, &:focus + .btn {
                 border-bottom-color: #fff;
+            }
+
+            &.invalid {
+                color: $login-form-input-invalid-color;
+                border-bottom-color: $login-form-input-invalid-color;
+                &::placeholder {
+                    color: rgba($color: $login-form-input-invalid-color, $alpha: 1);
+                }
+                & + .btn {
+                    border-bottom-color: $login-form-input-invalid-color;
+                }
             }
         }
 

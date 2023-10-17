@@ -1,5 +1,5 @@
 
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 import {
     Navigate,
@@ -21,7 +21,8 @@ interface PageProps {
 }
 
 export const Page = (props: PageProps) => {
-    const [scrollState, setScrollState] = useLocalStorage(`SCROLL_${props.pageName}`, null);
+    const { user } = useAuth();
+    const [scrollState, setScrollState] = useLocalStorage(`SCROLL_${props.pageName}`, 0);
 
     useLayoutEffect(() => {
         if($("#hj-navbar").length) {
@@ -47,23 +48,20 @@ export const Page = (props: PageProps) => {
             const scrollTop = $(`#${props.pageName}`).scrollTop();
             setScrollState(scrollTop);
         }
-    });
-
-    if(props.authNeeded) {
-        const { user } = useAuth();
-        if(!user) {
-            return (
-                <Navigate to={"/login"} />
-            );
-        }
-    }
+    }, []);
 
     return (
         <>
-            { props.bgImage && <img className="bg-image" src={props.bgImage} alt="" /> } 
-            <div id={props.pageName} className="page-container">
-                {props.children}
-            </div>
+            {
+                props.authNeeded && !user ?
+                <Navigate to={"/login"} /> :
+                <>
+                    { props.bgImage && <img className="bg-image" src={props.bgImage} alt="" /> } 
+                    <div id={props.pageName} className="page-container">
+                        {props.children}
+                    </div>
+                </>
+            }
         </>
     )
 };
