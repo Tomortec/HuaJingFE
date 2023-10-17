@@ -4,9 +4,6 @@
 
 @import "~bootstrap/scss/bootstrap.scss";
 
-$bootstrap-icons-font-dir: "~bootstrap-icons/font/fonts";
-@import "~bootstrap-icons/font/bootstrap-icons.scss";
-
 @import "./components/components.scss";
 
 body {
@@ -30,6 +27,10 @@ body {
     height: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 #root {
     height: 100%;
     
@@ -40,6 +41,32 @@ body {
 .page-container {
     width: $page-container-width;
     margin-left: $page-container-margin-left;
+    user-select: none;
+}
+
+// page transition
+.page {
+    &-enter {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+    
+    &-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+    
+    &-exit {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    &-exit-active {
+        opacity: 0;
+        transform: scale(0.9);
+        transition: opacity 0.3s, transform 0.3s;
+    }
 }
 
 .bg-image:has(+ .page-container) {

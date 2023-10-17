@@ -1,9 +1,11 @@
 
 import React from "react";
 import {
-    Outlet,
+    useOutlet,
     useLocation,
 } from "react-router-dom";
+
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 import { 
     Navbar,
@@ -23,10 +25,21 @@ const checkNavbarState = () => {
 };
 
 export const App = () => {
+    const currentOutlet = useOutlet();
+    const location = useLocation();
     return (
         <>
             <Navbar state={checkNavbarState()} />
-            <Outlet />
+            <SwitchTransition>
+                <CSSTransition
+                    key={location.pathname}
+                    timeout={500}
+                    classNames={"page"}
+                    unmountOnExit
+                >
+                    {currentOutlet}
+                </CSSTransition>
+            </SwitchTransition>
         </>
     )
 };
