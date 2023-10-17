@@ -55,12 +55,12 @@ export const Page = (props: PageProps) => {
             {
                 props.authNeeded && !user ?
                 <Navigate to={"/login"} /> :
-                <>
+                <div>
                     { props.bgImage && <img className="bg-image" src={props.bgImage} alt="" /> } 
                     <div id={props.pageName} className="page-container">
                         {props.children}
                     </div>
-                </>
+                </div>
             }
         </>
     )

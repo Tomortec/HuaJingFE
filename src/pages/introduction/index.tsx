@@ -31,7 +31,7 @@ interface LocationConfiguration {
     }
 };
 
-const LOCATION_CONFIG: LocationConfiguration = {
+const locationConfig: LocationConfiguration = {
     "/club": {
         "pageName": "clubPage",
         "title": "俱乐部",
@@ -58,7 +58,13 @@ const LOCATION_CONFIG: LocationConfiguration = {
 
 export const IntroductionPage = () => {
     const pathName = useLocation().pathname;
-    const config = LOCATION_CONFIG[pathName.toLowerCase()];
+    if(!introductionPagePaths.includes(pathName)) {
+        return (
+            <></>
+        )
+    }
+
+    const config = locationConfig[pathName.toLowerCase()];
 
     return (
         <Page pageName={config.pageName} authNeeded={true}>
@@ -87,4 +93,4 @@ export const IntroductionPage = () => {
     )
 };
 
-export const INTRODUCTION_PAGE_PATHS = Object.keys(LOCATION_CONFIG);
+export const introductionPagePaths = Object.keys(locationConfig);

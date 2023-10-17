@@ -1,33 +1,29 @@
 
-import React, { ReactElement } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 import {
-    Link,
+    useNavigate
 } from "react-router-dom";
 
 import { Page } from "../page";
 import "./index.scss";
 
-const INSTRUCTIONS_CONTENT: string = `
-   在远古时代，华夏文明，作为龙的传人一直领先于世界。
-从独有的陶瓷到字面、玉器等艺术品，均体现了人类思想和工匠精神的知行合一，
-系远古科技的代表佳作。每一件艺术作品中都包含了金新的“人造材料”，
-井且是人类揭示大自然奥秘的主动探索行为和为如今的生活进步准备了必要的技术条件。
-这些“远古科技”的佳作一直是帝王精选的审美与爱好，它不仅是帝王的象征，
-也与远古时代的发展有若息息相关的联系和传承。随若时间推移，他们逐渐被人为的蒙上了神秘的等级色彩，
-也被极少数的人所垄断，就这样远古科技尘封在历史发展的长河中···
-<br><br>
-   现在华境之门已打开，让我们一起寻找远古科技的故事，重新揭开那段属于华夏文明的神秘面纱。`
-.replace(/(?:\r\n|\r|\n)/g, "")
-.replace(/<br>/g, "\n");
+import logoImage from "../../assets/image-logo.png";
+import instructionsBgImage from "../../assets/image-home-bg.png";
+import learnMoreBtnBgImage from "../../assets/image-home-btn-bg.png";
+import clubBannerImage from "../../assets/image-banner-club.png";
+import lakeBannerImage from "../../assets/image-banner-lake.png";
+import modelBgImage from "../../assets/image-home-model-bg.png";
+
+const instructionsContent: string = `在远古时代，华夏文明\n作为龙的传人一直领先于世界\n华夏文明的神秘面纱`;
 
 interface IntroductionInfo { name: string, image: string, link: string }
-const INTRODUCTION_INFO: {
+const introductionInfo: {
     [_: string]: IntroductionInfo
 } = {
     "club": {
         name: "俱乐部",
-        image: "https://images.pexels.com/photos/5683351/pexels-photo-5683351.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        image: clubBannerImage,
         link: "/club"
     },
     "huaxia": {
@@ -37,7 +33,7 @@ const INTRODUCTION_INFO: {
     },
     "lake": {
         name: "雁栖湖",
-        image: "https://images.pexels.com/photos/15590299/pexels-photo-15590299.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        image: lakeBannerImage,
         link: "/lake"
     }
 };
@@ -45,119 +41,132 @@ const INTRODUCTION_INFO: {
 interface ModelInfo { 
     title: string, image: string, 
     link: string, age: string, 
-    classification: string 
+    classification: string,
+    reversed: boolean
 }
 const MODEL_INFO: ModelInfo[] = [
     {
         title: "花鸟纹四方瓶",
         age: "乾隆年间",
         classification: "彩粉瓷器",
-        image: "https://placehold.co/400",
-        link: "/model/0"
+        image: "https://placehold.co/400x600",
+        link: "/model/0",
+        reversed: true
     },
     {
-        title: "青花瓷",
-        age: "未知",
-        classification: "未知",
-        image: "https://placehold.co/400",
-        link: "/model/1"
+        title: "花鸟纹四方瓶",
+        age: "乾隆年间",
+        classification: "彩粉瓷器",
+        image: "https://placehold.co/400x600",
+        link: "/model/1",
+        reversed: false
     },
     {
-        title: "青花瓷（glTF）",
-        age: "未知",
-        classification: "未知",
-        image: "https://placehold.co/400",
-        link: "/model/2"
+        title: "花鸟纹四方瓶",
+        age: "乾隆年间",
+        classification: "彩粉瓷器",
+        image: "https://placehold.co/400x600",
+        link: "/model/2",
+        reversed: true
     }
 ];
 
-const SectionHeader = (props: { text: string }) => {
+const SectionHeader = (props: { text: string, enText: string }) => {
     return (
         <div className="section-header">
-            <span>{props.text}</span>
+            <span className="en-text">{props.enText}</span>
+            <span className="text">{props.text}</span>
+            <div className="divider"></div>
         </div>
     )
 };
 
-const Route = (props: {
-    children: ReactElement | ReactElement[],
-    to: string
-}) => {
-    // TODO: check if it is logged in
-
-    return (
-        <Link to={props.to}>
-            {props.children}
-        </Link>
-    )
-};
-
 const IntroductionLinkCard = (props: { info: IntroductionInfo }) => {
+    const navigate = useNavigate();
     return (
-        <Route to={props.info.link}>
-            <div 
-                className="introduction-link-card"
-                style={{ backgroundImage: `url(${props.info.image})` }}
-            >
-                <span>{ `华境 ｜ ${props.info.name}` }</span>
+        <div className="introduction-link-card"
+            style={{ backgroundImage: `url(${props.info.image})` }}
+            onClick={() => navigate(props.info.link)} >
+            <div className="text-container">
+                <span className="header">华境</span>
+                <span className="content">
+                    {props.info.name}
+                </span>
             </div>
-        </Route>
+        </div>
     )
 };
 
 const ModelLinkCard = (props: { info: ModelInfo }) => {
+    const navigate = useNavigate();
     return (
-        <Route to={props.info.link}>
-            <div className="model-link-card">
-                <img src={props.info.image} alt="" />
-                <div>
-                    <h5>{props.info.title}</h5>
+        <div className="model-link-card"
+            style={{ 
+                backgroundImage: `url(${modelBgImage})`, 
+                flexDirection: props.info.reversed ? "row-reverse" : "row"
+            }}
+            onClick={() => navigate(props.info.link)}>
+            <img src={props.info.image} alt="" />
+            <div className="text-container">
+                <span className="header">{props.info.title}</span>
+                <span className="content">
+                    <span>年代</span>
                     <span>{props.info.age}</span>
+                </span>
+                <span className="content">
+                    <span>品类</span>
                     <span>{props.info.classification}</span>
-                </div>
+                </span>
+                <span className="learn-more-btn">了解更多</span>
             </div>
-        </Route>
+        </div>
     )
 };
 
 export const MainPage = () => {
+    const navigate = useNavigate();
+    const [pageHeight, setPageHeight] = useState("100vh");
+
+    useLayoutEffect(() => {
+        setPageHeight(`${$(".page-container").height()}px`);
+    }, []);
+
     return (
         <Page pageName="mainPage">
             <div>
-                <div className="video-container">
-                    <video autoPlay={true} muted={true} preload="auto" playsInline={true}>
-                        <source src="https://placehold.co/1920x1080.mp4" type="video/mp4" />
-                    </video>
-                </div>
-                <div className="instructions-container horizon-space">
-                    <SectionHeader text="欢迎进入华境" />
-                    <pre>{ INSTRUCTIONS_CONTENT }</pre>
-                    <Route to="/instructions">
+                <div className="instructions-container" style={{ height: pageHeight, backgroundImage: `url(${instructionsBgImage})` }}>
+                    <div className="welcome-title">
+                        <div className="title-bg-image" style={{ backgroundImage: `url(${logoImage})` }}></div>
+                        { "WELCOME".split("").map((l, i) => (<span key={i}>{l}</span>)) }
+                    </div>
+                    <div className="instructions-content"><pre>{instructionsContent}</pre></div>
+                    <div className="learn-more-btn" 
+                        style={{ backgroundImage: `url(${learnMoreBtnBgImage})` }}
+                        onClick={() => navigate("/instructions")}>
                         <span>了解更多</span>
-                        <i className="bi-caret-right"></i>
-                    </Route>
+                    </div>
                 </div>
                 <div className="introduction-container">
                     {
-                        Object.keys(INTRODUCTION_INFO).map((key: string, i) => (
-                            <IntroductionLinkCard info={INTRODUCTION_INFO[key]} key={i} />
+                        Object.keys(introductionInfo).map((key: string, i) => (
+                            <IntroductionLinkCard info={introductionInfo[key]} key={i} />
                         ))
                     }
                 </div>
-                <div className="model-container horizon-space">
-                    <SectionHeader text="数字臻品" />
+                <div className="model-container">
+                    <SectionHeader text="数字臻品" enText="DIGITAL MASTERPIECE" />
                     {
                         MODEL_INFO.map((info, i) => (
                             <ModelLinkCard info={info} key={i} />
                         ))
                     }
                 </div>
-                <div className="roadmap-container horizon-space">
-                    <SectionHeader text="ROADMAP" />
+                <div className="roadmap-container">
+                    <SectionHeader text="发展路线" enText="ROADMAP" />
                     <img src="https://placehold.co/400x800" alt="" />
                 </div>
-                <div className="footer horizon-space">
-                    <SectionHeader text="合作伙伴" />
+                <div className="footer">
+                    <SectionHeader text="合作伙伴" enText="COOPERATION" />
                 </div>
             </div>
         </Page>

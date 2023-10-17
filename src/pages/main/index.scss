@@ -1,95 +1,250 @@
 
+@import "../../components/variables.scss";
+
 #mainPage {
+    $section-header-height: 25vh;
+    $section-header-margin-bottom: 5vh;
+    $section-header-en-text-opacity: 0.6;
+    $section-header-en-text-font-size: 0.8rem;
+    $section-header-en-text-font-weight: 300;
+    $section-header-text-font-size: 1.6rem;
+    $section-header-text-font-weight: 400;
+    $section-header-gap: 1rem;
+    $section-header-divider: 1px solid $highlight-red;
+
+    $instructions-container-height: 100vh;
+    $instructions-container-gap: 8%, 1rem, 80%;
+    $instructions-container-welcome-title-width: 60vw;
+    $instructions-container-welcome-title-height: 50vw;
+    $instructions-container-welcome-title-font-size: 1.5rem;
+    $instructions-container-welcome-title-font-weight: 300;
+    $instructions-container-welcome-title-bg-opacity: 0.2;
+    $instructions-container-welcome-title-bg-size: 60%;
+    $instructions-container-content-font-size: 0.85rem;
+    $instructions-container-content-font-weight: 300;
+    $instructions-container-btn-font-size: 0.95rem;
+    $instructions-container-btn-font-weight: 300;
+    $instructions-container-btn-padding: 0.75rem 3.5rem;
+
+    $introduction-link-card-height: calc(100vw / (750 / 620));
+    $introduction-link-card-left: 5%;
+    $introduction-link-card-bottom: 8%;
+    $introduction-link-card-gap: 1.2rem;
+    $introduction-link-card-divider: 1px solid rgba(255, 255, 255, 0.8);
+    $introduction-link-card-header-font-size: 1.1rem;
+    $introduction-link-card-header-font-weight: 300;
+    $introduction-link-card-content-font-size: 1.4rem;
+    $introduction-link-card-content-font-weight: 400;
+
+    $model-card-height: $introduction-link-card-height;
+    $model-card-padding: 3vh 5vw;
+    $model-card-gap: 5vw;
+    $model-card-image-width: 50%;
+    $model-card-text-container-gap: 30%, 7%, 2%, 24%;
+    $model-card-header-font-size: 1.5rem;
+    $model-card-header-font-weight: 400;
+    $model-card-content-font-size: 0.9rem;
+    $model-card-content-font-weight: 300;
+    $model-card-content-gap: $model-card-content-font-size;
+    $model-card-content-opacity: 0.8;
+    $model-card-btn-font-size: 0.9rem;
+    $model-card-btn-font-weight: 300;
+    $model-card-btn-decoration: linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
+    $model-card-btn-decoration-width: calc($model-card-btn-font-size * 5.5);
+
     width: 100%;
     margin-left: 0;
     overflow-y: scroll;
 
-    a {
-        text-decoration: none;
-    }
-
-    video {
-        width: 100%;
-    }
-
-    & > div > div:not(:first-child):not(:last-child) {
-        margin-bottom: 6vh;
-    }
-
-    .horizon-space {
-        width: 90%;
-        margin-left: 5%;
-    }
-
     .section-header {
-        font-size: 1.3rem;
-        font-weight: 300;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: $section-header-gap;
 
-        border-left: 3px solid #000;
-        padding-left: 1rem;
-        margin: 2vh 0;
+        width: 100%;
+        height: $section-header-height;
+
+        .en-text {
+            opacity: $section-header-en-text-opacity;
+            font-size: $section-header-en-text-font-size;
+            font-weight: $section-header-en-text-font-weight;
+        }
+
+        .text {
+            font-size: $section-header-text-font-size;
+            font-weight: $section-header-text-font-weight;
+        }
+
+        .divider {
+            width: $section-header-text-font-size;
+            border-bottom: $section-header-divider;
+            margin-bottom: $section-header-margin-bottom;
+        }
     }
 
     .instructions-container {
         display: flex;
         flex-direction: column;
+        align-items: center;
 
-        pre {
-            font-size: 0.95rem;
-            white-space: pre-wrap;
-        }
-
-        a {
-            align-self: flex-end;
-        }
-    }
-
-    .introduction-link-card {
-        $card-height: 25vh;
-
-        display: block;
-        width: 100%;
-        height: $card-height;
-
-        font-size: 1.2rem;
-        font-weight: 300;
-        text-align: center;
-        line-height: $card-height;
-
-        color: white;
+        height: $instructions-container-height;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
 
-        margin-bottom: 3vh;
+        @for $i from 1 through 3 {
+            & > div:nth-child(#{$i}) {
+                margin-top: nth($list: $instructions-container-gap, $n: $i);
+            }
+        }
 
-        span {
-            display: block;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
+        .welcome-title {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+
+            width: $instructions-container-welcome-title-width;
+            height: $instructions-container-welcome-title-height;
+
+            line-height: $instructions-container-welcome-title-height;
+            font-size: $instructions-container-welcome-title-font-size;
+            font-weight: $instructions-container-welcome-title-font-weight;
+
+            .title-bg-image {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: $instructions-container-welcome-title-bg-size;
+                opacity: $instructions-container-welcome-title-bg-opacity;
+            }
+        }
+
+        .instructions-content > pre {
+            text-align: center;
+            font-size: $instructions-container-content-font-size;
+            font-weight: $instructions-container-content-font-weight;
+            line-height: calc(1.85 * $instructions-container-content-font-size);
+        }
+
+        .learn-more-btn {
+            font-size: $instructions-container-btn-font-size;
+            font-weight: $instructions-container-btn-font-weight;
+            padding: $instructions-container-btn-padding;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+
+            span {
+                // to fit the bg image
+                transform: translateY(0.1rem);
+            }
+        }
+    }
+
+    .introduction-link-card {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: $introduction-link-card-height;
+
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        .text-container {
+            position: absolute;
+            left: $introduction-link-card-left;
+            bottom: $introduction-link-card-bottom;
+
+            display: flex;
+            flex-direction: column;
+            gap: $introduction-link-card-gap;
+
+            .header {
+                font-size: $introduction-link-card-header-font-size;
+                font-weight: $introduction-link-card-header-font-weight;
+
+                &::after {
+                    content: "";
+                    display: block;
+                    width: calc($introduction-link-card-header-font-size * 2 * 0.75);
+                    border-bottom: $introduction-link-card-divider;
+                    transform: translateY(calc($introduction-link-card-gap / 2));
+                }
+            }
+
+            .content {
+                @include link-arrow($introduction-link-card-content-font-size);
+
+                font-size: $introduction-link-card-content-font-size;
+                font-weight: $introduction-link-card-content-font-weight;
+            }
         }
     }
 
     .model-link-card {
-        display: flex;
-        gap: 2rem;
-        justify-content: flex-start;
-        align-items: center;
+        width: 100%;
+        height: $model-card-height;
+        padding: $model-card-padding;
 
-        color: #3d3d3d;
-        padding: 0.5rem;
-        padding-left: 8%;
+        display: flex;
+        align-items: center;
+        gap: $model-card-gap;
+
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
 
         img {
-            width: 6.5rem;
-            aspect-ratio: 1;
-            border-radius: 8px;
+            width: $model-card-image-width;
         }
 
-        div {
-            display: flex;
-            flex-direction: column;
+        .text-container {
+            width: 100%;
+
+            @for $i from 1 through 4 {
+                & > span:nth-child(#{$i}) {
+                    display: block;
+                    margin-top: nth($list: $model-card-text-container-gap, $n: $i);
+                }
+            }
+
+            .header {
+                font-size: $model-card-header-font-size;
+                font-weight: $model-card-header-font-weight;
+            }
+
+            .content {
+                display: flex !important;
+                gap: $model-card-content-gap;
+                font-size: $model-card-content-font-size;
+                font-weight: $model-card-content-font-weight;
+                & > span:first-child {
+                    opacity: $model-card-content-opacity;
+                }
+            }
+
+            .learn-more-btn {
+                @include link-arrow($model-card-btn-font-size);
+
+                font-size: $model-card-btn-font-size;
+                font-weight: $model-card-btn-font-weight;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    display: block;
+                    width: $model-card-btn-decoration-width;
+                    height: 1px;
+                    background: $model-card-btn-decoration;
+                    transform: translateY(calc($model-card-btn-font-size + 2px));
+                }
+            }
         }
     }
 

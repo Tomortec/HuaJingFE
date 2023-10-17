@@ -17,7 +17,7 @@ import { PorcelainPage } from './pages/porcelain';
 import { ModelPage } from './pages/model';
 import { LoginPage } from './pages/login';
 import { InstructionsPage } from './pages/instructions';
-import { IntroductionPage, INTRODUCTION_PAGE_PATHS } from './pages/introduction';
+import { IntroductionPage, introductionPagePaths } from './pages/introduction';
 
 const rootElement = document.createElement('div');
 rootElement.id = 'root';
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
                 element: <InstructionsPage />
             }
         ].concat(
-            INTRODUCTION_PAGE_PATHS.map((pathName) => ({
+            introductionPagePaths.map((pathName) => ({
                 path: pathName,
                 element: <IntroductionPage />
             }))
