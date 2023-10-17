@@ -27,6 +27,8 @@ import "./index.scss";
 
 import cameraResetIcon from "../../assets/icon-3d.svg";
 import modelBgImage from "../../assets/image-model-bg.png";
+import wechatIcon from "../../assets/icon-wechat.svg";
+import qrcodeImage from "../../assets/image-qrcode.png";
 
 declare global {
     namespace JSX {
@@ -136,14 +138,14 @@ export const ModelPage = () => {
                     <Popup popupId="modal-page" popupTitle="联系我们"
                         popupBody={
                             <>
-                                <img src="https://placehold.co/400" alt="" />
+                                <img src={qrcodeImage} alt="" />
                                 <span>扫码添加微信，了解更多详情</span>
                             </>
                         }
                         triggerCaption={
                             <div>
-                                <i className="bi-wechat"></i>
-                                <span>了解更多</span>
+                                <img src={wechatIcon} alt="" />
+                                <span>联系我们</span>
                             </div>
                         }
                     ></Popup>

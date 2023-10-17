@@ -6,6 +6,7 @@
     $main-content-margin-bottom: 0;
 
     $model-viewer-height: 55vh;
+    $model-viewer-margin-bottom: 3vh;
     $model-viewer-bg-color: transparent;
     $model-viewer-progressbar-bg-color: rgba(255, 255, 255, 0.5);
 
@@ -44,7 +45,7 @@
     $popup-button-icon-size: 1.4rem;
     $popup-button-icon-weight: $popup-button-font-weight;
     $popup-button-text-icon-gap: 0.5rem;
-    $popup-button-padding: 0.5rem 3rem;
+    $popup-button-padding: 0.8rem 4rem;
     $popup-button-border-radius: 4px;
     $popup-button-border: 1px solid rgba(255, 255, 255, 0.6);
 
@@ -60,6 +61,7 @@
     model-viewer {
         width: 100%;
         height: $model-viewer-height;
+        margin-bottom: $model-viewer-margin-bottom;
 
         background-position: center;
         background-repeat: no-repeat;
@@ -126,9 +128,9 @@
                 align-items: center;
                 gap: $popup-button-text-icon-gap;
 
-                & > i {
-                    font-size: $popup-button-icon-size;
-                    font-weight: $popup-button-icon-weight;
+                & > img {
+                    width: $popup-button-icon-size;
+                    aspect-ratio: 1;
                 }
             }
         }
@@ -170,9 +172,11 @@
                     font-size: $popup-content-font-size;
                     font-weight: $popup-content-font-weight;
 
+                    // QR Code
                     img {
                         width: $popup-content-image-size;
                         aspect-ratio: 1;
+                        object-fit: contain;
                         border-radius: $popup-content-image-border-radius;
                     }
                 }

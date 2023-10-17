@@ -5,6 +5,7 @@ import { PorcelainData, defaultPorcelainData } from "../interfaces";
 
 import ageIcon from "../assets/icon-clock.svg";
 import classIcon from "../assets/icon-classification.svg";
+import bottomStampIcon from "../assets/icon-diamond.svg";
 import sizeIcon from "../assets/icon-list.svg";
 
 const BasicInfoTextComponent = (
@@ -33,7 +34,7 @@ export const InfoContainer = (props: { info: PorcelainData }) => {
             <div className="basic-info-container">
                 <BasicInfoTextComponent icon={ageIcon} title="年代" text={data.age} />
                 <BasicInfoTextComponent icon={classIcon} title="品类" text={data.classification} />
-                <BasicInfoTextComponent icon="bi-gem" title="底款" text={data.bottomStamp} />
+                <BasicInfoTextComponent icon={bottomStampIcon} title="底款" text={data.bottomStamp} />
                 <BasicInfoTextComponent icon={sizeIcon} title="尺寸介绍" text={data.sizeIntroduction} />
             </div>
 
