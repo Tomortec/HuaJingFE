@@ -1,12 +1,19 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 import { UserData, defaultUserData, CollectionData } from "../../interfaces";
 import { useAuth } from "../../hooks/useAuth";
 import { isDevelopmentMode } from "../../hooks/useDevelopmentMode";
 
-import { getCollectionsData, getUserData } from "./api";
+import {
+    getUserData, 
+    getUserDataApiKey,
+
+    getCollectionsData, 
+    getCollectionsDataApiKey
+} from "./api";
 
 import { Page } from "../page";
 import "./index.scss";
@@ -38,7 +45,7 @@ const CollectionComponent = (props: { info: CollectionData }) => {
     return (
         <div className="collection-card" style={{ backgroundImage: `url(${collectionBgImage})` }}
             onClick={navigateToPorcelainPage}>
-            <img src={props.info.image || "https://placehold.co/400x600"} alt="" />
+            <img src={props.info.image || ""} alt="" />
             <span>{props.info.title}</span>
         </div>
     )
@@ -55,16 +62,18 @@ const EmptyCollectionPrompt = () => {
 
 export const UserPage = () => {
     const { user, logout } = useAuth();
-    const [userInfo, setUserInfo] = useState(defaultUserData);
-    const [collections, setCollections] = useState([] as CollectionData[]);
-
-    useEffect(() => {
-        getUserData(user)
-            .then((res) => setUserInfo(res));
-
-        getCollectionsData(user)
-            .then((res) => setCollections(res));
-    }, []);
+    const { data: userInfo, status: userInfoStatus } = useQuery({
+        queryKey: [getUserDataApiKey],
+        queryFn: () => getUserData(user),
+        placeholderData: defaultUserData,
+        staleTime: Infinity // https://stackoverflow.com/a/70294211/16835189
+    });
+    const { data: collections, status: collectionsStatus } = useQuery({
+        queryKey: [getCollectionsDataApiKey],
+        queryFn: () => getCollectionsData(user),
+        placeholderData: [],
+        staleTime: 60 * 3000 // 3 mins
+    });
 
     return (
         <Page pageName="userPage" authNeeded={true} bgImage={userBgImage}>

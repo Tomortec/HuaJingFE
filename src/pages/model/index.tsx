@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 import "@google/model-viewer";
 import { ModelViewerElement } from "@google/model-viewer";
@@ -17,12 +18,12 @@ import { gsap } from "gsap";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
 gsap.registerPlugin(ScrollToPlugin);
 
-import { SolidPorcelainData } from "../../interfaces";
+import { SolidPorcelainData, defaultSolidPorcelainData } from "../../interfaces";
 import { Page } from "../page";
 import { InfoContainer } from "../../components/info-container";
 import { SwiperNavigator } from "../../components/swiper-navigator";
 import { Popup } from "../../components/popup";
-import { getAllPorcelainData } from "./api";
+import { getAllPorcelainData, getAllPorcelainDataApiKey } from "./api";
 import "./index.scss";
 
 import cameraResetIcon from "../../assets/icon-3d.svg";
@@ -101,29 +102,34 @@ const SingleModelPage = (props: { id: string, data: SolidPorcelainData }) => {
 
 export const ModelPage = () => {
     const { modelId } = useParams();
-    const [allModelData, setAllModelData] = useState([] as SolidPorcelainData[]);
-    const [initialIndex, setInitialIndex] = useState(0);
+    const [swiper, setSwiper] = useState(null);
+    const { data: allModelData, status } = useQuery({
+        queryKey: [getAllPorcelainDataApiKey],
+        queryFn: () => getAllPorcelainData(),
+        // if you are using `Array(3).fill` here, it will return a type of `any[]`
+        // which confuses ts
+        placeholderData: [defaultSolidPorcelainData, defaultSolidPorcelainData, defaultSolidPorcelainData],
+        staleTime: Infinity
+    });
 
+    // https://tanstack.com/query/v4/docs/react/guides/migrating-to-react-query-4#onsuccess-is-no-longer-called-from-setquerydata
     useEffect(() => {
-        getAllPorcelainData()
-            .then((res) => {
-                setAllModelData(res);    
-                
-                // if not found, `findIndex` will return -1
-                // but Swiper accepts all numbers, for it will clamp the value to the right range
-                setInitialIndex(res.findIndex(data => data.id == modelId))
-            });
-    }, []);
+        const targetIndex = allModelData ? allModelData.findIndex(data => data.id == modelId) : 0;
+        if(swiper && swiper.activeIndex != targetIndex) {
+            swiper.slideTo(targetIndex, 0);
+            console.log(targetIndex);
+        }
+    }, [swiper]);
 
     return (
         <Page pageName="modelPage" authNeeded={true} resetScroll>
             <>
                 <div className="scrollable">
                     <Swiper
-                        initialSlide={initialIndex}
                         loop={true}
                         allowTouchMove={false}
                         spaceBetween={$(window).width() * 0.1}
+                        onSwiper={(swiper) => setSwiper(swiper)}
                     >
                         {
                             allModelData.map((data, i) => (

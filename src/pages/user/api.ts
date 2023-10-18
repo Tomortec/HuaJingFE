@@ -5,8 +5,7 @@ import {
     UserData, 
     defaultUserData, 
 
-    CollectionData, 
-    defaultCollectionData 
+    CollectionData
 } from "../../interfaces";
 
 interface RawCollectionData {
@@ -21,6 +20,7 @@ interface RawCollectionData {
     poster: string;
 }
 
+export const getUserDataApiKey = "GET_USER_DATA";
 export const getUserData = async (token: string): Promise<UserData> => {
     try {
         const result = await axios.get("/api/user/info", {
@@ -42,6 +42,7 @@ export const getUserData = async (token: string): Promise<UserData> => {
     }
 };
 
+export const getCollectionsDataApiKey = "GET_COLLECTIONS_DATA";
 export const getCollectionsData = async (token: string): Promise<CollectionData[]> => {
     try {
         const result = await axios.get("/api/user/my_sku", {
@@ -54,9 +55,9 @@ export const getCollectionsData = async (token: string): Promise<CollectionData[
             id: v.id.toString(),
             title: v.title,
             image: v.cover_img
-        } as CollectionData)) : [defaultCollectionData];
+        } as CollectionData)) : [];
     } catch (e) { 
         console.error(e); 
-        return [defaultCollectionData];
+        return [];
     }
 };

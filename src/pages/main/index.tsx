@@ -4,8 +4,13 @@ import React, { useLayoutEffect, useState } from "react";
 import {
     useNavigate
 } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 import { Page } from "../page";
+import {
+    getAllSolidPorcelainData,
+    getAllSolidPorcelainDataApiKey
+} from "./api";
 import "./index.scss";
 
 import logoImage from "../../assets/image-logo.png";
@@ -42,34 +47,11 @@ interface ModelInfo {
     title: string, image: string, 
     link: string, age: string, 
     classification: string,
+    /**
+     * if reversed, the image will be on the right
+     */
     reversed: boolean
 }
-const MODEL_INFO: ModelInfo[] = [
-    {
-        title: "花鸟纹四方瓶",
-        age: "乾隆年间",
-        classification: "彩粉瓷器",
-        image: "https://placehold.co/400x600",
-        link: "/model/0",
-        reversed: true
-    },
-    {
-        title: "花鸟纹四方瓶",
-        age: "乾隆年间",
-        classification: "彩粉瓷器",
-        image: "https://placehold.co/400x600",
-        link: "/model/1",
-        reversed: false
-    },
-    {
-        title: "花鸟纹四方瓶",
-        age: "乾隆年间",
-        classification: "彩粉瓷器",
-        image: "https://placehold.co/400x600",
-        link: "/model/2",
-        reversed: true
-    }
-];
 
 const SectionHeader = (props: { text: string, enText: string }) => {
     return (
@@ -127,6 +109,23 @@ export const MainPage = () => {
     const navigate = useNavigate();
     const [pageHeight, setPageHeight] = useState("100vh");
 
+    const { data: modelInfo } = useQuery({
+        queryKey: [getAllSolidPorcelainDataApiKey],
+        queryFn: () => getAllSolidPorcelainData(),
+        select: (data) => (
+            data.map((v, i): ModelInfo => ({
+                title: v.title,
+                image: v.poster ?? "",
+                link: `/model/${v.id.toString() || "0"}`,
+                age: v.age ?? "未知",
+                classification: v.classification ?? "未知",
+                reversed: i % 2 ? false : true
+            }))
+        ),
+        placeholderData: [],
+        staleTime: Infinity
+    });
+
     useLayoutEffect(() => {
         setPageHeight(`${$(".page-container").height()}px`);
     }, []);
@@ -156,7 +155,7 @@ export const MainPage = () => {
                 <div className="model-container">
                     <SectionHeader text="数字臻品" enText="DIGITAL MASTERPIECE" />
                     {
-                        MODEL_INFO.map((info, i) => (
+                        modelInfo.map((info, i) => (
                             <ModelLinkCard info={info} key={i} />
                         ))
                     }
