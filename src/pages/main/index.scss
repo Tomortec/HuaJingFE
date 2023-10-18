@@ -143,6 +143,7 @@
             background-repeat: no-repeat;
 
             span {
+                display: block;
                 // to fit the bg image
                 transform: translateY(0.1rem);
             }
