@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
     useOutlet,
     useLocation,
@@ -27,6 +27,16 @@ const checkNavbarState = () => {
 export const App = () => {
     const currentOutlet = useOutlet();
     const location = useLocation();
+
+    useEffect(() => {
+        // reset scroll position
+        window.addEventListener("beforeunload", () => {
+            Object.keys(window.localStorage).forEach((k) => {
+                k.startsWith("SCROLL_") && window.localStorage.setItem(k, "0");
+            });
+        });
+    }, []);
+
     return (
         <>
             <Navbar state={checkNavbarState()} />
