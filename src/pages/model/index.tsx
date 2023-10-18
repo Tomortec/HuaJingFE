@@ -158,3 +158,5 @@ export const ModelPage = () => {
         </Page>
     )
 };
+
+export default ModelPage;

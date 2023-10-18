@@ -146,3 +146,5 @@ export const LoginPage = () => {
         </Page>
     )
 };
+
+export default LoginPage;

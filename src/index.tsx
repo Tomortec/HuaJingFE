@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client"
 import {
     createBrowserRouter,
@@ -12,14 +12,24 @@ import { App } from './App';
 import './App.scss';
 
 import {
-    InstructionsPage,
-    IntroductionPage, introductionPagePaths,
-    LoginPage,
     MainPage,
-    ModelPage,
-    PorcelainPage,
-    UserPage
+    introductionPagePaths
+
+    // InstructionsPage,
+    // IntroductionPage, introductionPagePaths,
+    // LoginPage,
+    // MainPage,
+    // ModelPage,
+    // PorcelainPage,
+    // UserPage
 } from "./pages";
+import { LoadingPage } from "./components";
+const LoginPage = lazy(() => import("./pages/login/index"));
+const InstructionsPage = lazy(() => import("./pages/instructions/index"));
+const IntroductionPage = lazy(() => import("./pages/introduction/index"));
+const ModelPage = lazy(() => import("./pages/model/index"));
+const PorcelainPage = lazy(() => import("./pages/porcelain/index"));
+const UserPage = lazy(() => import("./pages/user/index"));
 
 const rootElement = document.createElement('div');
 rootElement.id = 'root';
@@ -70,7 +80,9 @@ const router = createBrowserRouter([
 root.render(
     // <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
+            <Suspense fallback={<LoadingPage />}>
+                <RouterProvider router={router} />
+            </Suspense>
         </QueryClientProvider>
     // </React.StrictMode>
 );

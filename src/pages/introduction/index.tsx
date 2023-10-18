@@ -94,3 +94,5 @@ export const IntroductionPage = () => {
 };
 
 export const introductionPagePaths = Object.keys(locationConfig);
+
+export default IntroductionPage;

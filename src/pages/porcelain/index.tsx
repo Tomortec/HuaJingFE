@@ -59,3 +59,5 @@ export const PorcelainPage = () => {
         </Page>
     )
 };
+
+export default PorcelainPage;

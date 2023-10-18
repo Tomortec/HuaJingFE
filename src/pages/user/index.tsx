@@ -107,3 +107,5 @@ export const UserPage = () => {
         </Page>
     )
 };
+
+export default UserPage;

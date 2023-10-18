@@ -25,3 +25,5 @@ export const InstructionsPage = () => {
         </Page>
     )
 };
+
+export default InstructionsPage;

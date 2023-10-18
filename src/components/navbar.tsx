@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {
-    Link,
+    useNavigate
 } from "react-router-dom";
 
 import logoImage from "../assets/image-logo.png";
@@ -14,6 +14,8 @@ export enum NavbarState {
 };
 
 export const Navbar = (props: { state: NavbarState }) => {
+    const navigate = useNavigate();
+
     return (
         <>
         {
@@ -23,21 +25,38 @@ export const Navbar = (props: { state: NavbarState }) => {
                 shadow-sm
             '>
                 <div className='container-fluid'>
-                    <Link className='navbar-brand mb-0 h1' to={"/"}>
-                        <div className='d-flex align-items-center'>
-                            <img src={logoImage} alt="" />
-                            <span>华境｜HJ</span>
-                        </div>
-                    </Link>
+                    <div className='navbar-brand mb-0 d-flex align-items-center' onClick={() => navigate("/")}>
+                        <img src={logoImage} alt="" />
+                        <span>华境｜HJ</span>
+                    </div>
                     {
                         props.state != NavbarState.UserDisabled &&
-                        <Link className='d-flex' to={"/user"}>
+                        <div className='d-flex' onClick={() => navigate("/user")}>
                             <img className='user-btn' src={userIcon} alt="" />
-                        </Link>
+                        </div>
                     }
                 </div>
             </nav>
         }
         </>
+    )
+};
+
+export const StaticNavbar = () => {
+    return (
+        <nav id='hj-navbar' className='
+            navbar navbar-expand-lg fixed-top
+            shadow-sm
+        '>
+            <div className='container-fluid'>
+                <div className='navbar-brand mb-0 d-flex align-items-center'>
+                    <img src={logoImage} alt="" />
+                    <span>华境｜HJ</span>
+                </div>
+                <div className='d-flex'>
+                    <img className='user-btn' src={userIcon} alt="" />
+                </div>
+            </div>
+        </nav>
     )
 };
