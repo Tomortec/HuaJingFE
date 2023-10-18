@@ -20,9 +20,7 @@ gsap.registerPlugin(ScrollToPlugin);
 
 import { SolidPorcelainData, defaultSolidPorcelainData } from "../../interfaces";
 import { Page } from "../page";
-import { InfoContainer } from "../../components/info-container";
-import { SwiperNavigator } from "../../components/swiper-navigator";
-import { Popup } from "../../components/popup";
+import { InfoContainer, SwiperNavigator, Popup } from "../../components";
 import { getAllPorcelainData, getAllPorcelainDataApiKey } from "./api";
 import "./index.scss";
 

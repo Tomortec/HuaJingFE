@@ -1,8 +1,8 @@
 
 import axios from "axios";
-import { useDevelopmentMode } from "../../../admin/hooks/useDevelopmentMode";
+import { isDevelopmentMode } from "../../hooks/useDevelopmentMode";
 
-const baseURL = useDevelopmentMode().isDevelopment ? "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io" : "";
+const baseURL = isDevelopmentMode().isDevelopment ? "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io" : "";
 
 export const requestVerificationCode = async (phoneNumber: string): Promise<boolean> => {
     try {

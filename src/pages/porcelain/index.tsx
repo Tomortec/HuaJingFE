@@ -13,8 +13,7 @@ import "swiper/scss/pagination";
 
 import { defaultPlanePorcelainData } from "../../interfaces";
 import { Page } from "../page";
-import { SwiperNavigator } from "../../components/swiper-navigator";
-import { InfoContainer } from "../../components/info-container";
+import { InfoContainer, SwiperNavigator } from "../../components";
 import { getPorcelainData } from "./api";
 import "./index.scss";
 

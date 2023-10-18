@@ -11,13 +11,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { App } from './App';
 import './App.scss';
 
-import { MainPage } from './pages/main';
-import { UserPage } from './pages/user';
-import { PorcelainPage } from './pages/porcelain';
-import { ModelPage } from './pages/model';
-import { LoginPage } from './pages/login';
-import { InstructionsPage } from './pages/instructions';
-import { IntroductionPage, introductionPagePaths } from './pages/introduction';
+import {
+    InstructionsPage,
+    IntroductionPage, introductionPagePaths,
+    LoginPage,
+    MainPage,
+    ModelPage,
+    PorcelainPage,
+    UserPage
+} from "./pages";
 
 const rootElement = document.createElement('div');
 rootElement.id = 'root';

@@ -10,7 +10,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { 
     Navbar,
     NavbarState
-} from "./components/navbar";
+} from "./components";
 
 const SPECIAL_PATH_NAVBAR_STATE: {
     readonly [_ : string]: NavbarState
