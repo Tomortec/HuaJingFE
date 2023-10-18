@@ -37,7 +37,7 @@
     $introduction-link-card-content-font-weight: 400;
 
     $model-card-height: $introduction-link-card-height;
-    $model-card-padding: 3vh 5vw;
+    $model-card-padding: 3vh 8vw;
     $model-card-gap: 5vw;
     $model-card-image-width: 50%;
     $model-card-text-container-gap: 30%, 7%, 2%, 24%;
@@ -70,6 +70,9 @@
             opacity: $section-header-en-text-opacity;
             font-size: $section-header-en-text-font-size;
             font-weight: $section-header-en-text-font-weight;
+            // to have the text align to its box's bottom
+            // making the gaps between `en-text`, `text` and `divider` equal
+            line-height: $section-header-en-text-font-size;
         }
 
         .text {
@@ -250,8 +253,6 @@
 
     .roadmap-container {
         // TODO
-        img {
-            width: 100%;
-        }
+        position: relative;
     }
 }

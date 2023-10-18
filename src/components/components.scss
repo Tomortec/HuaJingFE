@@ -300,3 +300,41 @@
         z-index: $popup-zindex;
     }
 }
+
+/* ----------------- Roadmap ------------------ */
+.roadmap {
+    $roadmap-item-margin-left: 30%;
+    $roadmap-item-gap: 2rem;
+    $roadmap-item-header-font-size: 1.4rem;
+    $roadmap-item-header-font-weight: 400;
+    $roadmap-item-header-content-gap: 1.2rem;
+    $roadmap-item-content-font-size: 0.9rem;
+    $roadmap-item-content-font-weight: 300;
+    $roadmap-item-text-line-margin-bottom: 0.6rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: $roadmap-item-gap;
+
+    .roadmap-item {
+        display: flex;
+        flex-direction: column;
+        gap: $roadmap-item-header-content-gap;
+
+        margin-left: $roadmap-item-margin-left;
+
+        .header {
+            font-size: $roadmap-item-header-font-size;
+            font-weight: $roadmap-item-header-font-weight;
+        }
+
+        .content {
+            font-size: $roadmap-item-content-font-size;
+            font-weight: $roadmap-item-content-font-weight;
+
+            .text-line {
+                margin-bottom: $roadmap-item-text-line-margin-bottom;
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 
 import {
     useNavigate
@@ -7,6 +7,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 
 import { Page } from "../page";
+import { Roadmap, RoadmapItemData } from "../../components";
 import {
     getAllSolidPorcelainData,
     getAllSolidPorcelainDataApiKey
@@ -52,6 +53,36 @@ interface ModelInfo {
      */
     reversed: boolean
 }
+
+const roadmapData: RoadmapItemData[] = [
+    {
+        header: "一",
+        content: [
+            "6幅臻品解析图",
+            "免费数字化臻品观澜",
+            "华境｜俱乐部",
+            "华境｜臻品ID"
+        ]
+    },
+    {
+        header: "二",
+        content: [
+            "2K｜3D臻品观澜",
+            "千件稀有臻品",
+            "解析图｜臻品对比",
+            "百件至尊臻品 十件殿堂级臻品"
+        ]
+    },
+    {
+        header: "三",
+        content: [
+            "华境｜社区",
+            "华境｜碎片",
+            "华境｜经纪人",
+            "华境｜博物馆"
+        ]
+    }
+];
 
 const SectionHeader = (props: { text: string, enText: string }) => {
     return (
@@ -106,8 +137,10 @@ const ModelLinkCard = (props: { info: ModelInfo }) => {
 };
 
 export const MainPage = () => {
+    const pageName = "mainPage";
     const navigate = useNavigate();
     const [pageHeight, setPageHeight] = useState("100vh");
+    const roadmapRef = useRef(null);
 
     const { data: modelInfo } = useQuery({
         queryKey: [getAllSolidPorcelainDataApiKey],
@@ -130,8 +163,15 @@ export const MainPage = () => {
         setPageHeight(`${$(".page-container").height()}px`);
     }, []);
 
+    useEffect(() => {
+        // wait for assets to load?
+        setTimeout(() => {
+            roadmapRef && roadmapRef.current.initializeRoadmap();
+        }, 500);
+    }, []);
+
     return (
-        <Page pageName="mainPage">
+        <Page pageName={pageName}>
             <div>
                 <div className="instructions-container" style={{ height: pageHeight, backgroundImage: `url(${instructionsBgImage})` }}>
                     <div className="welcome-title">
@@ -162,7 +202,11 @@ export const MainPage = () => {
                 </div>
                 <div className="roadmap-container">
                     <SectionHeader text="发展路线" enText="ROADMAP" />
-                    <img src="https://placehold.co/400x800" alt="" />
+                    <Roadmap 
+                        ref={roadmapRef}
+                        roadmapId="hj-home-roadmap" 
+                        scroller={`#${pageName}`} 
+                        data={roadmapData} />
                 </div>
                 <div className="footer">
                     <SectionHeader text="合作伙伴" enText="COOPERATION" />
