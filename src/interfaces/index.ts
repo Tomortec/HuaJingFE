@@ -64,5 +64,5 @@ export interface CollectionData {
 }
 export const defaultCollectionData: CollectionData = {
     ...defaultPorcelainData,
-    image: "https://placehold.co/400x600"
+    image: ""
 };

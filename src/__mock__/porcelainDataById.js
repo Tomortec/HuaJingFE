@@ -19,11 +19,22 @@
 */
 module.exports = (req) => {
     if(req.query.sku_id) {
+        const models = [
+            {
+                "p": "https://z1.ax1x.com/2023/10/18/piPfy1e.png",
+                "m": "https://modelviewer.dev/shared-assets/models/Horse.glb"
+            },
+            {
+                "p": "https://z1.ax1x.com/2023/10/18/piPf66H.png",
+                "m": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+            }
+        ];
+        const target = models[Math.floor(Math.random() * models.length)];
         return {
             "data": {
                 "id": req.query.sku_id,
                 "title": "@ctitle(2, 10)",
-                "cover_img": "https://placehold.co/400x600",
+                "cover_img": target["p"],
                 "image|1-6": [
                     "https://placehold.co/600x400",
                     "https://placehold.co/400x300",
@@ -34,10 +45,7 @@ module.exports = (req) => {
                 "years": "@ctitle(2, 8)",
                 "poster": "https://placehold.co/400x1200",
                 "bottom_desc": "@cword(4, 8)",
-                "threed_img|1": [
-                    "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-                    "https://modelviewer.dev/shared-assets/models/Horse.glb",
-                ],
+                "threed_img": target["m"],
                 "threed_exposure": "@float(0.1, 0.5)",
                 "specification_desc": "@csentence()",
                 "create_time": "2023-10-14T21:04:48+08:00", 
