@@ -15,11 +15,12 @@ import {
 import "./index.scss";
 
 import logoImage from "../../assets/image-logo.png";
-import instructionsBgImage from "../../assets/image-home-bg.png";
-import learnMoreBtnBgImage from "../../assets/image-home-btn-bg.png";
-import clubBannerImage from "../../assets/image-banner-club.png";
-import lakeBannerImage from "../../assets/image-banner-lake.png";
-import modelBgImage from "../../assets/image-home-model-bg.png";
+import instructionsBgImage from "../../assets/home/image-home-bg.png";
+import learnMoreBtnBgImage from "../../assets/home/image-home-btn-bg.png";
+import clubBannerImage from "../../assets/home/image-banner-club.png";
+import huaxiaBannerImage from "../../assets/home/image-banner-huaxia.png";
+import lakeBannerImage from "../../assets/home/image-banner-lake.png";
+import modelBgImage from "../../assets/home/image-home-model-bg.png";
 
 const instructionsContent: string = `在远古时代，华夏文明\n作为龙的传人一直领先于世界\n华夏文明的神秘面纱`;
 

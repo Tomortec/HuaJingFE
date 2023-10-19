@@ -18,9 +18,9 @@ import {
 import { Page } from "../page";
 import "./index.scss";
 
-import userBgImage from "../../assets/image-user-bg.png";
-import collectionBgImage from "../../assets/image-user-collection-bg.png";
-import collectionEmptyImage from "../../assets/image-user-empty.png"
+import userBgImage from "../../assets/user/image-user-bg.png";
+import collectionBgImage from "../../assets/user/image-user-collection-bg.png";
+import collectionEmptyImage from "../../assets/user/image-user-empty.png"
 import { DynamicImage, DynamicImageAnim } from "../../components";
 
 const UserInfoComponent = (props: { info: UserData }) => {

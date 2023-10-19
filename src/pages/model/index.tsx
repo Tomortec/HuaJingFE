@@ -25,7 +25,7 @@ import { getAllPorcelainData, getAllPorcelainDataApiKey } from "./api";
 import "./index.scss";
 
 import cameraResetIcon from "../../assets/icon-3d.svg";
-import modelBgImage from "../../assets/image-model-bg.png";
+import modelBgImage from "../../assets/model/image-model-bg.png";
 import wechatIcon from "../../assets/icon-wechat.svg";
 import qrcodeImage from "../../assets/image-qrcode.png";
 

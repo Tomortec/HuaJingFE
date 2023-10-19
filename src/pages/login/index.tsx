@@ -14,7 +14,7 @@ import "./index.scss";
 import { useAuth } from "../../hooks/useAuth";
 
 import logoImage from "../../assets/image-logo.png";
-import posterBgImage from "../../assets/image-login-bg.png";
+import posterBgImage from "../../assets/login/image-login-bg.png";
 import { requestForLoggingIn, requestVerificationCode } from "./api";
 import { DynamicImage, DynamicImageAnim } from "../../components";
 

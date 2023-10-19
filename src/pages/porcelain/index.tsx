@@ -17,7 +17,7 @@ import { InfoContainer, SwiperNavigator } from "../../components";
 import { getPorcelainData } from "./api";
 import "./index.scss";
 
-import modelBgImage from "../../assets/image-model-bg.png";
+import modelBgImage from "../../assets/model/image-model-bg.png";
 
 export const PorcelainPage = () => {
     const { porcelainId } = useParams();
