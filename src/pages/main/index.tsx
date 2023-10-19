@@ -21,8 +21,9 @@ import clubBannerImage from "../../assets/home/image-banner-club.png";
 import huaxiaBannerImage from "../../assets/home/image-banner-huaxia.png";
 import lakeBannerImage from "../../assets/home/image-banner-lake.png";
 import modelBgImage from "../../assets/home/image-home-model-bg.png";
+import qrcodeImage from "../../assets/image-qrcode.png";
 
-const instructionsContent: string = `在远古时代，华夏文明\n作为龙的传人一直领先于世界\n华夏文明的神秘面纱`;
+const instructionsContent: string = `自远古时代，华夏文明，作为龙的传人一直领先于世界\n随着时间推移，属于华夏文明的远古科技\n被极少数人所垄断，尘封于历史发展的长河中\n现在华境之门已打开，让我们一起寻找远古科技的故事，\n重新揭开那段属于华夏文明的神秘面纱。`;
 
 interface IntroductionInfo { name: string, image: string, link: string }
 const introductionInfo: {
@@ -35,7 +36,7 @@ const introductionInfo: {
     },
     "huaxia": {
         name: "华夏国际拍卖",
-        image: "https://images.pexels.com/photos/18418020/pexels-photo-18418020.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        image: huaxiaBannerImage,
         link: "/huaxia"
     },
     "lake": {
@@ -196,11 +197,13 @@ export const MainPage = () => {
                 </div>
                 <div className="model-container">
                     <SectionHeader text="数字臻品" enText="DIGITAL MASTERPIECE" />
+                    <div className="model-cards-container">
                     {
                         modelInfo.map((info, i) => (
                             <ModelLinkCard info={info} key={i} />
                         ))
                     }
+                    </div>
                 </div>
                 <div className="roadmap-container">
                     <SectionHeader text="发展路线" enText="ROADMAP" />
@@ -212,6 +215,15 @@ export const MainPage = () => {
                 </div>
                 <div className="footer">
                     <SectionHeader text="合作伙伴" enText="COOPERATION" />
+                    <img className="logo-wall" src="https://placehold.co/600x400" />
+                    <div className="qrcode-container">
+                        <span>扫码添加公众号</span>
+                        <img src={qrcodeImage} loading="lazy" />
+                    </div>
+                    <div className="footer-info-container">
+                        <span>阿特姆科技（海南）有限公司 版权所有</span>
+                        <a href="https://beian.miit.gov.cn" target="_blank">琼ICP备2023006172号-1</a>
+                    </div>
                 </div>
             </div>
         </Page>

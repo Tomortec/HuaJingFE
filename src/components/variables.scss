@@ -37,6 +37,22 @@ $highlight-red: #a32832;
     }
 }
 
+@mixin active-link-decoration($color: white, $link-font-size, $width, $transition: false) {
+    &::before {
+        content: "";
+        position: absolute;
+        display: block;
+        width: $width;
+        height: 1px;
+        background: linear-gradient(270deg, rgba($color, 0) 0%, rgba($color, 0.9) 50%, rgba($color, 0) 100%);
+        transform: translateY(calc($link-font-size + 2px));
+
+        @if $transition {
+            animation: fadeInAnimation ease 0.5s;
+        }
+    }
+}
+
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;

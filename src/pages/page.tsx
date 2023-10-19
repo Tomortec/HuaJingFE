@@ -19,6 +19,7 @@ interface PageProps {
     resetScroll?: boolean;
     children?: JSX.Element;
     bgImage?: string;
+    noTopPadding?: boolean;
 }
 
 export const Page = (props: PageProps) => {
@@ -31,8 +32,8 @@ export const Page = (props: PageProps) => {
             console.log(props.pageName, restHeight);
             $(".page-container").css({
                 position: "absolute",
-                top: $("#hj-navbar").outerHeight(),
-                height: restHeight
+                paddingTop: props.noTopPadding ? "0" : $("#hj-navbar").outerHeight(),
+                height: "100vh"
             });
 
             $(".bg-image").css({ top: $("#hj-navbar").outerHeight() });

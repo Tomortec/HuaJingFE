@@ -5,15 +5,17 @@
 .navbar {
     $navbar-logo-size: 2.5rem;
     $navbar-tint-color: $highlight-font-color;
-    $navbar-bg-color: $highlight-bg-color;
+    $navbar-bg-color: rgba($highlight-bg-color, 0.6);
+    $navbar-backdrop-blur: 6px;
     $navbar-font-size: 0.9rem;
     $navbar-font-weight: 100; // 300 = Light
     $navbar-letter-spacing: 0.05rem;
     $navbar-text-image-gap: 0.5rem;
-    $navbar-user-btn-size: 1.5rem;
+    $navbar-user-btn-size: 1.76rem;
 
     max-width: 100vw;
     background-color: $navbar-bg-color;
+    backdrop-filter: blur($navbar-backdrop-blur);
 
     .container-fluid {
         margin: 0 0.5rem;

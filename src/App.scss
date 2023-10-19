@@ -29,7 +29,12 @@ body {
 }
 
 a {
+    color: $page-body-font-color;
     text-decoration: none;
+
+    &:visited {
+        color: $page-body-font-color;
+    }
 }
 
 #root {
@@ -43,6 +48,8 @@ a {
     width: $page-container-width;
     margin-left: $page-container-margin-left;
     user-select: none;
+
+    overflow-x: hidden;
 }
 
 // page transition

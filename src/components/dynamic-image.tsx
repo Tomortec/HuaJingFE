@@ -29,6 +29,10 @@ const animMapper = (anim: DynamicImageAnim): {
                 initialStyle: {}
             };
         case DynamicImageAnim.SlideInFromBottom:
+            return {
+                className: "slide-in-from-bottom-anim",
+                initialStyle: {}
+            };
         default:
             return { className: "", initialStyle: {} }
     }
@@ -37,13 +41,14 @@ const animMapper = (anim: DynamicImageAnim): {
 export const DynamicImage = (props: {
     src?: string,
     classNames?: string,
-    anim: DynamicImageAnim
+    anim: DynamicImageAnim,
+    lazy?: boolean
 }) => {
     const anim = animMapper(props.anim);
     return (
         props.src && 
         <img src={props.src} className={props.classNames ?? ""} alt="" 
-            style={anim["initialStyle"]}
+            style={anim["initialStyle"]} loading={ props.lazy ? "lazy" : "eager" }
             onLoad={(e) => e?.currentTarget?.classList?.add(anim["className"])} />
     )
 };

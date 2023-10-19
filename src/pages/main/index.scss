@@ -13,15 +13,16 @@
     $section-header-divider: 1px solid $highlight-red;
 
     $instructions-container-height: 100vh;
-    $instructions-container-gap: 8%, 1rem, 80%;
-    $instructions-container-welcome-title-width: 60vw;
-    $instructions-container-welcome-title-height: 50vw;
+    $instructions-container-gap: 8%, 1rem, 0%;
+    $instructions-container-welcome-title-width: min(60vw, 350px);
+    $instructions-container-welcome-title-height: calc($instructions-container-welcome-title-width / 6 * 5);
     $instructions-container-welcome-title-font-size: 1.5rem;
     $instructions-container-welcome-title-font-weight: 300;
     $instructions-container-welcome-title-bg-opacity: 0.2;
     $instructions-container-welcome-title-bg-size: 60%;
-    $instructions-container-content-font-size: 0.85rem;
+    $instructions-container-content-font-size: 0.8rem;
     $instructions-container-content-font-weight: 300;
+    $instructions-container-btn-bottom: 10vh;
     $instructions-container-btn-font-size: 0.95rem;
     $instructions-container-btn-font-weight: 300;
     $instructions-container-btn-padding: 0.75rem 3.5rem;
@@ -49,8 +50,21 @@
     $model-card-content-opacity: 0.8;
     $model-card-btn-font-size: 0.9rem;
     $model-card-btn-font-weight: 300;
-    $model-card-btn-decoration: linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
+    $model-card-btn-decoration-color: rgba(255, 255, 255);
     $model-card-btn-decoration-width: calc($model-card-btn-font-size * 5.5);
+
+    $footer-margin-bottom: 7vh;
+    $footer-qrcode-container-margin-top: 8vh;
+    $footer-qrcode-container-gap: 1rem;
+    $footer-qrcode-size: 5rem;
+    $footer-qrcode-font-size: 0.9rem;
+    $footer-qrcode-font-weight: 300;
+    $footer-copyright-margin-top: 5vh;
+    $footer-copyright-gap: 0.5rem;
+    $footer-copyright-font-size: 0.85rem;
+    $footer-copyright-font-weight: 300;
+    $footer-copyright-bg-color: #101010;
+    $footer-copyright-opacity: 0.8;
 
     width: 100%;
     margin-left: 0;
@@ -114,6 +128,7 @@
             position: relative;
             display: flex;
             justify-content: space-between;
+            align-items: center;
 
             width: $instructions-container-welcome-title-width;
             height: $instructions-container-welcome-title-height;
@@ -138,10 +153,13 @@
             text-align: center;
             font-size: $instructions-container-content-font-size;
             font-weight: $instructions-container-content-font-weight;
-            line-height: calc(1.85 * $instructions-container-content-font-size);
+            line-height: calc(3 * $instructions-container-content-font-size);
         }
 
         .learn-more-btn {
+            position: absolute;
+            bottom: $instructions-container-btn-bottom;
+
             font-size: $instructions-container-btn-font-size;
             font-weight: $instructions-container-btn-font-weight;
             padding: $instructions-container-btn-padding;
@@ -242,19 +260,14 @@
 
             .learn-more-btn {
                 @include link-arrow($model-card-btn-font-size);
+                @include active-link-decoration(
+                    $model-card-btn-decoration-color,
+                    $model-card-btn-font-size,
+                    $model-card-btn-decoration-width
+                );
 
                 font-size: $model-card-btn-font-size;
                 font-weight: $model-card-btn-font-weight;
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    display: block;
-                    width: $model-card-btn-decoration-width;
-                    height: 1px;
-                    background: $model-card-btn-decoration;
-                    transform: translateY(calc($model-card-btn-font-size + 2px));
-                }
             }
         }
     }
@@ -263,4 +276,42 @@
         // TODO
         position: relative;
     }
+
+    .footer {
+        .logo-wall {
+            width: 100%;
+        }
+
+        .qrcode-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: $footer-qrcode-container-gap;
+
+            margin-top: $footer-qrcode-container-margin-top;
+            font-size: $footer-qrcode-font-size;
+            font-weight: $footer-qrcode-font-weight;
+            & img {
+                width: $footer-qrcode-size;
+                aspect-ratio: 1;
+            }
+        }
+
+        .footer-info-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: $footer-copyright-gap;
+
+            background-color: $footer-copyright-bg-color;
+            margin-top: $footer-copyright-margin-top;
+            padding-bottom: $footer-margin-bottom;
+            font-size: $footer-copyright-font-size;
+            font-weight: $footer-copyright-font-weight;
+
+            opacity: $footer-copyright-opacity;
+        }
+    }
+}
+
 }
