@@ -21,12 +21,13 @@ import "./index.scss";
 import userBgImage from "../../assets/image-user-bg.png";
 import collectionBgImage from "../../assets/image-user-collection-bg.png";
 import collectionEmptyImage from "../../assets/image-user-empty.png"
+import { DynamicImage, DynamicImageAnim } from "../../components";
 
 const UserInfoComponent = (props: { info: UserData }) => {
     return (
         <>
             <div className="avatar-container">
-                <img src={props.info.avatar} alt="" />
+                <DynamicImage src={props.info.avatar} anim={DynamicImageAnim.FadeIn} />
                 {/* <span className="badge">VIP{props.info.level}</span> */}
                 { props.info.level > 0 && <span className="badge">VIP</span> }
             </div>
@@ -43,7 +44,7 @@ const CollectionComponent = (props: { info: CollectionData }) => {
     };
 
     return (
-        <div className="collection-card" style={{ backgroundImage: `url(${collectionBgImage})` }}
+        <div className="collection-card slide-in-from-bottom-anim" style={{ backgroundImage: `url(${collectionBgImage})` }}
             onClick={navigateToPorcelainPage}>
             <img src={props.info.image || ""} alt="" />
             <span>{props.info.title}</span>
@@ -54,7 +55,7 @@ const CollectionComponent = (props: { info: CollectionData }) => {
 const EmptyCollectionPrompt = () => {
     return (
         <div className="empty-collection-prompt">
-            <img src={collectionEmptyImage} alt="" />
+            <DynamicImage src={collectionEmptyImage} classNames="poster-image" anim={DynamicImageAnim.ScaleUpFromCenter} />
             <span>暂无藏品</span>
         </div>
     )

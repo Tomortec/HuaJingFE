@@ -5,6 +5,7 @@ import { Popup } from "./popup";
 import { Roadmap, RoadmapItemData } from "./roadmap";
 import { SwiperNavigator } from "./swiper-navigator";
 import { LoadingPage } from "./loading-page";
+import { DynamicImage, DynamicImageAnim } from "./dynamic-image";
 
 export { 
     InfoContainer, 
@@ -12,5 +13,6 @@ export {
     Popup, 
     Roadmap, RoadmapItemData, 
     SwiperNavigator,
-    LoadingPage
+    LoadingPage,
+    DynamicImage, DynamicImageAnim
 }

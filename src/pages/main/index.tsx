@@ -7,7 +7,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 
 import { Page } from "../page";
-import { Roadmap, RoadmapItemData } from "../../components";
+import { DynamicImage, DynamicImageAnim, Roadmap, RoadmapItemData } from "../../components";
 import {
     getAllSolidPorcelainData,
     getAllSolidPorcelainDataApiKey
@@ -166,20 +166,21 @@ export const MainPage = () => {
     useEffect(() => {
         // wait for assets to load?
         setTimeout(() => {
-            roadmapRef && roadmapRef.current.initializeRoadmap();
+            roadmapRef?.current?.initializeRoadmap();
         }, 500);
     }, []);
 
     return (
         <Page pageName={pageName}>
             <div>
-                <div className="instructions-container" style={{ height: pageHeight, backgroundImage: `url(${instructionsBgImage})` }}>
+                <div className="instructions-container" style={{ height: pageHeight }}>
+                    <DynamicImage src={instructionsBgImage} classNames="instructions-bg" anim={DynamicImageAnim.FadeIn} />
                     <div className="welcome-title">
-                        <div className="title-bg-image" style={{ backgroundImage: `url(${logoImage})` }}></div>
+                        <div className="title-bg-image scale-up-anim" style={{ backgroundImage: `url(${logoImage})` }}></div>
                         { "WELCOME".split("").map((l, i) => (<span key={i}>{l}</span>)) }
                     </div>
                     <div className="instructions-content"><pre>{instructionsContent}</pre></div>
-                    <div className="learn-more-btn" 
+                    <div className="learn-more-btn scale-up-x-anim" 
                         style={{ backgroundImage: `url(${learnMoreBtnBgImage})` }}
                         onClick={() => navigate("/instructions")}>
                         <span>了解更多</span>

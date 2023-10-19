@@ -37,6 +37,11 @@
     $login-form-btn-font-weight: $login-form-label-font-weight;
 
     overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 
     .login-poster {
         display: flex;

@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollToPlugin);
 
 import { useAuth } from "../hooks/useAuth";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { DynamicImage, DynamicImageAnim } from "../components";
 
 interface PageProps {
     pageName: string;
@@ -56,7 +57,7 @@ export const Page = (props: PageProps) => {
                 props.authNeeded && !user ?
                 <Navigate to={"/login"} /> :
                 <div>
-                    { props.bgImage && <img className="bg-image" src={props.bgImage} alt="" /> } 
+                    { props.bgImage && <DynamicImage src={props.bgImage} classNames="bg-image" anim={DynamicImageAnim.FadeIn} /> }
                     <div id={props.pageName} className="page-container">
                         {props.children}
                     </div>

@@ -16,6 +16,7 @@ import { useAuth } from "../../hooks/useAuth";
 import logoImage from "../../assets/image-logo.png";
 import posterBgImage from "../../assets/image-login-bg.png";
 import { requestForLoggingIn, requestVerificationCode } from "./api";
+import { DynamicImage, DynamicImageAnim } from "../../components";
 
 const phoneNumberRegex = /^(?:\+?86)?1(?:3\d{3}|5[^4\D]\d{2}|8\d{3}|7(?:[0-35-9]\d{2}|4(?:0\d|1[0-2]|9\d))|9[0-35-9]\d{2}|6[2567]\d{2}|4[579]\d{2})\d{6}$/;
 const verificationCodeRegex = /^\d{6}$/;
@@ -98,9 +99,9 @@ export const LoginPage = () => {
         <Page pageName="loginPage">
             <div>
                 <div className="login-poster">
-                    <img className="poster-image" src={posterBgImage} alt="" />
+                    <DynamicImage src={posterBgImage} classNames="poster-image" anim={DynamicImageAnim.FadeIn} />
                     <div className="logo-container" onClick={navigateToMainPage}>
-                        <img src={logoImage} alt="" />
+                        <DynamicImage src={logoImage} anim={DynamicImageAnim.ScaleUpFromCenter} />
                         <span>华境｜HUAJING</span>
                     </div>
                 </div>
