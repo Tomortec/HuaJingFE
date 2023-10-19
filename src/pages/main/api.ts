@@ -52,6 +52,8 @@ interface RawSolidPorcelainData {
 }
 
 const getSolidPorcelainData = async (id: string): Promise<SolidPorcelainData> => {
+    if(!id) return defaultSolidPorcelainData;
+    
     try {
         const result = await axios.get("/api/sku/detail", {
             params: { "sku_id": id }

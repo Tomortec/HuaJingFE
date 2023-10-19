@@ -22,6 +22,8 @@ interface RawCollectionData {
 
 export const getUserDataApiKey = "GET_USER_DATA";
 export const getUserData = async (token: string): Promise<UserData> => {
+    if(!token) return defaultUserData;
+
     try {
         const result = await axios.get("/api/user/info", {
             params: { "token": token }
@@ -44,6 +46,8 @@ export const getUserData = async (token: string): Promise<UserData> => {
 
 export const getCollectionsDataApiKey = "GET_COLLECTIONS_DATA";
 export const getCollectionsData = async (token: string): Promise<CollectionData[]> => {
+    if(!token) return [];
+
     try {
         const result = await axios.get("/api/user/my_sku", {
             params: { "token": token }

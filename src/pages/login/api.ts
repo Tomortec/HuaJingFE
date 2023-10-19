@@ -5,6 +5,8 @@ import { isDevelopmentMode } from "../../hooks/useDevelopmentMode";
 const baseURL = isDevelopmentMode().isDevelopment ? "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io" : "";
 
 export const requestVerificationCode = async (phoneNumber: string): Promise<boolean> => {
+    if(!phoneNumber) return false;
+    
     try {
         const result = await axios.post(baseURL + "/api/user/verification_code", {
             "phone": phoneNumber
@@ -22,7 +24,9 @@ export const requestVerificationCode = async (phoneNumber: string): Promise<bool
  * @param vcode 
  * @returns user token if everything goes well
  */
-export const requestForLoggingIn = async (phoneNumber: string, vcode: number): Promise<string> => {
+export const requestForLoggingIn = async (phoneNumber: string, vcode: string): Promise<string> => {
+    if(!phoneNumber || !vcode) return "";
+
     try {
         const result = await axios.post(baseURL + "/api/user/login", {
             "phone": phoneNumber,

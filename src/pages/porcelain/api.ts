@@ -18,6 +18,8 @@ interface RawCollectionData {
 }
 
 export const getPorcelainData = async (id: string): Promise<PlanePorcelainData> => {
+    if(!id) return defaultPlanePorcelainData;
+    
     try {
         const result = await axios.get("/api/sku/detail", {
             params: { "sku_id": id }

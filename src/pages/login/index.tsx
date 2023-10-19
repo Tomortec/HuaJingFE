@@ -83,7 +83,10 @@ export const LoginPage = () => {
     const handleSubmit = async () => {
         if(vcodeInputRef && verificationCodeRegex.test(vcodeInputRef.current.value)
             && phoneNumberInputRef && phoneNumberRegex.test(phoneNumberInputRef.current.value)) {
-            const token = await requestForLoggingIn(phoneNumberInputRef.current.value, vcodeInputRef.current.value);
+            const token = await requestForLoggingIn(
+                phoneNumberInputRef.current.value, 
+                vcodeInputRef.current.value
+            );
             if(token) {
                 login(token);
                 return;
