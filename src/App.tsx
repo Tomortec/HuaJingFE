@@ -12,6 +12,9 @@ import {
     NavbarState
 } from "./components";
 
+import { isDevelopmentMode } from "./hooks/useDevelopmentMode";
+import axios from "axios";
+
 const SPECIAL_PATH_NAVBAR_STATE: {
     readonly [_ : string]: NavbarState
 } = {
@@ -35,6 +38,14 @@ export const App = () => {
                 k.startsWith("SCROLL_") && window.localStorage.setItem(k, "0");
             });
         });
+    }, []);
+
+    useEffect(() => {
+        const baseURL = isDevelopmentMode().isDevelopment ? 
+            "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io" : (
+                isDevelopmentMode().isTesting ? "https://test.atmhn.cn" : ""
+            );
+        axios.defaults.baseURL = baseURL;
     }, []);
 
     return (
