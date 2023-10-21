@@ -36,6 +36,28 @@ module.exports = {
     optimization: {
         splitChunks: {
             chunks: "all",
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                    name: "vendor",
+                    chunks: "all",
+                },
+                modelViewer: {
+                    test: /[\\/]node_modules[\\/]@google[\\/]model-viewer[\\/]/,
+                    name: "model-viewer",
+                    chunks: "all"
+                },
+                three: {
+                    test: /[\\/]node_modules[\\/]three[\\/]/,
+                    name: "three",
+                    chunks: "all"
+                },
+                jQuery: {
+                    test: /[\\/]node_modules[\\/]jquery[\\/]/,
+                    name: "jquery",
+                    chunks: "all"
+                },
+            }
         },
     },
     module: {
