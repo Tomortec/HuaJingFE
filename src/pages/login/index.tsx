@@ -126,8 +126,7 @@ export const LoginPage = () => {
                                 onFocus={handlePhoneNumberInputFocused}
                                 disabled={!readyForRequestCode} />
                             <Countdown ref={countdownRef} date={countdownDate} key={countdownDate.getTime()}
-                                renderer={countdownRenderer}
-                                onComplete={() => setCountdownDate(new Date())} />
+                                renderer={countdownRenderer} />
                         </div>
                     </div>
                     <div>
