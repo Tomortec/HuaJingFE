@@ -5,12 +5,13 @@
     // if the popup-container is `fixed`, it will cover main contents
     $main-content-margin-bottom: 0;
 
-    $model-viewer-height: 55vh;
+    $model-viewer-size-factor: 3;
+    $model-viewer-size: calc($model-viewer-size-factor * 100vw);
     $model-viewer-margin-bottom: 3vh;
     $model-viewer-bg-color: transparent;
     $model-viewer-progressbar-bg-color: rgba(255, 255, 255, 0.5);
 
-    $camera-reset-btn-top: 5%;
+    $camera-reset-btn-top: 1%;
     $camera-reset-btn-right: 6%;
     $camera-reset-btn-padding: 0.25rem;
     $camera-reset-btn-bg-color: $highlight-bg-color;
@@ -58,15 +59,26 @@
         margin-left: 5%;
     }
 
-    model-viewer {
-        width: 100%;
-        height: $model-viewer-height;
-        margin-bottom: $model-viewer-margin-bottom;
+    .visible-port {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vw;
 
         background-position: center;
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 200%;
         background-color: $model-viewer-bg-color;
+
+        overflow-y: hidden;
+    }
+
+    model-viewer {
+        min-width: $model-viewer-size;
+        min-height: $model-viewer-size;
+
+        margin-bottom: $model-viewer-margin-bottom;
 
         &::part(default-progress-bar) {
             background-color: $model-viewer-progressbar-bg-color;
