@@ -307,14 +307,21 @@
 
 /* ----------------- Roadmap ------------------ */
 .roadmap {
-    $roadmap-item-margin-left: 30%;
+    $roadmap-item-margin-left: 40%;
     $roadmap-item-gap: 2rem;
-    $roadmap-item-header-font-size: 1.4rem;
+    $roadmap-item-header-font-size: 1.6rem;
     $roadmap-item-header-font-weight: 400;
     $roadmap-item-header-content-gap: 1.2rem;
+    $roadmap-item-header-number-padding: 0.25rem;
+    $roadmap-item-header-number-bg-color: $page-body-font-color;
+    $roadmap-item-header-number-font-color: $page-body-bg-color;
+    $roadmap-item-header-number-font-size: $roadmap-item-header-font-size;
+    $roadmap-item-header-number-font-weight: 300;
     $roadmap-item-content-font-size: 0.9rem;
     $roadmap-item-content-font-weight: 300;
     $roadmap-item-text-line-margin-bottom: 0.6rem;
+    $roadmap-item-bar-opacity: 0.6;
+    $roadmap-item-bar-left: calc($roadmap-item-margin-left / -2);
 
     display: flex;
     flex-direction: column;
@@ -327,14 +334,49 @@
 
         margin-left: $roadmap-item-margin-left;
 
-        .header {
-            font-size: $roadmap-item-header-font-size;
-            font-weight: $roadmap-item-header-font-weight;
+        .header-container {
+            display: flex;
+            align-items: center;
+
+            .series-num {
+                margin-left: $roadmap-item-bar-left;
+
+                color: $roadmap-item-header-number-font-color;
+                background-color: $roadmap-item-header-number-bg-color;
+
+                font-size: $roadmap-item-header-number-font-size;
+                font-weight: $roadmap-item-header-number-font-weight;
+                text-align: center;
+                line-height: $roadmap-item-header-font-size;
+                padding: $roadmap-item-header-number-padding;
+                border-radius: 50%;
+
+                transform: translateX(-50%);
+            }
+
+            .header {
+                margin-left: calc(-0.5 * $roadmap-item-bar-left);
+                font-size: $roadmap-item-header-font-size;
+                font-weight: $roadmap-item-header-font-weight;
+            }
         }
 
         .content {
+            position: relative;
             font-size: $roadmap-item-content-font-size;
             font-weight: $roadmap-item-content-font-weight;
+
+            .bar {
+                position: absolute;
+                width: 1px;
+                height: 100%;
+                left: $roadmap-item-bar-left;
+
+                background: $page-body-font-color;
+                transform: translateY(calc(-0.35 * $roadmap-item-text-line-margin-bottom));
+            
+                opacity: $roadmap-item-bar-opacity;
+            }
 
             .text-line {
                 margin-bottom: $roadmap-item-text-line-margin-bottom;

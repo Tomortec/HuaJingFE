@@ -11,13 +11,22 @@ export interface RoadmapItemData {
     content: string[];
 }
 
+const seriesNumber = ["壹", "贰", "叁", "肆"];
+
 const RoadmapItem = (props: {
-    data: RoadmapItemData
+    data: RoadmapItemData,
+    i: number
 }) => {
     return (
         <div className="roadmap-item">
-            <div className="header">{props.data.header}</div>
+            <div className="header-container">
+                <div className="series-num">{seriesNumber[props.i] ?? ""}</div>
+                <div className="header">
+                    {props.data.header}
+                </div>
+            </div>
             <div className="content">
+                <div className="bar"></div>
                 {
                     props.data.content.map((content, i) => (
                         <div key={i} className="text-line">{content}</div>
@@ -33,10 +42,19 @@ const createRoadmapAnimation = (tl: GSAPTimeline, data: RoadmapItemData[]) => {
         const label = `LABEL-${i}`;
         const item = `.roadmap-item:nth-of-type(${i + 1})`;
         tl.addLabel(label);
-        tl.from(`${item} .header`, { autoAlpha: 0, duration:0.8 }, label);
+        tl.from(`${item} .header`, { delay: 0.8, autoAlpha: 0, duration: 0.8 }, label);
+        tl.from(`${item} .series-num`, { autoAlpha: 0.0, duration: 0.8 }, label);
+
+        tl.from(`${item} .bar`, {
+            height: "0",
+            duration: 0.8,
+            ease: "power1.in"
+        }, label);
 
         v.content.forEach((_, j) => {
-            tl.from(`${item} .text-line:nth-of-type(${j + 1})`, {
+            // here is a `div.bar`, so 2 is added
+            tl.from(`${item} .text-line:nth-of-type(${j + 2})`, {
+                delay: () => 0.5 * j + 0.8,
                 x: "100",
                 alpha: 0,
                 duration: 0.8
@@ -57,11 +75,11 @@ export const Roadmap = forwardRef((props: {
                 scrollTrigger: {
                     trigger: trigger,
                     scroller: $(props.scroller)[0],
-                    start: "top center",
+                    start: "top 66%",
                     end: `+=${$(trigger).height() * 0.5}`,
                     fastScrollEnd: false,
                     snap: "labels",
-                    scrub: 0.5,
+                    scrub: 5,
                     markers: isDevelopmentMode().isDevelopment
                 }
             });
@@ -73,7 +91,7 @@ export const Roadmap = forwardRef((props: {
     return (
         <div id={props.roadmapId} className="roadmap">
             {
-                props.data.map((v, i) => <RoadmapItem data={v} key={i} />)
+                props.data.map((v, i) => <RoadmapItem data={v} i={i} key={i} />)
             }
         </div>
     )

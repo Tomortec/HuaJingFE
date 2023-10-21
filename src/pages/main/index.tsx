@@ -1,10 +1,14 @@
 
-import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
+import React from "react";
+import { useLayoutEffect, useState, useRef, useEffect } from "react";
 
 import {
     useNavigate
 } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { gsap } from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 import { Page } from "../page";
 import { DynamicImage, DynamicImageAnim, Roadmap, RoadmapItemData } from "../../components";
@@ -58,25 +62,26 @@ interface ModelInfo {
 
 const roadmapData: RoadmapItemData[] = [
     {
-        header: "一",
+        header: "瓷",
         content: [
-            "6幅臻品解析图",
-            "免费数字化臻品观澜",
-            "华境｜俱乐部",
-            "华境｜臻品ID"
+            "3个3D数字臻品",
+            "收藏展示",
+            "藏品解析",
+            "拍卖会图鉴"
         ]
     },
     {
-        header: "二",
+        header: "墨",
         content: [
-            "2K｜3D臻品观澜",
-            "千件稀有臻品",
-            "解析图｜臻品对比",
-            "百件至尊臻品 十件殿堂级臻品"
+            "2K 3D臻品",
+            "千件数字化臻品",
+            "百件至尊臻品",
+            "十件殿堂级臻品",
+            "解析图 对比功能"
         ]
     },
     {
-        header: "三",
+        header: "境",
         content: [
             "华境｜社区",
             "华境｜碎片",
@@ -169,6 +174,20 @@ export const MainPage = () => {
         // wait for assets to load?
         setTimeout(() => {
             roadmapRef?.current?.initializeRoadmap();
+
+            $(".section-header").each((_, header) => {
+                gsap.from(header, {
+                    opacity: 0,
+                    y: "+=100",
+                    duration: 0.8,
+                    scrollTrigger: {
+                        trigger: header,
+                        scroller: ".page-container",
+                        start: "top 85%",
+                        markers: true
+                    }
+                });
+            });
         }, 500);
     }, []);
 
@@ -198,11 +217,11 @@ export const MainPage = () => {
                 <div className="model-container">
                     <SectionHeader text="数字臻品" enText="DIGITAL MASTERPIECE" />
                     <div className="model-cards-container">
-                    {
-                        modelInfo.map((info, i) => (
-                            <ModelLinkCard info={info} key={i} />
-                        ))
-                    }
+                            {
+                                    modelInfo.map((info, i) => (
+                                        <ModelLinkCard info={info} key={i} />
+                                    ))
+                            }
                     </div>
                 </div>
                 <div className="roadmap-container">
