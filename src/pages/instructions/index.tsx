@@ -9,7 +9,7 @@ import "./index.scss";
 
 export const InstructionsPage = () => {
     return (
-        <Page pageName='instructionsPage' authNeeded={true} noTopPadding={true}>
+        <Page pageName='instructionsPage' noTopPadding={true}>
             <div>
                 {
                     range(5).map((i) => (

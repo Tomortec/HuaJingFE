@@ -120,7 +120,7 @@ export const ModelPage = () => {
     }, [swiper]);
 
     return (
-        <Page pageName="modelPage" authNeeded={true} resetScroll>
+        <Page pageName="modelPage" resetScroll>
             <>
                 <div className="scrollable">
                     <Swiper

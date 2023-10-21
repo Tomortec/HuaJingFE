@@ -29,7 +29,7 @@ export const PorcelainPage = () => {
     }, []);
 
     return (
-        <Page pageName="porcelainPage" authNeeded={true} resetScroll>
+        <Page pageName="porcelainPage" resetScroll>
             <div>
                 <Swiper
                     modules={[Pagination, Autoplay]}

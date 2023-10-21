@@ -23,7 +23,7 @@ import {
     // PorcelainPage,
     // UserPage
 } from "./pages";
-import { LoadingPage } from "./components";
+import { LoadingPage, ProtectedRoute } from "./components";
 const LoginPage = lazy(() => import("./pages/login/index"));
 const InstructionsPage = lazy(() => import("./pages/instructions/index"));
 const IntroductionPage = lazy(() => import("./pages/introduction/index"));
@@ -50,15 +50,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "/user",
-                element: <UserPage />
+                element: <ProtectedRoute><UserPage /></ProtectedRoute>
             },
             {
                 path: "/porcelain/:porcelainId",
-                element: <PorcelainPage />
+                element: <ProtectedRoute><PorcelainPage /></ProtectedRoute>
             },
             {
                 path: "/model/:modelId",
-                element: <ModelPage />
+                element: <ProtectedRoute><ModelPage /></ProtectedRoute>
             },
             {
                 path: "/login",
@@ -66,12 +66,12 @@ const router = createBrowserRouter([
             },
             {
                 path: "/instructions",
-                element: <InstructionsPage />
+                element: <ProtectedRoute><InstructionsPage /></ProtectedRoute>
             }
         ].concat(
             introductionPagePaths.map((pathName) => ({
                 path: pathName,
-                element: <IntroductionPage />
+                element: <ProtectedRoute><IntroductionPage /></ProtectedRoute>
             }))
         )
     }

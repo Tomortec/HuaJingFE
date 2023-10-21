@@ -6,6 +6,7 @@ import { Roadmap, RoadmapItemData } from "./roadmap";
 import { SwiperNavigator } from "./swiper-navigator";
 import { LoadingPage } from "./loading-page";
 import { DynamicImage, DynamicImageAnim } from "./dynamic-image";
+import { ProtectedRoute } from "./protected-route";
 
 export { 
     InfoContainer, 
@@ -14,5 +15,6 @@ export {
     Roadmap, RoadmapItemData, 
     SwiperNavigator,
     LoadingPage,
-    DynamicImage, DynamicImageAnim
+    DynamicImage, DynamicImageAnim,
+    ProtectedRoute,
 }

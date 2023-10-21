@@ -1,21 +1,15 @@
 
-import React, { useLayoutEffect, useState } from "react";
-
-import {
-    Navigate,
-} from "react-router-dom";
+import React, { useLayoutEffect } from "react";
 
 import { gsap } from "gsap";
 import ScrollToPlugin from "gsap/ScrollToPlugin";
 gsap.registerPlugin(ScrollToPlugin);
 
-import { useAuth } from "../hooks/useAuth";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { DynamicImage, DynamicImageAnim } from "../components";
 
 interface PageProps {
     pageName: string;
-    authNeeded?: boolean;
     resetScroll?: boolean;
     children?: JSX.Element;
     bgImage?: string;
@@ -23,7 +17,6 @@ interface PageProps {
 }
 
 export const Page = (props: PageProps) => {
-    const { user } = useAuth();
     const [scrollState, setScrollState] = useLocalStorage(`SCROLL_${props.pageName}`, 0);
 
     useLayoutEffect(() => {
@@ -54,16 +47,12 @@ export const Page = (props: PageProps) => {
 
     return (
         <>
-            {
-                props.authNeeded && !user ?
-                <Navigate to={"/login"} /> :
-                <div>
-                    { props.bgImage && <DynamicImage src={props.bgImage} classNames="bg-image" anim={DynamicImageAnim.FadeIn} /> }
-                    <div id={props.pageName} className="page-container">
-                        {props.children}
-                    </div>
+            <div>
+                { props.bgImage && <DynamicImage src={props.bgImage} classNames="bg-image" anim={DynamicImageAnim.FadeIn} /> }
+                <div id={props.pageName} className="page-container">
+                    {props.children}
                 </div>
-            }
+            </div>
         </>
     )
 };

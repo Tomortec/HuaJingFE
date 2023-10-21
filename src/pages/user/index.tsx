@@ -77,7 +77,7 @@ export const UserPage = () => {
     });
 
     return (
-        <Page pageName="userPage" authNeeded={true} bgImage={userBgImage}>
+        <Page pageName="userPage" bgImage={userBgImage}>
             <div>
                 <div id="hj-user-info">
                     <UserInfoComponent info={userInfo} />

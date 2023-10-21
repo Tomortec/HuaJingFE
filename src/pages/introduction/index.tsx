@@ -41,7 +41,7 @@ export const IntroductionPage = () => {
     const config = locationConfig[pathName.toLowerCase()];
 
     return (
-        <Page pageName={config.name + "Page"} authNeeded={true} noTopPadding={true}>
+        <Page pageName={config.name + "Page"} noTopPadding={true}>
             <div>
                 {
                     range(config.imageNum).map((i) => (
