@@ -38,26 +38,27 @@ const RoadmapItem = (props: {
 };
 
 const createRoadmapAnimation = (tl: GSAPTimeline, data: RoadmapItemData[]) => {
-    data.forEach((v, i) => {
+    data.forEach((value, i) => {
         const label = `LABEL-${i}`;
         const item = `.roadmap-item:nth-of-type(${i + 1})`;
         tl.addLabel(label);
+
         tl.from(`${item} .header`, { delay: 0.8, autoAlpha: 0, duration: 0.8 }, label);
         tl.from(`${item} .series-num`, { autoAlpha: 0.0, duration: 0.8 }, label);
 
         tl.from(`${item} .bar`, {
             height: "0",
-            duration: 0.8,
+            duration: 0.8 * value.content.length,
             ease: "power1.in"
         }, label);
 
-        v.content.forEach((_, j) => {
+        value.content.forEach((_, j) => {
             // here is a `div.bar`, so 2 is added
             tl.from(`${item} .text-line:nth-of-type(${j + 2})`, {
                 delay: () => 0.5 * j + 0.8,
-                x: "100",
+                x: "200",
                 alpha: 0,
-                duration: 0.8
+                duration: 2.0
             }, label);
         });
     });
@@ -76,11 +77,10 @@ export const Roadmap = forwardRef((props: {
                     trigger: trigger,
                     scroller: $(props.scroller)[0],
                     start: "top 66%",
-                    end: `+=${$(trigger).height() * 0.5}`,
+                    end: `+=${$(trigger).height() * 0.75}`,
                     fastScrollEnd: false,
                     snap: "labels",
-                    scrub: 5,
-                    markers: isDevelopmentMode().isDevelopment
+                    scrub: 5
                 }
             });
             createRoadmapAnimation(tl, props.data);

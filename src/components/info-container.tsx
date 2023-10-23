@@ -9,11 +9,11 @@ import bottomStampIcon from "../assets/icon-diamond.svg";
 import sizeIcon from "../assets/icon-list.svg";
 
 const BasicInfoTextComponent = (
-    props: { icon: string, title: string, text: string }
+    props: { icon: string, title: string, text: string, shouldAlignLeft?: boolean }
 ) => {
     return (
         <div className="basic-info">
-            <div className="header">
+            <div className="header" style={props.shouldAlignLeft ? { "justifyContent": "flex-start" } : {}}>
                 { 
                     props.icon.startsWith("bi") ? 
                     <i className={props.icon}></i> :
@@ -21,7 +21,7 @@ const BasicInfoTextComponent = (
                 }
                 <span>{props.title}</span>
             </div>
-            <span className="content">{props.text}</span>
+            <span className="content" style={props.shouldAlignLeft ? { "textAlign": "left" } : {}}>{props.text}</span>
         </div>
     )
 };
@@ -35,7 +35,7 @@ export const InfoContainer = (props: { info: PorcelainData }) => {
                 <BasicInfoTextComponent icon={ageIcon} title="年代" text={data.age} />
                 <BasicInfoTextComponent icon={classIcon} title="品类" text={data.classification} />
                 <BasicInfoTextComponent icon={bottomStampIcon} title="底款" text={data.bottomStamp} />
-                <BasicInfoTextComponent icon={sizeIcon} title="尺寸介绍" text={data.sizeIntroduction} />
+                <BasicInfoTextComponent icon={sizeIcon} title="尺寸说明" text={data.sizeIntroduction} shouldAlignLeft />
             </div>
 
             <div className="description-container">

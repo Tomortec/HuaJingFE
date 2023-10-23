@@ -95,7 +95,6 @@ const SingleModelPage = (props: { id: string, data: SolidPorcelainData }) => {
 
     const handlePanningEvent = (e: React.TouchEvent) => {
         if(e.touches.length == 2) {
-            console.log(e.changedTouches);
             const deltaX1 = e.touches[0].clientX - touchStartPos.current[0].x,
                 deltaY1 = e.touches[0].clientY - touchStartPos.current[0].y;
             const deltaX2 = e.touches[1].clientX - touchStartPos.current[1].x,
@@ -109,8 +108,9 @@ const SingleModelPage = (props: { id: string, data: SolidPorcelainData }) => {
                 const initialRadius = Number(modelViewer.getAttribute("data-initial-radius"));
                 const baseFactor = Math.max(modelViewer.getCameraOrbit().radius, initialRadius) * Math.log(modelViewer.getMaximumFieldOfView());
                 const vw = $(window).width();
-                const translationX = clamp(deltaX1 * baseFactor * 0.0007, vw * 0.01);
-                const translationY = clamp(deltaY1 * baseFactor * 0.0007, vw * 0.01);
+                const translationX = clamp(deltaX1 * baseFactor * 0.0005, vw * 0.01);
+                const translationY = clamp(deltaY1 * baseFactor * 0.0005, vw * 0.01);
+                if(Math.abs(translationX) < 0.5 && Math.abs(translationY) < 0.5) { return; }
                 translationDelta.current.x = clamp(translationDelta.current.x + translationX, -0.5 * vw, 0.5 * vw);
                 translationDelta.current.y = clamp(translationDelta.current.y + translationY, -0.5 * vw, 0.5 * vw);
                 $(modelViewer).css({
@@ -159,7 +159,7 @@ const SingleModelPage = (props: { id: string, data: SolidPorcelainData }) => {
                 <model-viewer
                     id={modelViewerId}
                     src={props.data.model}
-                    // poster={props.data.poster}
+                    poster={props.data.poster}
                     exposure={props.data.exposure ?? 1}
                     disable-pan
                     camera-orbit={initialCameraOrbit}
