@@ -15,6 +15,9 @@ module.exports = merge(common, {
         proxy: {
             "/admin": "http://localhost:3000/",
             "/api": "http://localhost:3001/"
+        },
+        devMiddleware: {
+            writeToDisk: true
         }
     },
     output: {

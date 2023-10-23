@@ -75,7 +75,24 @@ module.exports = {
             },
             {
                 test: /\.s[ac]ss$/i,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+                use: [
+                    MiniCssExtractPlugin.loader, 
+                    {
+                        loader: "css-loader",
+                        options: {
+                            url: false
+                        }
+                    },
+                    {
+                        loader: "resolve-url-loader"
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -87,8 +104,9 @@ module.exports = {
                 },
             },
             {
-                test: /\.woff2?$/i,
-                type: "asset/resource",
+                test: /\.(otf|ttf|woff|woff2)$/i,
+                // use: "url-loader"
+                type: "asset/resource"
             },
             {
                 test: /\.(glb|gltf)$/i,
