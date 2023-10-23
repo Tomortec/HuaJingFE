@@ -84,12 +84,41 @@ export const App = () => {
     }, []);
 
     useEffect(() => {
-        const baseURL = isDevelopmentMode().isDevelopment ? 
-            "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io" : (
-                isDevelopmentMode().isTesting ? "https://test.atmhn.cn" : ""
-            );
-        axios.defaults.baseURL = baseURL;
+        !isDevelopmentMode().isDevelopment && fecthWXConfig()
+            .then((config) => {
+                console.log(config);
+
+                if(!config) return;
+                wx.config({
+                    debug: true,
+                    appId: config.appId,
+                    timestamp: config.timestamp,
+                    nonceStr: config.nonceStr,
+                    signature: config.signature,
+                    jsApiList: ["updateAppMessageShareData"]
+                });
+
+                wx.ready(() => {
+                    wx.updateAppMessageShareData({
+                        title: "华境-共享共建的艺术品数字化交流平台",
+                        desc: "欢迎您加入华镜艺术品数字化交流平台！",
+                        link: "https://test.atmhn.cn",
+                        imgUrl: "",
+                        success: () => { alert("Update WX message successfully!"); }
+                    })
+                }); 
+
+                wx.error((error) => {
+                    alert(error);
+                    console.error(error);
+                });
+            });
     }, []);
+
+    // useEffect(() => {
+    //     const baseURL = isDevelopmentMode().isTesting ? "https://test.atmhn.cn" : ""
+    //     axios.defaults.baseURL = baseURL;
+    // }, []);
 
     return (
         <>
