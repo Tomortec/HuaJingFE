@@ -54,7 +54,7 @@
     $model-card-btn-decoration-width: calc($model-card-btn-font-size * 5.5);
 
     $footer-margin-bottom: 7vh;
-    $footer-qrcode-container-margin-top: 8vh;
+    $footer-qrcode-container-margin-top: 10vh;
     $footer-qrcode-container-gap: 1rem;
     $footer-qrcode-size: 5rem;
     $footer-qrcode-font-size: 0.9rem;
@@ -63,7 +63,6 @@
     $footer-copyright-gap: 0.5rem;
     $footer-copyright-font-size: 0.85rem;
     $footer-copyright-font-weight: 300;
-    $footer-copyright-bg-color: #101010;
     $footer-copyright-opacity: 0.8;
 
     width: 100%;
@@ -71,6 +70,7 @@
     overflow-y: scroll;
 
     .section-header {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -79,6 +79,7 @@
 
         width: 100%;
         height: $section-header-height;
+        z-index: 999;
 
         .en-text {
             opacity: $section-header-en-text-opacity;
@@ -279,7 +280,8 @@
 
     .footer {
         .logo-wall {
-            width: 100%;
+            width: 80%;
+            margin-left: 10%;
         }
 
         .qrcode-container {
@@ -303,7 +305,6 @@
             align-items: center;
             gap: $footer-copyright-gap;
 
-            background-color: $footer-copyright-bg-color;
             margin-top: $footer-copyright-margin-top;
             padding-bottom: $footer-margin-bottom;
             font-size: $footer-copyright-font-size;
@@ -314,4 +315,156 @@
     }
 }
 
+#mainPage {
+
+    $instructions-container-gap: 0, -2%, 5%;
+    $instructions-container-welcome-title-width: 28vw;
+    $instructions-container-welcome-title-height: 35vh;
+
+    $introduction-link-card-height: 60vh;
+
+    $model-cards-container-height: 45vh;
+    $model-cards-container-padding: calc($model-cards-container-height / 6) 16%;
+    $model-tab-trigger-font-size: 1.4rem;
+    $model-tab-trigger-font-weight: 400;
+    $model-tab-trigger-decoration-width: calc($model-tab-trigger-font-size * 8);
+
+    @include desktop() {
+        .instructions-container {
+            @for $i from 1 through 3 {
+                & > div:nth-of-type(#{$i}) {
+                    margin-top: nth($list: $instructions-container-gap, $n: $i);
+                    z-index: 1;
+                }
+            }
+
+            .welcome-title {
+                width: $instructions-container-welcome-title-width;
+                height: $instructions-container-welcome-title-height;  
+                .title-bg-image {
+                    background-size: 10vw;
+                } 
+            }
+
+            .learn-more-btn {
+                @include desktop-cursor();
+                position: unset;
+            }
+
+            .tri-arrow {
+                position: absolute;
+                bottom: 5vh;
+            }
+        }
+
+        .introduction-container {
+            display: flex;
+            justify-content: center;
+
+            .introduction-link-card {
+                @include desktop-cursor();
+                width: 22vw;
+                height: $introduction-link-card-height;
+            }
+        }
+
+        .model-cards-container {
+            height: 50vh;
+
+            --swiper-navigation-size: 2.5rem;
+
+            .swiper-button-prev, .swiper-button-next {
+                width: var(--swiper-navigation-size);
+                border-radius: 50%;
+                border: 0.8px solid white;
+            }
+
+            .swiper-button-prev {
+                @include link-arrow(1.5rem);
+                right: 87.5vw !important;
+                left: auto !important;
+                transform: scaleX(-1);
+            }
+
+            .swiper-button-next {
+                @include link-arrow(1.5rem);
+                left: 87.5vw !important;
+                right: auto !important;
+            }
+            
+            .model-link-card {
+                display: flex;
+                justify-content: center;
+                width: 75vw;
+                height: 50vh;
+                margin-left: 12.5vw;
+                padding: 0;
+
+                .model-image {
+                    width: 50%;
+                    aspect-ratio: 1;
+                    object-fit: contain;
+                    background-position: center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                }
+
+                .model-info-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    width: 50%;
+
+                    .model-title {
+                        @include link-arrow(1.4rem);
+                        @include active-link-decoration(white, 1.4rem, 10rem);
+                        @include desktop-cursor();
+                        font-size: 1.4rem;
+                        margin-bottom: 3rem;
+                    }
+
+                    .model-age, .model-class {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .container-column {
+                        display: flex;
+                        gap: 4rem;
+                        margin-bottom: 2rem;
+                    }
+
+                    .header {
+                        position: relative;
+                        font-size: 0.8rem;
+                        font-weight: 300;
+                        padding-left: 0.3rem;
+                        margin-bottom: 0.5rem;
+
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            left: -0.3rem;
+                            top: 0.25rem;
+                            display: block;
+                            height: 0.7rem;
+                            border-left: 1px solid $highlight-red;
+                        }
+
+                        & + span:not(.header) {
+                            font-size: 0.9rem;
+                        }
+                    }
+                }
+            }
+        }
+        
+        .logo-wall {
+            display: block;
+            min-width: 720px;
+            width: 40vw !important;
+            margin-left: auto !important;
+            margin: 0 auto;
+        }
+    }
 }
