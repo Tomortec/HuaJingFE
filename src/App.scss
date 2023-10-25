@@ -1,10 +1,10 @@
 
 // some variables of Bootstrap should be overwritten
-@use "./components/variables.scss" as *;
+@import "./components/variables.scss";
 
-@use "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap/scss/bootstrap.scss";
 
-@use "./components/components.scss";
+@import "./components/components.scss";
 
 body {
     height: 100vh;

@@ -11,22 +11,33 @@ import wx from "weixin-js-sdk";
 
 import { 
     Navbar,
-    NavbarState
+    NavbarState,
 } from "./components";
 
+import { useDesktop } from "./hooks/useDesktop";
 import { isDevelopmentMode } from "./hooks/useDevelopmentMode";
 import axios from "axios";
 
-const SPECIAL_PATH_NAVBAR_STATE: {
+const mobileSpecialPathNavbarState: {
     readonly [_ : string]: NavbarState
 } = {
     "/user": NavbarState.UserDisabled,
     "/login": NavbarState.Hidden
 };
 
-const checkNavbarState = () => {
+const checkNavbarState = (): NavbarState => {
     const path = useLocation().pathname;
-    return SPECIAL_PATH_NAVBAR_STATE[path] || NavbarState.Normal;
+
+    const isDesktop = useDesktop();
+    if(isDesktop) {
+        if(Object.keys(mobileSpecialPathNavbarState).includes(path)) {
+            return NavbarState.UserDisabled;
+        } else {
+            return NavbarState.Normal;
+        }
+    }
+
+    return mobileSpecialPathNavbarState[path] || NavbarState.Normal;
 };
 
 const fecthWXConfig = async (): Promise<{

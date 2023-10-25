@@ -7,6 +7,7 @@ import { SwiperNavigator } from "./swiper-navigator";
 import { LoadingPage } from "./loading-page";
 import { DynamicImage, DynamicImageAnim } from "./dynamic-image";
 import { ProtectedRoute } from "./protected-route";
+import { MediaWrapper } from "./media-wrapper";
 
 export { 
     InfoContainer, 
@@ -17,4 +18,5 @@ export {
     LoadingPage,
     DynamicImage, DynamicImageAnim,
     ProtectedRoute,
+    MediaWrapper,
 }

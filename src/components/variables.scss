@@ -31,7 +31,7 @@ $highlight-red: #a32832;
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
-        // to left arrow image
+        // to-left arrow image
         background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="99.73" height="179" viewBox="0 0 99.73 179"><polygon fill="white" points="0 89.5 99.73 0 49.73 90 99.73 179 0 89.5"/></svg>');
         transform: scaleX(-1);
     }
@@ -119,4 +119,16 @@ $highlight-red: #a32832;
     animation: slideInFromBottom ease 1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+}
+
+@mixin desktop() {
+    @media only screen and (min-width: 768px) and (orientation: landscape) {
+        @content;
+    }
+}
+
+@mixin desktop-cursor() {
+    & {
+        cursor: pointer;
+    }
 }

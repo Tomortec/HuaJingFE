@@ -43,6 +43,18 @@
     }
 }
 
+.navbar {
+    @include desktop() {
+        .container-fluid {
+            margin: 0 15vw;
+        }
+
+        .navbar-brand, .user-btn {
+            @include desktop-cursor();
+        }
+    }
+}
+
 /* ----------------- SwiperNavigator ------------------ */
 .swiper-navigator {
     $navigator-margin-top: 1rem;
@@ -245,6 +257,105 @@
     }
 }
 
+.info-container {
+    @mixin grid-full-width() {
+        grid-column-start: 1;
+        grid-column-end: 4;
+    }
+
+    @include desktop() {
+        & {
+            display: flex;
+            flex-direction: column;
+            gap: 6vh;
+            margin-top: 10vh;
+        }
+
+        .top-frame-container {
+            display: flex;
+            justify-content: space-between;
+
+            min-height: 40vh;
+
+            user-select: text;
+
+            .basic-info-container {
+                row-gap: 0;
+                background-color: transparent;
+
+                .basic-info {
+                    align-items: flex-start;
+                    .content {
+                        text-align: left
+                    }
+                }
+
+                .basic-info-title {
+                    @include grid-full-width();
+                    font-size: 1.5rem;
+                    letter-spacing: 0.1rem;
+
+                    padding-bottom: 1rem;
+                    border-style: solid;
+                    border-width: 0 0 1px 0;
+                    border-image: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%) 1 1 100%;
+                    margin-bottom: 3rem;
+                }
+
+                // size introduction
+                & > div:nth-last-child(2) {
+                    @include grid-full-width();
+
+                    margin-top: 2rem;
+                    margin-bottom: 3rem;
+                }
+
+                .popup-wrapper {
+                    @include grid-full-width();
+
+                    .popup-button {
+                        max-width: 24rem;
+                        width: 100%;
+                        border: 0.5px solid white;
+                        border-radius: 4px;
+                        color: white;
+                        font-size: 0.9rem;
+                        font-weight: 300;
+                        padding: 0.6rem;
+
+                        & > div {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .description-container {
+            .header {
+                text-align: center;
+                font-size: 1.2rem;
+                margin-bottom: 4rem;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 50%;
+
+                    display: block;
+                    width: 1rem;
+                    border-bottom: 1px solid $highlight-red;
+
+                    transform: translate(-50%, 1rem);
+                }
+            }
+        }
+    }
+}
+
 /* ----------------- Popup ------------------ */
 .popup-wrapper {
     $popup-zindex: 999;
@@ -332,12 +443,21 @@
     flex-direction: column;
     gap: $roadmap-item-gap;
 
+    .roadmap-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: translateY(-15vh);
+    }
+
     .roadmap-item {
         display: flex;
         flex-direction: column;
         gap: $roadmap-item-header-content-gap;
 
         margin-left: $roadmap-item-margin-left;
+
+        z-index: 1;
 
         .header-container {
             display: flex;
@@ -387,5 +507,67 @@
                 margin-bottom: $roadmap-item-text-line-margin-bottom;
             }
         }
+    }
+}
+
+.roadmap {
+    @include desktop() {
+        & {
+            position: relative;
+            height: 40vh;
+            flex-direction: row;
+            margin-top: calc(1.2rem + 20vh);
+        }
+
+        & > div {
+            z-index: 1;
+        }
+
+        .roadmap-bg {
+            position: absolute;
+            top: calc(-1 * (1.2rem + 20vh));
+            width: auto;
+            height: calc(40vh + 1.2rem + 20vh);
+            transform: none;
+            z-index: 0;
+        }
+
+        .bar {
+            position: absolute;
+            top: calc(-1.4rem - 0.25rem);
+            left: calc(30% + 1.6rem + 0.5rem);
+            width: 0%;// 70%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
+        }
+
+        .roadmap-item {
+            margin-left: 0;
+            margin-right: 12%;
+
+            .header-container {
+                position: relative;
+                .series-num {
+                    position: absolute;
+                    top: calc(-1.2rem - 1.6rem);
+                    margin-left: 0;
+                    transform: none;
+                }
+                .header {
+                    margin-left: 0.25rem;
+                }
+            }
+
+            .content {
+                .bar {
+                    display: none;
+                }
+            }
+        }
+
+        .roadmap-item:first-child {
+            margin-left: 30%;
+        }
+
     }
 }

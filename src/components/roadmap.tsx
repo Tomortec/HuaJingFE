@@ -4,7 +4,11 @@ import React, { forwardRef, useImperativeHandle } from "react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { isDevelopmentMode } from "../hooks/useDevelopmentMode";
+import { useDesktop } from "../hooks/useDesktop";
 gsap.registerPlugin(ScrollTrigger);
+
+import roadmapBgImage from "../assets/home/image-roadmap-bg.png";
+import roadmapBgImageForDesktop from "../assets/home/desktop/image-roadmap-bg.png";
 
 export interface RoadmapItemData {
     header: string;
@@ -64,11 +68,37 @@ const createRoadmapAnimation = (tl: GSAPTimeline, data: RoadmapItemData[]) => {
     });
 };
 
+const createRoadmapAnimationForDesktop = (tl: GSAPTimeline, data: RoadmapItemData[]) => {
+    data.forEach((value, i) => {
+        const label = `LABEL-${i}`;
+        const item = `.roadmap-item:nth-of-type(${i + 1})`;
+        tl.addLabel(label);
+
+        tl.from(`${item} .header`, { delay: 0.8, autoAlpha: 0, duration: 0.8 }, label);
+        tl.from(`${item} .series-num`, { autoAlpha: 0.0, duration: 0.8 }, label);
+
+        tl.from(`${item} .text-line`, {
+            delay: () => 0.8,
+            y: "200",
+            alpha: 0,
+            duration: 2.0,
+            onStart: () => {
+                tl.to(`.roadmap .bar`, {
+                    duration: 2.0,
+                    width: `${70 / 3 * (i + 1)}%`
+                }, label);
+            }
+        }, label);
+    });
+};
+
 export const Roadmap = forwardRef((props: {
     roadmapId: string,
     scroller: string,
     data: RoadmapItemData[]
 }, ref) => {
+    const isDesktop = useDesktop();
+
     useImperativeHandle(ref, () => ({
         initializeRoadmap() {
             const trigger = $(`#${props.roadmapId}`)[0];
@@ -76,14 +106,18 @@ export const Roadmap = forwardRef((props: {
                 scrollTrigger: {
                     trigger: trigger,
                     scroller: $(props.scroller)[0],
-                    start: "top 66%",
-                    end: `+=${$(trigger).height() * 0.75}`,
+                    start: `${isDesktop ? "-50%" : "top"} 66%`,
+                    end: `+=${$(trigger).height() * (isDesktop ? 0.5 : 0.75)}`,
                     fastScrollEnd: false,
                     snap: "labels",
-                    scrub: 5
+                    scrub: 5,
+                    once: isDesktop,
+                    markers: true
                 }
             });
-            createRoadmapAnimation(tl, props.data);
+            isDesktop ? 
+                createRoadmapAnimationForDesktop(tl, props.data) : 
+                createRoadmapAnimation(tl, props.data);
             tl.addLabel("end");
         }
     }));
@@ -93,6 +127,8 @@ export const Roadmap = forwardRef((props: {
             {
                 props.data.map((v, i) => <RoadmapItem data={v} i={i} key={i} />)
             }
+            { isDesktop && <div className="bar"></div> }
+            <img className="roadmap-bg" src={isDesktop ? roadmapBgImageForDesktop : roadmapBgImage} alt="" />
         </div>
     )
 });
