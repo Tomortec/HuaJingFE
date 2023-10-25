@@ -6,6 +6,7 @@ import ScrollToPlugin from "gsap/ScrollToPlugin";
 gsap.registerPlugin(ScrollToPlugin);
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useDesktop } from "../hooks/useDesktop";
 import { DynamicImage, DynamicImageAnim } from "../components";
 
 interface PageProps {
@@ -18,6 +19,7 @@ interface PageProps {
 
 export const Page = (props: PageProps) => {
     const [scrollState, setScrollState] = useLocalStorage(`SCROLL_${props.pageName}`, 0);
+    const isDesktop = useDesktop();
 
     useLayoutEffect(() => {
         if($("#hj-navbar").length) {
@@ -35,7 +37,7 @@ export const Page = (props: PageProps) => {
         if(!props.resetScroll && (scrollState as number)) {
             gsap.to(`#${props.pageName}`, {
                 scrollTo: scrollState as number,
-                duration: 0.5
+                duration: isDesktop ? 1.0 : 0.5
             });
         }
 

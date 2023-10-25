@@ -1,6 +1,8 @@
 
 /* ----------------- UserData ------------------ */
 
+import userAvatar from "../assets/user/image-user-avatar.png"
+
 export interface UserData {
     name: string;
     level: 0|1|2|3|4|5;
@@ -8,7 +10,7 @@ export interface UserData {
     avatar?: string;
 }
 export const defaultUserData: UserData = {
-    name: "", level: 0, porcelainIds: [], avatar: "https://placehold.co/400"
+    name: "", level: 0, porcelainIds: [], avatar: userAvatar
 };
 
 /* ----------------- PorcelainData ------------------ */
