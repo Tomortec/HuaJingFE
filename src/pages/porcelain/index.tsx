@@ -3,21 +3,14 @@ import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
-import {
-    Swiper,
-    SwiperSlide
-} from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
-import "swiper/scss";
-import "swiper/scss/pagination";
-
 import { defaultPlanePorcelainData } from "../../interfaces";
 import { Page } from "../page";
-import { InfoContainer, SwiperNavigator } from "../../components";
+import { SwiperForMobile } from "./mobile/mobile";
+import { SwiperForDesktop } from "./desktop/desktop";
+import { InfoContainer, SwiperNavigator, MediaWrapper } from "../../components";
 import { getPorcelainData } from "./api";
+import { useDesktop } from "../../hooks/useDesktop";
 import "./index.scss";
-
-import modelBgImage from "../../assets/model/image-model-bg.png";
 
 export const PorcelainPage = () => {
     const { porcelainId } = useParams();
@@ -28,32 +21,24 @@ export const PorcelainPage = () => {
             .then((res) => setData(res));
     }, []);
 
+    const isDesktop = useDesktop();
+
     return (
         <Page pageName="porcelainPage" resetScroll>
             <div>
-                <Swiper
-                    modules={[Pagination, Autoplay]}
-                    loop={true} speed={600}
-                    spaceBetween={$(window).width() * 0.1}
-                    autoplay={{ delay: 5000 }}
-                    pagination={{ dynamicBullets: true, dynamicMainBullets: 3 }}
-                >
-                    {
-                        data.images.length > 0 ?
-                        data.images.map((src, i) => 
-                            <SwiperSlide key={i} style={{ backgroundImage: `url(${modelBgImage})` }}>
-                                <img src={src} alt="" />
-                            </SwiperSlide>
-                        ) :
-                        <SwiperSlide>
-                            <img src="https://placehold.co/400" alt="" />
-                        </SwiperSlide>
-                    }
-                </Swiper>
+                {
+                    !isDesktop &&
+                    <div className="swiper-container">
+                        <SwiperForMobile data={data} />
+                    </div>
+                }
 
                 <div className="content-container">
-                    <SwiperNavigator title={data.title} buttonsNeeded={false} />
-                    <InfoContainer info={data} />
+                    {!isDesktop && <SwiperNavigator title={data.title} buttonsNeeded={false} /> }
+                    <InfoContainer 
+                        pageId="porcelain-page" 
+                        info={data}
+                        itemFrame={isDesktop ? <SwiperForDesktop data={data} /> : null} />
                 </div>
             </div>
         </Page>
