@@ -83,9 +83,9 @@ module.exports = {
                             url: false
                         }
                     },
-                    {
-                        loader: "resolve-url-loader"
-                    },
+                    // {
+                    //     loader: "resolve-url-loader"
+                    // },
                     {
                         loader: "sass-loader",
                         options: {
