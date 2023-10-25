@@ -24,8 +24,10 @@ const RoadmapItem = (props: {
     return (
         <div className="roadmap-item">
             <div className="header-container">
-                <div className="series-num">{seriesNumber[props.i] ?? ""}</div>
-                <div className="header">
+                <div className="series-num" style={props.i == 0 ? { backgroundColor: "darkred" } : {}}>
+                    <span className="zh-serif-text">{seriesNumber[props.i] ?? ""}</span>
+                </div>
+                <div className="header zh-serif-text">
                     {props.data.header}
                 </div>
             </div>
@@ -112,7 +114,6 @@ export const Roadmap = forwardRef((props: {
                     snap: "labels",
                     scrub: 5,
                     once: isDesktop,
-                    markers: true
                 }
             });
             isDesktop ? 

@@ -18,7 +18,7 @@ const ModelLinkCard = (props: { info: ModelInfo }) => {
             onClick={() => navigate(props.info.link)}>
             <img src={props.info.image} alt="" />
             <div className="text-container">
-                <span className="header">{props.info.title}</span>
+                <span className="header zh-serif-text">{props.info.title}</span>
                 <span className="content">
                     <span>年代</span>
                     <span>{props.info.age}</span>

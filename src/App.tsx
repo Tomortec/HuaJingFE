@@ -66,18 +66,49 @@ const fecthWXConfig = async (): Promise<{
 
 import ButlerWoff2 from "./assets/fonts/font-en-Butler-light.woff2";
 import ButlerWoff from "./assets/fonts/font-en-Butler-light.woff";
-import ButlerTrueType from "./assets/fonts/font-en-Butler-light.ttf";
+import ButlerTTF from "./assets/fonts/font-en-Butler-light.ttf";
+import SourceHanWoff2 from "./assets/fonts/font-zh-SourceHan-semibold.woff2";
+import SourceHanWoff from "./assets/fonts/font-zh-SourceHan-semibold.woff";
+import SourceHanTTF from "./assets/fonts/font-zh-SourceHan-semibold.ttf";
+import HiraginoWoff2 from "./assets/fonts/font-zh-Hiragino-w3.woff2";
+import HiraginoWoff from "./assets/fonts/font-zh-Hiragino-w3.woff";
+import HiraginoTTF from "./assets/fonts/font-zh-Hiragino-w3.ttf";
  
 const GlobalStyle = createGlobalStyle`
     @font-face {
         font-family: "Butler-Light";
-        src: url(${ButlerWoff2}) format('woff2'),
+        src: local('Butler-Light'), local('Butler'),
+            url(${ButlerWoff2}) format('woff2'),
             url(${ButlerWoff}) format('woff'),
-            url(${ButlerTrueType}) format('truetype');
+            url(${ButlerTTF}) format('truetype');
     }
 
     .en-light-text {
         font-family: "Butler-Light";
+    }
+
+    @font-face {
+        font-family: "SourceHan";
+        src: local('SourceHanSerifCN-SemiBold'), local('思源宋体 CN Semibold'),
+            url(${SourceHanWoff2}) format('woff2'),
+            url(${SourceHanWoff}) format('woff'),
+            url(${SourceHanTTF}) format('truetype');
+    }
+
+    .zh-serif-text {
+        font-family: "SourceHan";
+    }
+
+    @font-face {
+        font-family: "Hiragino";
+        src: local('HiraginoSansGB-W3'), local('Hiragino Sans GB W3'),
+            url(${HiraginoWoff2}) format('woff2'),
+            url(${HiraginoWoff}) format('woff'),
+            url(${HiraginoTTF}) format('truetype');
+    }
+
+    *, pre {
+        font-family: "Hiragino";
     }
 `;
 

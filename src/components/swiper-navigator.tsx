@@ -10,7 +10,7 @@ export const SwiperNavigator = (props: {
     return (
         <div className="swiper-navigator">
             { props.buttonsNeeded && <div className="prev-btn" onClick={props.onSlideToPrev}></div> }
-            <span>{props.title}</span>
+            <span className="zh-serif-text">{props.title}</span>
             { props.buttonsNeeded && <div className="next-btn" onClick={props.onSlideToNext}></div> }
         </div>
     )

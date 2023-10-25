@@ -63,7 +63,7 @@ export const InfoContainer = (props: {
             <div className="top-frame-container">
                 { isDesktop && <div className="frame-container">{ props.itemFrame }</div> }
                 <div className="basic-info-container">
-                    { isDesktop && <span className="basic-info-title">{data.title}</span> }
+                    { isDesktop && <span className="basic-info-title zh-serif-text">{data.title}</span> }
                     <BasicInfoTextComponent icon={ageIcon} title="年代" text={data.age} />
                     <BasicInfoTextComponent icon={classIcon} title="品类" text={data.classification} />
                     <BasicInfoTextComponent icon={bottomStampIcon} title="底款" text={data.bottomStamp} />

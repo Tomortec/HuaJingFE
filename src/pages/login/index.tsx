@@ -14,6 +14,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useDesktop } from "../../hooks/useDesktop";
 
 import logoImage from "../../assets/image-logo.png";
+import logoTitleImage from "../../assets/image-logo-title-large.png";
 import posterBgImage from "../../assets/login/image-login-bg.png";
 import desktopBgImage from "../../assets/login/desktop/image-login-bg.png";
 import { DynamicImage, DynamicImageAnim } from "../../components";
@@ -40,7 +41,7 @@ export const LoginPage = () => {
                     { !isDesktop && <DynamicImage src={posterBgImage} classNames="poster-image" anim={DynamicImageAnim.FadeIn} /> }
                     <div className="logo-container" onClick={navigateToMainPage}>
                         <DynamicImage src={logoImage} anim={DynamicImageAnim.ScaleUpFromCenter} />
-                        <span>华境｜HUAJING</span>
+                        <DynamicImage classNames="logo-title" src={logoTitleImage} anim={DynamicImageAnim.FadeIn} />
                     </div>
                 </div>
 

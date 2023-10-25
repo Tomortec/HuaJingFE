@@ -27,12 +27,16 @@
         font-weight: $navbar-font-weight;
         letter-spacing: $navbar-letter-spacing;
 
-        img {
+        img:first-child {
             width: $navbar-logo-size;
             aspect-ratio: 1;
             object-fit: cover;
 
             margin-right: $navbar-text-image-gap;
+        }
+
+        img:last-child {
+            height: calc($navbar-logo-size / 2);
         }
     }
 
@@ -429,9 +433,9 @@
     $roadmap-item-header-font-weight: 400;
     $roadmap-item-header-content-gap: 1.2rem;
     $roadmap-item-header-number-padding: 0.25rem;
-    $roadmap-item-header-number-bg-color: $page-body-font-color;
-    $roadmap-item-header-number-font-color: $page-body-bg-color;
-    $roadmap-item-header-number-font-size: $roadmap-item-header-font-size;
+    $roadmap-item-header-number-bg-color: $page-body-bg-color;
+    $roadmap-item-header-number-font-color: $page-body-font-color;
+    $roadmap-item-header-number-font-size: 1.1rem;
     $roadmap-item-header-number-font-weight: 300;
     $roadmap-item-content-font-size: 0.9rem;
     $roadmap-item-content-font-weight: 300;
@@ -464,6 +468,12 @@
             align-items: center;
 
             .series-num {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 2rem;
+                height: 2rem;
                 margin-left: $roadmap-item-bar-left;
 
                 color: $roadmap-item-header-number-font-color;
@@ -472,7 +482,6 @@
                 font-size: $roadmap-item-header-number-font-size;
                 font-weight: $roadmap-item-header-number-font-weight;
                 text-align: center;
-                line-height: $roadmap-item-header-font-size;
                 padding: $roadmap-item-header-number-padding;
                 border-radius: 50%;
 
@@ -504,7 +513,20 @@
             }
 
             .text-line {
+                margin-left: 1rem;
                 margin-bottom: $roadmap-item-text-line-margin-bottom;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0.35rem;
+                    left: -1rem;
+                    display: block;
+                    width: 0.6rem;
+                    height: 0.6rem;
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-image: url('data:image/svg+xml,<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="200" height="200"><path d="M828.509091 679.563636c0-95.418182-44.218182-186.181818-118.690909-246.690909l-2.327273-2.327272s-95.418182-72.145455-95.418182-155.927273c0-114.036364 34.909091-176.872727 107.054546-190.836364h2.327272s2.327273 0 2.327273-2.327273l2.327273-2.327272 2.327273-2.327273 2.327272-2.327273s0-2.327273 2.327273-2.327272v-4.654546V46.545455c0-9.309091-9.309091-18.618182-18.618182-18.618182H307.2c-9.309091 0-18.618182 9.309091-18.618182 18.618182v25.6s0 2.327273 2.327273 2.327272l2.327273 2.327273 2.327272 2.327273 2.327273 2.327272s2.327273 0 2.327273 2.327273h2.327273c72.145455 13.963636 107.054545 76.8 107.054545 190.836364 0 81.454545-93.090909 155.927273-95.418182 155.927273l-2.327273 2.327272c-74.472727 60.509091-118.690909 151.272727-118.690909 246.690909 0 114.036364 60.509091 216.436364 158.254546 274.618182l-6.981818 16.290909c-2.327273 4.654545-2.327273 11.636364 0 18.618182 2.327273 4.654545 9.309091 9.309091 16.290909 9.309091h297.890909c6.981818 0 11.636364-2.327273 16.290909-9.309091 2.327273-4.654545 4.654545-11.636364 0-18.618182l-4.654546-16.290909c97.745455-58.181818 158.254545-162.909091 158.254546-274.618182z" p-id="5026" fill="white"></path></svg>');                }
             }
         }
     }
@@ -519,8 +541,8 @@
             margin-top: calc(1.2rem + 20vh);
         }
 
-        & > div {
-            z-index: 1;
+        & > div:not(.bar) {
+            z-index: 9 !important;
         }
 
         .roadmap-bg {
@@ -534,16 +556,17 @@
 
         .bar {
             position: absolute;
-            top: calc(-1.4rem - 0.25rem);
-            left: calc(30% + 1.6rem + 0.5rem);
+            top: calc(-1.5rem - 0.25rem);
+            left: calc(30% + 1.1rem + 0.5rem);
             width: 0%;// 70%;
             height: 1px;
             background: linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
+            z-index: 1;
         }
 
         .roadmap-item {
             margin-left: 0;
-            margin-right: 12%;
+            margin-right: 10%;
 
             .header-container {
                 position: relative;

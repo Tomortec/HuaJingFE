@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import logoImage from "../assets/image-logo.png";
+import logoTitleImage from "../assets/image-logo-title.png";
 import userIcon from "../assets/icon-user.svg";
 
 export enum NavbarState {
@@ -27,7 +28,7 @@ export const Navbar = (props: { state: NavbarState }) => {
                 <div className='container-fluid'>
                     <div className='navbar-brand mb-0 d-flex align-items-center' onClick={() => navigate("/")}>
                         <img src={logoImage} alt="" />
-                        <span>华境｜HJ</span>
+                        <img src={logoTitleImage} alt="" />
                     </div>
                     {
                         props.state != NavbarState.UserDisabled &&

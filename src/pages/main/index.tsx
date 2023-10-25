@@ -101,7 +101,7 @@ const SectionHeader = (props: { text: string, enText: string }) => {
     return (
         <div className="section-header">
             <span className="en-text en-light-text">{props.enText}</span>
-            <span className="text">{props.text}</span>
+            <span className="text zh-serif-text">{props.text}</span>
             <div className="divider"></div>
         </div>
     )
@@ -116,7 +116,7 @@ const IntroductionLinkCard = (props: { info: IntroductionInfo }) => {
             onClick={() => navigate(props.info.link)} >
             <div className="text-container">
                 <span className="header">华境</span>
-                <span className="content">
+                <span className="content zh-serif-text">
                     {props.info.name}
                 </span>
             </div>
@@ -184,7 +184,7 @@ export const MainPage = () => {
                     <DynamicImage src={isDesktop ? instructionsBgImageForDesktop : instructionsBgImage} classNames="instructions-bg" anim={DynamicImageAnim.FadeIn} />
                     <div className="welcome-title">
                         <div className="title-bg-image scale-up-anim" style={{ backgroundImage: `url(${logoImage})` }}></div>
-                        { "WELCOME".split("").map((l, i) => (<span key={i}>{l}</span>)) }
+                        { "WELCOME".split("").map((l, i) => (<span className="en-light-text" key={i}>{l}</span>)) }
                     </div>
                     <div className="instructions-content"><pre>{instructionsContent}</pre></div>
                     <div className="learn-more-btn scale-up-x-anim" 
