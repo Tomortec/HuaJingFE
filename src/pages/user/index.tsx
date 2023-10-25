@@ -16,12 +16,14 @@ import {
 } from "./api";
 
 import { Page } from "../page";
+import { DynamicImage, DynamicImageAnim } from "../../components";
+import { useDesktop } from "../../hooks/useDesktop";
 import "./index.scss";
 
 import userBgImage from "../../assets/user/image-user-bg.png";
+import userBgImageForDesktop from "../../assets/user/desktop/image-user-bg.png";
 import collectionBgImage from "../../assets/user/image-user-collection-bg.png";
 import collectionEmptyImage from "../../assets/user/image-user-empty.png"
-import { DynamicImage, DynamicImageAnim } from "../../components";
 
 const UserInfoComponent = (props: { info: UserData }) => {
     return (
@@ -63,6 +65,9 @@ const EmptyCollectionPrompt = () => {
 
 export const UserPage = () => {
     const { user, logout } = useAuth();
+
+    const isDesktop = useDesktop();
+
     const { data: userInfo, status: userInfoStatus } = useQuery({
         queryKey: [getUserDataApiKey],
         queryFn: () => getUserData(user),
@@ -77,34 +82,37 @@ export const UserPage = () => {
     });
 
     return (
-        <Page pageName="userPage" bgImage={userBgImage}>
-            <div>
-                <div id="hj-user-info">
-                    <UserInfoComponent info={userInfo} />
-                </div>
-                <div id="hj-user-collections">
-                    <span className="collection-header">我的臻品</span>
-                    {
-                        collections.length > 0 ?
-                        <div className="collections-container">
+        <Page pageName="userPage">
+            <>
+                <img className="bg-image" src={isDesktop ? userBgImageForDesktop : userBgImage} alt="" />
+                <div>
+                    <div id="hj-user-info">
+                        <UserInfoComponent info={userInfo} />
+                    </div>
+                    <div id="hj-user-collections">
+                        <span className="collection-header">我的臻品</span>
                         {
-                            collections.map((info, i) => 
-                                <CollectionComponent info={info} key={i}></CollectionComponent>
-                            )
+                            collections.length > 0 ?
+                            <div className="collections-container">
+                            {
+                                collections.map((info, i) => 
+                                    <CollectionComponent info={info} key={i}></CollectionComponent>
+                                )
+                            }
+                            </div> :
+                            <EmptyCollectionPrompt />
                         }
-                        </div> :
-                        <EmptyCollectionPrompt />
+                    </div>
+                    {
+                        isDevelopmentMode().isDevelopment &&
+                        <div>
+                            <button type="button" onClick={logout} className="btn btn-primary">
+                                注销
+                            </button>
+                        </div>
                     }
                 </div>
-                {
-                    isDevelopmentMode().isDevelopment &&
-                    <div>
-                        <button type="button" onClick={logout} className="btn btn-primary">
-                            注销
-                        </button>
-                    </div>
-                }
-            </div>
+            </>
         </Page>
     )
 };
