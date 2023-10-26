@@ -2,6 +2,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const { ProvidePlugin } = require("webpack");
 
 module.exports = {
@@ -27,6 +28,10 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
         }),
+        new FaviconsWebpackPlugin({
+            logo: "./src/assets/image-logo-with-bg.png",
+            prefix: "favicons/"
+        })
     ],
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -102,15 +107,17 @@ module.exports = {
                         maxSize: 4 * 1024, // 4kb
                     },
                 },
+                generator: {
+                    filename: "images/[hash][ext][query]"
+                }
             },
             {
                 test: /\.(otf|ttf|woff|woff2)$/i,
                 // use: "url-loader"
-                type: "asset/resource"
-            },
-            {
-                test: /\.(glb|gltf)$/i,
                 type: "asset/resource",
+                generator: {
+                    filename: "fonts/[hash][ext][query]"
+                }
             }
         ]
     },

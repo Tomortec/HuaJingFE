@@ -16,6 +16,7 @@ import {
 
 import { useDesktop } from "./hooks/useDesktop";
 import { isDevelopmentMode } from "./hooks/useDevelopmentMode";
+import logoImage from "./assets/image-logo-with-bg.png";
 import axios from "axios";
 
 const mobileSpecialPathNavbarState: {
@@ -40,15 +41,15 @@ const checkNavbarState = (): NavbarState => {
     return mobileSpecialPathNavbarState[path] || NavbarState.Normal;
 };
 
-const fecthWXConfig = async (): Promise<{
+const fecthWXConfig = async (url: string): Promise<{
     appId: string,
     timestamp: number,
     nonceStr: string,
-    signature: string
+    signature: string,
 }> => {
     try {
         const result = await axios.post("https://test.atmhn.cn/api/wechat/gen_sign", {
-            "url": "https://test.atmhn.cn"
+            "url": url
         });
         const resultData = result.data;
         const rawConfigData = resultData["data"];
@@ -56,7 +57,7 @@ const fecthWXConfig = async (): Promise<{
             appId: rawConfigData["app_id"],
             nonceStr: rawConfigData["noncestr"],
             timestamp: rawConfigData["timestamp"],
-            signature: rawConfigData["sign"]
+            signature: rawConfigData["sign"],
         } : null;
     } catch(error) {
         console.error(error);
@@ -126,32 +127,50 @@ export const App = () => {
     }, []);
 
     useEffect(() => {
-        fecthWXConfig()
+        const url = window.location.href.split("#")[0];
+        fecthWXConfig(url)
             .then((config) => {
-                console.log(config);
-
                 if(!config) return;
+
+                const apiList: wx.jsApiList = ["updateAppMessageShareData", "onMenuShareAppMessage"];
                 wx.config({
-                    debug: true,
+                    debug: isDevelopmentMode().isDevelopment,
                     appId: config.appId,
                     timestamp: config.timestamp,
                     nonceStr: config.nonceStr,
                     signature: config.signature,
-                    jsApiList: ["updateAppMessageShareData"]
+                    jsApiList: apiList
                 });
 
                 wx.ready(() => {
-                    wx.updateAppMessageShareData({
-                        title: "华境-共享共建的艺术品数字化交流平台",
-                        desc: "欢迎您加入华镜艺术品数字化交流平台！",
-                        link: "https://test.atmhn.cn",
-                        imgUrl: "",
-                        success: () => { alert("Update WX message successfully!"); }
-                    })
+                    console.log("WX Config Ready");
+                    wx.checkJsApi({
+                        jsApiList: apiList,
+                        success: (res) => {
+                            if(res.checkResult["updateAppMessageShareData"]) {
+                                wx.updateAppMessageShareData({
+                                    title: "华境-共享共建的艺术品数字化交流平台",
+                                    desc: "欢迎您加入华镜艺术品数字化交流平台！",
+                                    link: url,
+                                    imgUrl: logoImage,
+                                    success: () => { console.log("Update WX message successfully!"); }
+                                });
+                            } else if(res.checkResult["onMenuShareAppMessage"]) {
+                                wx.onMenuShareAppMessage({
+                                    title: "华境-共享共建的艺术品数字化交流平台",
+                                    desc: "欢迎您加入华镜艺术品数字化交流平台！",
+                                    link: url,
+                                    imgUrl: logoImage,
+                                    success: () => { console.log("Update WX message successfully!"); },
+                                    cancel: () => { console.log("WX Share Cancelled") }
+                                });
+                            }
+                        }
+                    });
                 }); 
 
                 wx.error((error) => {
-                    alert(error);
+                    // alert(error);
                     console.error(error);
                 });
             });
