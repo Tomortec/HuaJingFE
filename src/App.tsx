@@ -126,7 +126,7 @@ export const App = () => {
     }, []);
 
     useEffect(() => {
-        !isDevelopmentMode().isDevelopment && fecthWXConfig()
+        fecthWXConfig()
             .then((config) => {
                 console.log(config);
 

@@ -82,9 +82,9 @@ export const UserPage = () => {
     });
 
     return (
-        <Page pageName="userPage">
+        <Page pageName="userPage" bgImage={ isDesktop ? "" : userBgImage }>
             <>
-                <img className="bg-image" src={isDesktop ? userBgImageForDesktop : userBgImage} alt="" />
+                { isDesktop && <img className="bg-image" src={userBgImageForDesktop} alt="" /> }
                 <div>
                     <div id="hj-user-info">
                         <UserInfoComponent info={userInfo} />

@@ -116,7 +116,7 @@
     $info-container-gap-inside: 3vh;
     $info-container-margin: 3vh 0 5vh 0;
 
-    $container-bg-color: $highlight-bg-color;
+    $container-bg-color: #121112;
     $container-padding: 1.25rem;
     $container-border-radius: 12px;
 
@@ -419,7 +419,7 @@
         height: 100vh;
     
         background-color: black;
-        opacity: 0.3;
+        opacity: 0.8;
     
         z-index: $popup-zindex;
     }

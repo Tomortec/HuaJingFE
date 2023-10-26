@@ -25,7 +25,7 @@
 
     $popup-size: 85vw;
     $popup-border-radius: 12px;
-    $popup-bg-color: $highlight-bg-color;
+    $popup-bg-color: $popup-bg-color;
     $popup-font-color: $highlight-font-color;
     $popup-mask-opacity: 0.8;
     $popup-title-font-size: 1.4rem;
@@ -226,6 +226,21 @@
                 background-size: 100%;
             }
         }
+
+        // BUG: here are two Popups in ModelPage
+        // BUGFIXING
+        .popup-container {
+            height: 0;
+            margin: 0;
+            & .popup-button {
+                display: none;
+            }
+        }
+
+        .popup-mask {
+            opacity: 0.4 !important;
+        }
+        // BUGFIXING
 
         .popup {
             width: 30vw;
