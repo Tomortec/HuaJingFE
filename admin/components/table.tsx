@@ -13,6 +13,7 @@ declare global {
 }
 
 interface TableProps {
+    dataLoader: () => Promise<any[]>,
     id: string,
     newButtonCaption: string,
     newButtonHandler: Function,
@@ -25,35 +26,38 @@ export class Table extends Component<TableProps> {
     shouldComponentUpdate = () => false
 
     componentDidMount() {
-        const dataTable =  $(`#${this.props.id}`).DataTable(Object.assign({
-            language,
-            ordering: true
-        }, this.props.dataTableOptions));
-        
-        dataTable.on("draw", () => {
-            const body = $(dataTable.table(`#${this.props.id}`).body());
-
-            body.unhighlight();
-            if(dataTable.rows({ filter: "applied" }).data().length) {
-                body.highlight(dataTable.search());
-            }
+        this.props.dataLoader().then((data) => {
+            const dataTable =  $(`#${this.props.id}`).DataTable(Object.assign({
+                data: data,
+                language,
+                ordering: true
+            }, this.props.dataTableOptions));
+            
+            dataTable.on("draw", () => {
+                const body = $(dataTable.table(`#${this.props.id}`).body());
+    
+                body.unhighlight();
+                if(dataTable.rows({ filter: "applied" }).data().length) {
+                    body.highlight(dataTable.search());
+                }
+            });
+    
+            $(`#${this.props.id}_wrapper label`)
+                .addClass("input-group mb-3 align-items-center")
+                .last().css({ justifyContent: "flex-end" });
+    
+            $(
+                `<div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary mb-3">
+                        ${this.props.newButtonCaption}
+                    </button>
+                </div>`
+            )
+                .on("click", "button", () => { this.props.newButtonHandler(); })
+                .insertBefore(".dt-row");
+    
+            this.props.afterRender && this.props.afterRender();    
         });
-
-        $(`#${this.props.id}_wrapper label`)
-            .addClass("input-group mb-3 align-items-center")
-            .last().css({ justifyContent: "flex-end" });
-
-        $(
-            `<div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-primary mb-3">
-                    ${this.props.newButtonCaption}
-                </button>
-            </div>`
-        )
-            .on("click", "button", () => { this.props.newButtonHandler(); })
-            .insertBefore(".dt-row");
-
-        this.props.afterRender && this.props.afterRender();
     }
 
     render() {

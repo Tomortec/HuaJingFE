@@ -2,19 +2,24 @@
 export interface AuthData {
     id: string;
     phoneNumber: string;
+    token: string;
 }
 
 export interface UserData {
-    id: string;
+    readonly id: string;
     name: string;
     phoneNumber: string;
-    level: 0|1|2|3|4|5;
+    level: number;
     porcelainIds?: string[];
     lastLoginTime?: Date;
 }
+export const defaultUserData: UserData = {
+    id: "", name: "", phoneNumber: "",
+    level: 0, porcelainIds: [], lastLoginTime: null
+};
 
 export interface PorcelainData {
-    id: string;
+    readonly id: string;
     name: string;
     age: string;
 
@@ -23,5 +28,24 @@ export interface PorcelainData {
     sizeIntroduction?: string;
     description?: string;
 
-    images: string[];    
+    images: string[];   
+    
+    model?: string;
+    exposure?: number;
 }
+export const defaultPorcelainData: PorcelainData = {
+    id: "", name: "", age: "",
+    classification: "", bottomStamp: "",
+    sizeIntroduction: "", description: "",
+    images: [], model: "", exposure: 1
+};
+
+export const PorcelainCategoryMapper = (data: PorcelainData): number => {
+    return {
+        "": 0
+    }[data.classification] || 0;
+};
+
+export const PorcelainCategoryDescMapper = (num: number): string => {
+    return [""][num] || "";
+};

@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useContext } from "react";
 
 import { Tooltip } from "bootstrap";
 
@@ -9,20 +9,23 @@ import "datatables.net-plugins/sorting/chinese-string";
 import { Table } from "./table";
 import { UserData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
-import { getPorcelainById } from "../api";
+import { AuthContext } from "../hooks/authContext";
+// import { getPorcelainById } from "../api";
+import { deleteUser, getAllUserData } from "../api";
 import { UserModalId } from "./user-modal";
 
 export const UserTable = () => {
     const tableId = "hj-user-table";
 
+    const { auth } = useContext(AuthContext);
     const { showModal } = useModal();
 
     const showDialog = (info?: UserData) => {
         showModal(`#${UserModalId}`, info);
     };
 
-    const showDeletionConfirm = (info?: UserData) => {
-        window.confirm(`
+    const showDeletionConfirm = (info?: UserData): boolean => {
+        return window.confirm(`
             ${"!".repeat(40)}
             请注意：删除后不可恢复！\n
             确认删除该用户记录？\n
@@ -38,7 +41,7 @@ export const UserTable = () => {
     const bindButtonsEvents = () => {
         const getRowData = (
             event: JQuery.ClickEvent | JQuery.MouseOverEvent
-        ) => {
+        ): UserData => {
             try {
                 return JSON.parse(
                     $(event.target).closest("td[data-row-object]")
@@ -70,21 +73,30 @@ export const UserTable = () => {
             Tooltip.getInstance($(event.target)[0]).hide();
         });
 
-        $(document).on("click", `#${tableId} .delete-btn`, (event) => {
-            showDeletionConfirm(getRowData(event));
+        $(document).on("click", `#${tableId} .delete-btn`, async (event) => {
+            if(!auth || !auth.token) {
+                alert("未登录！\n请刷新页面");
+            } else {
+                const rawData = getRowData(event);
+                if(rawData && showDeletionConfirm(rawData)) {
+                    const res = await deleteUser(auth.token, rawData);
+                    alert(res ? "删除用户成功！" : "发生错误");
+                }    
+            }
         });
 
-        $(document).on("click", "a.porcelain-link", (event) => {
-            const porcelainId = $(event.target).attr("data-porcelain-id");
-            getPorcelainById(porcelainId)
-                .then((data) => alert(`
-                    藏品 ID：${data.id}
-                    藏品名称：${data.name}
-                    年代：${data.age}
-                    品类：${data.classification}
-                    图片个数：${data.images.length}
-                `));
-        });
+        // TODO: get porcelain details when clicking link
+        // $(document).on("click", "a.porcelain-link", (event) => {
+        //     const porcelainId = $(event.target).attr("data-porcelain-id");
+        //     getPorcelainById(porcelainId)
+        //         .then((data) => alert(`
+        //             藏品 ID：${data.id}
+        //             藏品名称：${data.name}
+        //             年代：${data.age}
+        //             品类：${data.classification}
+        //             图片个数：${data.images.length}
+        //         `));
+        // });
     };
 
     const porcelainIdsRenderer = (data: string[]) => {
@@ -107,10 +119,10 @@ export const UserTable = () => {
     };
 
     const dataTableOptions: DataTables.Settings = {
-        ajax: {
-            url: "/adminApi/userData",
-            dataSrc: "data"
-        },
+        // ajax: {
+        //     url: "/adminApi/userData",
+        //     dataSrc: "data"
+        // },
         responsive: true,
         columns: [
             { data: "id", title: "用户 ID" },
@@ -155,7 +167,7 @@ export const UserTable = () => {
 
     return (
         <>
-            <Table id={tableId} 
+            <Table dataLoader={() => getAllUserData(auth.token)} id={tableId} 
                 newButtonCaption="新增用户" 
                 newButtonHandler={showDialog}
                 dataTableOptions={dataTableOptions}

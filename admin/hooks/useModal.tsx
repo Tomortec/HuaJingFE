@@ -28,6 +28,7 @@ export const ModalProvider = (props: {
     };
 
     const hideModal = (id: string) => {
+        setPayload(null);
         $(id)
             .removeClass("show")
             .css("display", "none");

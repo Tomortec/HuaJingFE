@@ -1,17 +1,14 @@
 
-import React, { useLayoutEffect, useState, useCallback } from "react";
+import React, { useLayoutEffect, useState, useContext } from "react";
 import { clamp } from "lodash";
 
-import { useDropzone } from "react-dropzone";
-
+import { ImageUploader } from "./image-uploader";
 import { useModal } from "../hooks/useModal";
+import { AuthContext } from "../hooks/authContext";
+import { updatePorcelain, updatePorcelainImage, uploadPorcelainImage, uploadPorcelainModel } from "../api";
+import { PorcelainData } from "../interfaces";
 
 export const ImageSelectionModalId = "image-selection-modal";
-
-export interface ImageSelectionModalPayload { 
-    porcelainId: string;
-    images: string[];
-}
 
 const ImageSelector = (props: {
     src: string,
@@ -40,54 +37,32 @@ const ImageSelector = (props: {
     )
 };
 
-const ImageUploader = (props: {
-    filesDroppedHandler: (fileURLs: string[]) => void
-}) => {
-    const onDrop = useCallback((files: File[]) => {
-        console.log(files);
-        props.filesDroppedHandler(files.map((file) => URL.createObjectURL(file)));
-    }, []);
-
-    const { getRootProps, getInputProps, open } = useDropzone({
-        accept: {
-            "image/jpeg": [],
-            "image/png": []
-        },
-        maxFiles: 20,
-        noClick: true,
-        noKeyboard: true,
-        noDrag: true,
-        onDrop
-    });
-
-    return (
-        <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            <div className="new-image-btn btn btn-primary" onClick={open}>
-                <i className="bi-plus"></i>
-            </div>
-        </div>
-    )
-};
-
 export const ImageSelectionModal = () => {
     const modalId = ImageSelectionModalId;
+    const { auth } = useContext(AuthContext);
 
     const { payload, hideModal }: {
-        payload: ImageSelectionModalPayload,
+        payload: PorcelainData,
         hideModal: (id: string) => void
     } = useModal();
+    const hideDialog = () => hideModal(`#${modalId}`);
 
-    const [images, setImages] = useState(null);
+    const [images, setImages] = useState<string[]>(null);
+    const [newImages, setNewImages] = useState<File[]>(null);
     const [coverIndex, setCoverIndex] = useState(0);
+    const [model, setModel] = useState<string>(null);
+    const [modelFile, setModelFile] = useState<File>(null);
+    const [exposure, setExposure] = useState(1);
     useLayoutEffect(() => {
         if(payload) {
+            setCoverIndex(0);
             setImages(payload.images);
+            setNewImages(null);
+            setModel(payload.model);
+            setModelFile(null);
+            setExposure(payload.exposure ?? 1.0);
         }
     }, [payload]);
-
-
-    const hideDialog = () => hideModal(`#${modalId}`);
 
     const removeImage = (i: number) => {
         setCoverIndex(clamp(coverIndex, 0, images.length - 2));
@@ -97,9 +72,34 @@ export const ImageSelectionModal = () => {
     };
 
     const onImageSelected = (i: number) => { setCoverIndex(i); };
-    const onImagesDropped = (urls: string[]) => { setImages(images.concat(urls)); };
-    const onConfirm = () => {
-        console.log(coverIndex);
+    const onImagesDropped = (urls: string[], files: File[]) => { setImages(images.concat(urls)); setNewImages(files); };
+    const onConfirm = async () => {
+        if(!auth || !auth.token) {
+            alert("未登录！\n请刷新页面");
+        } else {
+            let newPorcelain = payload;
+            // delete image
+            newPorcelain.images = images;
+            // add or replace model
+            if(model && model != payload.model && modelFile) {
+                newPorcelain = await uploadPorcelainModel(auth.token, newPorcelain, modelFile);
+            }
+            // add images
+            if((newImages && newImages.length > 0)) {
+                newPorcelain = await uploadPorcelainImage(auth.token, newPorcelain, newImages, false);
+            }
+            // change cover image
+            if(coverIndex != 0) {
+                newPorcelain.images.unshift(newPorcelain.images.splice(coverIndex, 1)[0]);
+                await updatePorcelainImage(auth.token, newPorcelain);
+            }
+            // change exposure
+            if(exposure && exposure != 1) {
+                newPorcelain.exposure = exposure;
+                await updatePorcelain(auth.token, newPorcelain);
+            }
+            console.log(newPorcelain);
+        }
         hideDialog();
     };
 
@@ -113,7 +113,7 @@ export const ImageSelectionModal = () => {
                     </div>
                     <div className="modal-body">
                         <div className="mb-3">
-                            <span>{`藏品 ID：${payload && payload.porcelainId}`}</span>
+                            <span>{`藏品 ID：${payload && payload.id}`}</span>
                         </div>
                         <div className="mb-3">
                             <div className="grid-container">
@@ -126,10 +126,35 @@ export const ImageSelectionModal = () => {
                                     ))
                                 }
                                 {
-                                    images && <ImageUploader filesDroppedHandler={onImagesDropped} />
+                                    images && <ImageUploader maxFiles={20} filesDroppedHandler={onImagesDropped} />
                                 }
                             </div>
                         </div>
+                        <div className="mb-3">
+                            <label>藏品模型</label><br />
+                            { 
+                                model && (
+                                    model.startsWith("blob:") ? 
+                                        <h5>来自本地文件：{modelFile.name}</h5> :
+                                        <a href={`https://tomortec.github.io/SimpleOnlineModelRenderer/?src=${encodeURIComponent(model)}&exposure=${exposure}`} target="_blank">当前模型：{model}</a>
+                                )
+                            }
+                            <ImageUploader maxFiles={1} acceptType={{ "model/gltf-binary": [".glb", ".gltf"] }}
+                                filesDroppedHandler={(url, file) => { 
+                                    setModel(url[0]);
+                                    setModelFile(file[0]);
+                                }} />
+                            { model && <i>上传新模型后将会覆盖原有模型</i> }
+                        </div>
+                        {
+                            model &&
+                            <div className="mb-3">
+                                <label htmlFor="exposureInput" className="form-label">曝光度</label>
+                                <input type="number" step={0.01}
+                                    id="exposureInput" className="form-control"
+                                    value={exposure} onChange={(e) => setExposure(Number(e.currentTarget.value))} />
+                            </div>
+                        }
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary" onClick={onConfirm}>保存</button>

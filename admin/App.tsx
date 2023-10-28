@@ -16,6 +16,7 @@ import { useDevelopmentMode } from "./hooks/useDevelopmentMode";
 import "./App.scss";
 import { LoginModule } from "./components/login-module";
 import { ImageSelectionModal } from "./components/image-selection-modal";
+import axios from "axios";
 
 enum Tabs {
     UserData, PorcelainData
@@ -57,6 +58,12 @@ export const App = () => {
         }
     });
 
+    useEffect(() => {
+        if(useDevelopmentMode().isDevelopment) {
+            axios.defaults.baseURL = "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io";
+        }
+    }, []);
+
     const tabConfig: TabConfig[] = [
         {
             text: "管理用户",
@@ -77,7 +84,7 @@ export const App = () => {
     return (
         <AuthContext.Provider value={authValue}>
             {
-                auth || useDevelopmentMode().isDevelopment ?
+                auth ?
                 <>
                     <Navbar />
                     <div className="page-container">

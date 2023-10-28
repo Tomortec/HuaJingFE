@@ -11,12 +11,14 @@
             "classification": "@cword(4)",
             "bottomStamp": "@cword(4, 8)",
             "sizeIntroduction": "@csentence()",
-            "description": "@cparagraph()",
+            "description": "https://placehold.co/600x400",
             "images|1-6": [
                 "https://placehold.co/600x400",
                 "https://placehold.co/400",
                 "https://placehold.co/600"
-            ]
+            ],
+            "model": "https://placehold.co/600x400",
+            "exposure": "@float()"
         }
     ]
 }
