@@ -29,7 +29,7 @@ module.exports = {
             jQuery: "jquery",
         }),
         new FaviconsWebpackPlugin({
-            logo: "./src/assets/image-logo-with-bg.png",
+            logo: "./src/assets/image-logo.png",
             prefix: "favicons/"
         })
     ],

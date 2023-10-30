@@ -223,7 +223,7 @@ export const MainPage = () => {
                     <img className="logo-wall" src={isDesktop ? logoWallImageForDesktop : logoWallImage} />
                     <div className="qrcode-container">
                         <span>扫码添加公众号</span>
-                        <img src={qrcodeImage} loading="lazy" />
+                        <DynamicImage src={qrcodeImage} anim={DynamicImageAnim.ScaleUpFromCenter} />
                     </div>
                     <div className="footer-info-container">
                         <span>阿特姆科技（海南）有限公司 版权所有</span>

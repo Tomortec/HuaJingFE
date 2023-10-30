@@ -2,18 +2,16 @@
 import axios from "axios";
 import { isDevelopmentMode } from "../../hooks/useDevelopmentMode";
 
-const baseURL = isDevelopmentMode().isDevelopment ? "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io" : "";
-
 export const requestVerificationCode = async (phoneNumber: string): Promise<boolean> => {
     if(!phoneNumber) return false;
     
     try {
-        const result = await axios.post(baseURL + "/api/user/verification_code", {
+        const result = await axios.post("/api/user/verification_code", {
             "phone": phoneNumber
         });
         return result.status == 200;
     } catch(error) {
-        console.error(error);
+        globalThis.log.error(error);
         return false;
     }
 };
@@ -28,7 +26,7 @@ export const requestForLoggingIn = async (phoneNumber: string, vcode: string): P
     if(!phoneNumber || !vcode) return "";
 
     try {
-        const result = await axios.post(baseURL + "/api/user/login", {
+        const result = await axios.post("/api/user/login", {
             "phone": phoneNumber,
             "code": vcode
         });
@@ -38,7 +36,7 @@ export const requestForLoggingIn = async (phoneNumber: string, vcode: string): P
         const rawData = resultData["data"];
         return rawData["token"] || "";
     } catch(error) {
-        console.error(error);
+        globalThis.log.error(error);
         return "";
     }
 };

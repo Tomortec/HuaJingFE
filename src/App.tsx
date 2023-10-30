@@ -9,6 +9,9 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { createGlobalStyle } from "styled-components";
 import wx from "weixin-js-sdk";
 
+import log from "loglevel";
+import remote from "loglevel-plugin-remote";
+
 import { 
     Navbar,
     NavbarState,
@@ -16,7 +19,7 @@ import {
 
 import { useDesktop } from "./hooks/useDesktop";
 import { isDevelopmentMode } from "./hooks/useDevelopmentMode";
-import logoImage from "./assets/image-logo-with-bg.png";
+import logoImage from "./assets/image-logo.png";
 import axios from "axios";
 
 const mobileSpecialPathNavbarState: {
@@ -41,6 +44,20 @@ const checkNavbarState = (): NavbarState => {
     return mobileSpecialPathNavbarState[path] || NavbarState.Normal;
 };
 
+const configRemoteLogger = () => {
+    !isDevelopmentMode().isDevelopment && remote.apply(log, {
+        url: "/api/log/console",
+        level: "warn",
+        format: (log) => ({
+            timestamp: (new Date()).getTime(),
+            level: log.level.label,
+            message: log.message + `[${log.stacktrace}]`
+        })
+    }); 
+
+    log.enableAll();
+};
+
 const fecthWXConfig = async (url: string): Promise<{
     appId: string,
     timestamp: number,
@@ -60,7 +77,7 @@ const fecthWXConfig = async (url: string): Promise<{
             signature: rawConfigData["sign"],
         } : null;
     } catch(error) {
-        console.error(error);
+        log.error(error);
         return null;
     }
 };
@@ -127,6 +144,10 @@ export const App = () => {
     }, []);
 
     useEffect(() => {
+        configRemoteLogger();
+    }, []);
+
+    useEffect(() => {
         const url = window.location.href.split("#")[0];
         fecthWXConfig(url)
             .then((config) => {
@@ -171,7 +192,7 @@ export const App = () => {
 
                 wx.error((error) => {
                     // alert(error);
-                    console.error(error);
+                    globalThis.log.error(error);
                 });
             });
     }, []);

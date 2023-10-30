@@ -12,7 +12,7 @@ export const useLocalStorage = (keyName: string, defaultValue: any) => {
                 return defaultValue;
             }
         } catch(error) {
-            // console.error(error);
+            globalThis.log.error(error);
             return defaultValue;
         }
     });
@@ -20,7 +20,7 @@ export const useLocalStorage = (keyName: string, defaultValue: any) => {
     const setValue = (newValue: any) => {
         try {
             window.localStorage.setItem(keyName, newValue);
-        } catch(error) { console.error(error); }
+        } catch(error) { globalThis.log.error(error); }
         setStoredValue(newValue);
     }
 

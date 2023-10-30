@@ -17,7 +17,7 @@ export const useCookies = (
                 return defaultValue;
             }
         } catch(error) {
-            console.error(error);
+            globalThis.log.error(error);
             return defaultValue;
         }
     });
@@ -26,7 +26,7 @@ export const useCookies = (
         try {
             Cookies.set(key, JSON.stringify(newValue), options);
         } catch(error) {
-            console.error(error);
+            globalThis.log.error(error);
         }
     }
 

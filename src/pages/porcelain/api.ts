@@ -38,7 +38,7 @@ export const getPorcelainData = async (id: string): Promise<PlanePorcelainData> 
             images: [rawData.cover_img, ...rawData.image]
         } : defaultPlanePorcelainData;
     } catch(e) { 
-        console.error(e); 
+        globalThis.log.error(e); 
         return defaultPlanePorcelainData;
     }
 };

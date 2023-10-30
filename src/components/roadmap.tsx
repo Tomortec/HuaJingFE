@@ -129,6 +129,13 @@ export const Roadmap = forwardRef((props: {
                 props.data.map((v, i) => <RoadmapItem data={v} i={i} key={i} />)
             }
             { isDesktop && <div className="bar"></div> }
+            <div className="roadmap-title">
+                <span className="en-light-text">ROAD</span>
+                <div>
+                    <span className="en-light-text">MAP</span>
+                    <span className="zh-serif-text">发展路线</span>
+                </div>
+            </div>
             <img className="roadmap-bg" src={isDesktop ? roadmapBgImageForDesktop : roadmapBgImage} alt="" />
         </div>
     )

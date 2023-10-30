@@ -39,7 +39,7 @@ export const getUserData = async (token: string): Promise<UserData> => {
             avatar: defaultUserData.avatar
         } : defaultUserData;
     } catch (e) { 
-        console.error(e); 
+        globalThis.log.error(e); 
         return defaultUserData;
     }
 };
@@ -61,7 +61,7 @@ export const getCollectionsData = async (token: string): Promise<CollectionData[
             image: v.cover_img
         } as CollectionData)) : [];
     } catch (e) { 
-        console.error(e); 
+        globalThis.log.error(e); 
         return [];
     }
 };

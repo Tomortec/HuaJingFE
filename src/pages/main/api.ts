@@ -16,7 +16,7 @@ const getSolidPorcelainIds = async (): Promise<string[]> => {
             const value = window.localStorage.getItem(keyName);
             if(value) return JSON.parse(value);
         } catch(error) {
-            console.error(error);
+            globalThis.log.error(error);
             return null;
         }
     };
@@ -32,7 +32,7 @@ const getSolidPorcelainIds = async (): Promise<string[]> => {
             window.localStorage.setItem(keyName, JSON.stringify(ids));
             return ids;
         } catch(error) {
-            console.error(error);
+            globalThis.log.error(error);
             return null;
         }
     }
@@ -74,7 +74,7 @@ const getSolidPorcelainData = async (id: string): Promise<SolidPorcelainData> =>
             exposure: rawData.threed_exposure
         } : defaultSolidPorcelainData;    
     } catch(error) {
-        console.error(error);
+        globalThis.log.error(error);
         return defaultSolidPorcelainData;
     }
 };
@@ -93,7 +93,7 @@ export const getAllSolidPorcelainData = async (): Promise<SolidPorcelainData[]> 
             throw "Cannot get solid porcelain's ID !";
         }
     } catch(error) {
-        console.error(error);
+        globalThis.log.error(error);
         return [defaultSolidPorcelainData];
     }
 };
