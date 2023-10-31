@@ -8,6 +8,9 @@ import {
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+import log from "loglevel";
+globalThis.log = log;
+
 import { App } from './App';
 import './App.scss';
 

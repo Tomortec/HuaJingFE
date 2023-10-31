@@ -4,23 +4,25 @@ import {
     useOutlet,
     useLocation,
 } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
 
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { createGlobalStyle } from "styled-components";
 import wx from "weixin-js-sdk";
 
+import axios from "axios";
 import log from "loglevel";
 import remote from "loglevel-plugin-remote";
 
 import { 
     Navbar,
     NavbarState,
+    ErrorPage
 } from "./components";
 
 import { useDesktop } from "./hooks/useDesktop";
 import { isDevelopmentMode } from "./hooks/useDevelopmentMode";
 import logoImage from "./assets/image-logo.png";
-import axios from "axios";
 
 const mobileSpecialPathNavbarState: {
     readonly [_ : string]: NavbarState
@@ -45,6 +47,7 @@ const checkNavbarState = (): NavbarState => {
 };
 
 const configRemoteLogger = () => {
+    // TODO
     !isDevelopmentMode().isDevelopment && remote.apply(log, {
         url: "/api/log/console",
         level: "warn",
@@ -213,7 +216,9 @@ export const App = () => {
                     classNames={"page"}
                     unmountOnExit
                 >
-                    {currentOutlet}
+                    <ErrorBoundary FallbackComponent={ErrorPage}>
+                        {currentOutlet}
+                    </ErrorBoundary>
                 </CSSTransition>
             </SwitchTransition>
         </>

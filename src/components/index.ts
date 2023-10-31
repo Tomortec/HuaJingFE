@@ -8,6 +8,7 @@ import { LoadingPage } from "./loading-page";
 import { DynamicImage, DynamicImageAnim } from "./dynamic-image";
 import { ProtectedRoute } from "./protected-route";
 import { MediaWrapper } from "./media-wrapper";
+import ErrorPage from "./error-page";
 
 export { 
     InfoContainer, 
@@ -19,4 +20,5 @@ export {
     DynamicImage, DynamicImageAnim,
     ProtectedRoute,
     MediaWrapper,
+    ErrorPage
 }

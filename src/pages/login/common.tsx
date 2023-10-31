@@ -17,6 +17,7 @@ export const LoginForm = (props: {
     const vcodeInputRef = useRef(null);
     const [countdownDate, setCountdownDate] = useState<Date>(new Date());
     const countdownRef = useRef(null);
+    const [isRequesting, setIsRequesting] = useState(false);
 
     const countdownRenderer = ({ seconds, completed }) => {
         if(completed) {
@@ -60,6 +61,7 @@ export const LoginForm = (props: {
     const handleSubmit = async () => {
         if(vcodeInputRef && verificationCodeRegex.test(vcodeInputRef.current.value)
             && phoneNumberInputRef && phoneNumberRegex.test(phoneNumberInputRef.current.value)) {
+            setIsRequesting(true);
             const token = await requestForLoggingIn(
                 phoneNumberInputRef.current.value, 
                 vcodeInputRef.current.value
@@ -68,6 +70,7 @@ export const LoginForm = (props: {
                 props.login(token);
                 return;
             }
+            setIsRequesting(false);
         }
         console.log("Invalid vcode");
         $(vcodeInputRef.current)
@@ -107,7 +110,7 @@ export const LoginForm = (props: {
             <div>
                 <button 
                     type="button" className="submit-btn btn"
-                    disabled={!(agreementChecked && readyForRequestCode)}
+                    disabled={!(agreementChecked && readyForRequestCode) || isRequesting}
                     onClick={handleSubmit}
                 >登录</button>
             </div>
