@@ -26,6 +26,7 @@ export const getPorcelainData = async (id: string): Promise<PlanePorcelainData> 
         });
         const resultData = result["data"];
 
+        globalThis.log.info(resultData);
         const rawData = resultData["data"] as RawCollectionData;
         return rawData ? {
             id: rawData.id.toString(),

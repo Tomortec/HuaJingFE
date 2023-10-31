@@ -72,6 +72,7 @@ const fecthWXConfig = async (url: string): Promise<{
             "url": url
         });
         const resultData = result.data;
+        log.info("fecthWXConfig", resultData);
         const rawConfigData = resultData["data"];
         return rawConfigData ? {
             appId: rawConfigData["app_id"],
@@ -199,11 +200,6 @@ export const App = () => {
                 });
             });
     }, []);
-
-    // useEffect(() => {
-    //     const baseURL = isDevelopmentMode().isTesting ? "https://test.atmhn.cn" : ""
-    //     axios.defaults.baseURL = baseURL;
-    // }, []);
 
     return (
         <>

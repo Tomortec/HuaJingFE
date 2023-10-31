@@ -29,9 +29,10 @@ export const getUserData = async (token: string): Promise<UserData> => {
             params: { "token": token }
         });
         const resultData = result["data"];
+
+        globalThis.log.info("getUserData", resultData);
         const rawUserData = resultData["data"];
 
-        // TODO: handle error
         return rawUserData ? {
             name: rawUserData.name,
             level: rawUserData.vip_level,
@@ -53,6 +54,8 @@ export const getCollectionsData = async (token: string): Promise<CollectionData[
             params: { "token": token }
         });
         const resultData = result["data"];
+
+        globalThis.log.info("getCollectionsData", resultData);
         const rawData = resultData["data"] as RawCollectionData[];
 
         return rawData ? rawData.map((v) => ({

@@ -27,6 +27,7 @@ const getSolidPorcelainIds = async (): Promise<string[]> => {
         try {
             const result = await axios.get("/api/index/square");
             const resultData = result["data"];
+            globalThis.log.info("getSolidPorcelainIds", resultData);
             const rawData = resultData["data"]["skus"] as RawIndexPorcelainData[];
             const ids = rawData.map((v) => v.id.toString());    
             window.localStorage.setItem(keyName, JSON.stringify(ids));
@@ -60,6 +61,7 @@ const getSolidPorcelainData = async (id: string): Promise<SolidPorcelainData> =>
         });
         const resultData = result["data"];
 
+        globalThis.log.info("getSolidPorcelainData", resultData);
         const rawData = resultData["data"] as RawSolidPorcelainData;
         return rawData ? {
             id: rawData.id.toString(),

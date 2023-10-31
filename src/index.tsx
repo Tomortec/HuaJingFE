@@ -16,12 +16,11 @@ import './App.scss';
 
 import {
     MainPage,
-    introductionPagePaths
+    introductionPagePaths,
 
     // InstructionsPage,
-    // IntroductionPage, introductionPagePaths,
+    // IntroductionPage,
     // LoginPage,
-    // MainPage,
     // ModelPage,
     // PorcelainPage,
     // UserPage

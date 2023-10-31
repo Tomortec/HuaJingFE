@@ -52,7 +52,7 @@ export const StaticNavbar = () => {
             <div className='container-fluid'>
                 <div className='navbar-brand mb-0 d-flex align-items-center'>
                     <img src={logoImage} alt="" />
-                    <span>华境｜HJ</span>
+                    <img src={logoTitleImage} alt="" />
                 </div>
                 <div className='d-flex'>
                     <img className='user-btn' src={userIcon} alt="" />

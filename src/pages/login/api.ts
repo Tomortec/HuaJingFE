@@ -9,6 +9,7 @@ export const requestVerificationCode = async (phoneNumber: string): Promise<bool
         const result = await axios.post("/api/user/verification_code", {
             "phone": phoneNumber
         });
+        globalThis.log.info("requestVerificationCode", result.data);
         return result.status == 200;
     } catch(error) {
         globalThis.log.error(error);
@@ -32,7 +33,7 @@ export const requestForLoggingIn = async (phoneNumber: string, vcode: string): P
         });
         const resultData = result.data;
 
-        // TODO: handle error
+        globalThis.log.info("requestForLoggingIn", resultData);
         const rawData = resultData["data"];
         return rawData["token"] || "";
     } catch(error) {
