@@ -35,6 +35,14 @@ const locationConfig: LocationConfiguration = {
     }
 };
 
+export const assetsSource = (isDesktop: boolean): string[] => {
+    return Object.values(locationConfig).reduce((prev, cnt) => (
+        [...prev, ...range(cnt[isDesktop ? "desktopImageNum" : "imageNum"]).map((i) => (
+            require(`../../assets/introduction${isDesktop ? "/desktop" : ""}/image-introduction-${cnt.name}-${i}.png`)
+        ))]
+    ), [] as string[]);
+};
+
 export const IntroductionPage = () => {
     const pathName = useLocation().pathname;
     if(!introductionPagePaths.includes(pathName)) {

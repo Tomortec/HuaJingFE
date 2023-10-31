@@ -8,17 +8,21 @@ import { useDesktop } from "../../hooks/useDesktop";
 
 import "./index.scss";
 
+export const assetsSource = (isDesktop: boolean): string[] => {
+    return range(isDesktop ? 3 : 5).map((i) => (
+        require(`../../assets/instructions${isDesktop ? "/desktop" : ""}/image-instructions-${i}.png`)
+    ));
+};
+
 export const InstructionsPage = () => {
-    const assetsDir = useDesktop() ? "/desktop" : "";
-    const assetsNum = useDesktop() ? 3 : 5;
     const noTopPadding = !useDesktop();
     return (
         <Page pageName='instructionsPage' noTopPadding={noTopPadding}>
             <div>
                 {
-                    range(assetsNum).map((i) => (
-                        <DynamicImage key={i} src={require(`../../assets/instructions${assetsDir}/image-instructions-${i}.png`)} 
-                            anim={DynamicImageAnim.SlideInFromBottom} lazy />
+                    assetsSource(useDesktop()).map((src, i) => (
+                        <DynamicImage key={i} src={src} 
+                            anim={DynamicImageAnim.SlideInFromBottom} />
                     ))
                 }
             </div>

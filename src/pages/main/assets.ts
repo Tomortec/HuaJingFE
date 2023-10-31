@@ -1,0 +1,14 @@
+export { default as logoImage } from "../../assets/image-logo.png";
+export { default as instructionsBgImage } from "../../assets/home/image-home-bg.png";
+export { default as instructionsBgImageForDesktop } from "../../assets/home/desktop/image-home-bg.png";
+export { default as triArrowIcon } from "../../assets/icon-tri-down-arrows.svg";
+export { default as learnMoreBtnBgImage } from "../../assets/home/image-home-btn-bg.png";
+export { default as clubBannerImage } from "../../assets/home/image-banner-club.png";
+export { default as huaxiaBannerImage } from "../../assets/home/image-banner-huaxia.png";
+export { default as lakeBannerImage } from "../../assets/home/image-banner-lake.png";
+export { default as clubBannerImageForDesktop } from "../../assets/home/desktop/image-banner-club.png";
+export { default as huaxiaBannerImageForDesktop } from "../../assets/home/desktop/image-banner-huaxia.png";
+export { default as lakeBannerImageForDesktop } from "../../assets/home/desktop/image-banner-lake.png";
+export { default as qrcodeImage } from "../../assets/image-qrcode.png";
+export { default as logoWallImage } from "../../assets/home/image-logo-wall.png";
+export { default as logoWallImageForDesktop } from "../../assets/home/desktop/image-logo-wall.png";

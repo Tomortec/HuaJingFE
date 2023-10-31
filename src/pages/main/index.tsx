@@ -15,6 +15,7 @@ import { Page } from "../page";
 import { MediaWrapper } from "../../components";
 import { DynamicImage, DynamicImageAnim, Roadmap, RoadmapItemData } from "../../components";
 import { useDesktop } from "../../hooks/useDesktop";
+import { useCacheImages } from "../../hooks/useCacheImages";
 import {
     getAllSolidPorcelainData,
     getAllSolidPorcelainDataApiKey
@@ -24,21 +25,10 @@ import "./index.scss";
 import { ModelInfo } from "./common";
 import { ModelLinkCardForMobile } from "./mobile/mobile";
 import { ModelLinkCardForDesktop } from "./desktop/desktop";
+import { assetsSource as InstructionsAssets } from "../instructions";
+import { assetsSource as IntroductionAssets } from "../introduction";
 
-import logoImage from "../../assets/image-logo.png";
-import instructionsBgImage from "../../assets/home/image-home-bg.png";
-import instructionsBgImageForDesktop from "../../assets/home/desktop/image-home-bg.png";
-import triArrowIcon from "../../assets/icon-tri-down-arrows.svg";
-import learnMoreBtnBgImage from "../../assets/home/image-home-btn-bg.png";
-import clubBannerImage from "../../assets/home/image-banner-club.png";
-import huaxiaBannerImage from "../../assets/home/image-banner-huaxia.png";
-import lakeBannerImage from "../../assets/home/image-banner-lake.png";
-import clubBannerImageForDesktop from "../../assets/home/desktop/image-banner-club.png";
-import huaxiaBannerImageForDesktop from "../../assets/home/desktop/image-banner-huaxia.png";
-import lakeBannerImageForDesktop from "../../assets/home/desktop/image-banner-lake.png";
-import qrcodeImage from "../../assets/image-qrcode.png";
-import logoWallImage from "../../assets/home/image-logo-wall.png";
-import logoWallImageForDesktop from "../../assets/home/desktop/image-logo-wall.png";
+import * as assets from "./assets";
 
 const instructionsContent: string = `自远古时代，华夏文明，作为龙的传人一直领先于世界\n随着时间推移，属于华夏文明的远古科技\n被极少数人所垄断，尘封于历史发展的长河中\n现在华境之门已打开，让我们一起寻找远古科技的故事，\n重新揭开那段属于华夏文明的神秘面纱。`;
 
@@ -48,20 +38,20 @@ const introductionInfo: {
 } = {
     "club": {
         name: "我们是谁",
-        image: clubBannerImage,
-        imageForDesktop: clubBannerImageForDesktop,
+        image: assets.clubBannerImage,
+        imageForDesktop: assets.clubBannerImageForDesktop,
         link: "/club"
     },
     "huaxia": {
         name: "华夏国际拍卖",
-        image: huaxiaBannerImage,
-        imageForDesktop: huaxiaBannerImageForDesktop,
+        image: assets.huaxiaBannerImage,
+        imageForDesktop: assets.huaxiaBannerImageForDesktop,
         link: "/huaxia"
     },
     "lake": {
         name: "雁栖湖",
-        image: lakeBannerImage,
-        imageForDesktop: lakeBannerImageForDesktop,
+        image: assets.lakeBannerImage,
+        imageForDesktop: assets.lakeBannerImageForDesktop,
         link: "/lake"
     }
 };
@@ -153,6 +143,7 @@ export const MainPage = () => {
         setPageHeight(`${$(".page-container").height()}px`);
     }, []);
 
+    // Apply GSAP Scroller to Roadmap
     useEffect(() => {
         // wait for assets to load?
         setTimeout(() => {
@@ -177,22 +168,28 @@ export const MainPage = () => {
         }, 500);
     }, []);
 
+    // Cache Images
+    useEffect(() => {
+        useCacheImages(InstructionsAssets(isDesktop));
+        useCacheImages(IntroductionAssets(isDesktop));
+    }, []);
+
     return (
         <Page pageName={pageName}>
             <div>
                 <div className="instructions-container" style={{ height: pageHeight }}>
-                    <DynamicImage src={isDesktop ? instructionsBgImageForDesktop : instructionsBgImage} classNames="instructions-bg" anim={DynamicImageAnim.FadeIn} />
+                    <DynamicImage src={isDesktop ? assets.instructionsBgImageForDesktop : assets.instructionsBgImage} classNames="instructions-bg" anim={DynamicImageAnim.FadeIn} />
                     <div className="welcome-title">
-                        <div className="title-bg-image scale-up-anim" style={{ backgroundImage: `url(${logoImage})` }}></div>
+                        <div className="title-bg-image scale-up-anim" style={{ backgroundImage: `url(${assets.logoImage})` }}></div>
                         { "WELCOME".split("").map((l, i) => (<span className="en-light-text" key={i}>{l}</span>)) }
                     </div>
                     <div className="instructions-content"><pre>{instructionsContent}</pre></div>
                     <div className="learn-more-btn scale-up-x-anim" 
-                        style={{ backgroundImage: `url(${learnMoreBtnBgImage})` }}
+                        style={{ backgroundImage: `url(${assets.learnMoreBtnBgImage})` }}
                         onClick={() => navigate("/instructions")}>
                         <span>了解更多</span>
                     </div>
-                    { isDesktop && <DynamicImage classNames="tri-arrow" src={triArrowIcon} anim={DynamicImageAnim.FadeIn} /> }
+                    { isDesktop && <DynamicImage classNames="tri-arrow" src={assets.triArrowIcon} anim={DynamicImageAnim.FadeIn} /> }
                 </div>
                 <div className="introduction-container">
                     {
@@ -220,10 +217,10 @@ export const MainPage = () => {
                 </div>
                 <div className="footer">
                     <SectionHeader text="合作伙伴" enText="COOPERATION" />
-                    <img className="logo-wall" src={isDesktop ? logoWallImageForDesktop : logoWallImage} />
+                    <img className="logo-wall" src={isDesktop ? assets.logoWallImageForDesktop : assets.logoWallImage} />
                     <div className="qrcode-container">
                         <span>扫码添加公众号</span>
-                        <DynamicImage src={qrcodeImage} anim={DynamicImageAnim.ScaleUpFromCenter} />
+                        <DynamicImage src={assets.qrcodeImage} anim={DynamicImageAnim.ScaleUpFromCenter} lazy />
                     </div>
                     <div className="footer-info-container">
                         <span>阿特姆科技（海南）有限公司 版权所有</span>
