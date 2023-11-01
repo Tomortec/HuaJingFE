@@ -26,12 +26,12 @@ const animMapper = (anim: DynamicImageAnim): {
         case DynamicImageAnim.ScaleXUp:
             return {
                 className: "scale-up-x-anim",
-                initialStyle: {}
+                initialStyle: { transform: "scaleX(0)" }
             };
         case DynamicImageAnim.SlideInFromBottom:
             return {
                 className: "slide-in-from-bottom-anim",
-                initialStyle: {}
+                initialStyle: { opacity: 0, transform: "translateY(30px)" }
             };
         default:
             return { className: "", initialStyle: {} }
