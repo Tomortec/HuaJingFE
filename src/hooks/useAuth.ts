@@ -18,7 +18,7 @@ const AuthContext = () => {
 
     const login = async (token: string) => {
         setUser(token);
-        navigate("/user");
+        navigate("/");
     };
 
     const logout = () => {
