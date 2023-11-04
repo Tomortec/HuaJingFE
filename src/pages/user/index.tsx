@@ -90,7 +90,7 @@ export const UserPage = () => {
                         <UserInfoComponent info={userInfo} />
                     </div>
                     <div id="hj-user-collections">
-                        <span className="collection-header">我的臻品</span>
+                        <span className="collection-header">我的藏品</span>
                         {
                             collections.length > 0 ?
                             <div className="collections-container">

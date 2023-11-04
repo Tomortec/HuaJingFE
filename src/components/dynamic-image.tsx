@@ -42,13 +42,15 @@ export const DynamicImage = (props: {
     src?: string,
     classNames?: string,
     anim: DynamicImageAnim,
-    lazy?: boolean
+    lazy?: boolean,
+    fetchPriority?: "high" | "low"
 }) => {
     const anim = animMapper(props.anim);
     return (
         props.src && 
         <img src={props.src} className={props.classNames ?? ""} alt="" 
             style={anim["initialStyle"]} loading={ props.lazy ? "lazy" : "eager" }
+            fetchpriority={props.fetchPriority || "auto"}
             onLoad={(e) => e?.currentTarget?.classList?.add(anim["className"])} />
     )
 };

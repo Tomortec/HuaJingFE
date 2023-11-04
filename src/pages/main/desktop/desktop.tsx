@@ -23,9 +23,11 @@ const ModelLinkCard = (props: { info: ModelInfo }) => {
             <img className="model-image" style={{ backgroundImage: `url(${modelBgImage})` }}
                 src={props.info.image} alt="" />
             <div className="model-info-container">
-                <span className="model-title" onClick={() => navigate(props.info.link)}>
-                    {props.info.title}
-                </span>
+                <div className="model-title-container">
+                    <span className="model-title" onClick={() => navigate(props.info.link)}>
+                        {props.info.title}
+                    </span>
+                </div>
                 <div className="container-column">
                     <div className="model-age">
                         <span className="header">年代</span>

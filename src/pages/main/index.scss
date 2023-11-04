@@ -279,6 +279,8 @@
     }
 
     .footer {
+        margin-top: 10vh;
+
         .logo-wall {
             width: 90%;
             margin-left: 5%;
@@ -415,12 +417,19 @@
                     align-items: flex-start;
                     width: 50%;
 
-                    .model-title {
-                        @include link-arrow(1.4rem);
-                        @include active-link-decoration(white, 1.4rem, 10rem);
-                        @include desktop-cursor();
-                        font-size: 1.4rem;
+                    .model-title-container {
+                        .model-title {
+                            @include link-arrow(1.4rem);
+                            // @include active-link-decoration(white, 1.4rem, 10rem);
+                            @include desktop-cursor();
+                            font-size: 1.5rem;
+                        }
+                        margin-left: -0.3rem;
                         margin-bottom: 3rem;
+                        border-width: 0 0 1px 0;
+                        border-style: solid;
+                        border-image: linear-gradient(270deg, rgba(white, 0) 0%, rgba(white, 0.6) 50%, rgba(white, 0) 100%) 1 1 100%;
+                        padding-bottom: 0.25rem;
                     }
 
                     .model-age, .model-class {
@@ -441,7 +450,7 @@
 
                     .header {
                         position: relative;
-                        font-size: 0.8rem;
+                        font-size: 0.9rem;
                         font-weight: 300;
                         padding-left: 0.3rem;
                         margin-bottom: 0.5rem;
@@ -457,7 +466,7 @@
                         }
 
                         & + span:not(.header) {
-                            font-size: 0.9rem;
+                            font-size: 1.0rem;
                         }
                     }
                 }
@@ -470,6 +479,10 @@
             width: 75vw !important;
             margin-left: auto !important;
             margin: 0 auto;
+        }
+
+        .footer {
+            margin-top: 0;
         }
     }
 }

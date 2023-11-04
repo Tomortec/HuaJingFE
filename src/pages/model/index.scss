@@ -11,8 +11,8 @@
     $model-viewer-bg-color: transparent;
     $model-viewer-progressbar-bg-color: rgba(255, 255, 255, 0.5);
 
-    $camera-reset-btn-top: 1%;
-    $camera-reset-btn-right: 6%;
+    $camera-reset-btn-top: 1rem;
+    $camera-reset-btn-right: $camera-reset-btn-top;
     $camera-reset-btn-padding: 0.25rem;
     $camera-reset-btn-bg-color: $highlight-bg-color;
     $camera-reset-btn-image-size: 1.25rem;
@@ -68,7 +68,7 @@
 
         background-position: center;
         background-repeat: no-repeat;
-        background-size: 200%;
+        background-size: 100%;
         background-color: $model-viewer-bg-color;
 
         overflow-y: hidden;
@@ -202,45 +202,28 @@
 
 #modelPage {
     @include desktop() {
+        & > .popup-container {
+            display: none;
+        }
+
         & > div:first-child {
             width: 75vw;
             margin: 0 auto;
         }
 
         .frame-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            max-width: 35vw;
-            width: 80%;
-
             model-viewer {
                 min-width: unset;
                 min-height: unset;
-                width: 100%;
-                height: 100%;
+                min-width: min(55vh, 40vw);
+                height: min(55vh, 40vw);
                 margin-bottom: 0;
 
                 background-position: center;
                 background-repeat: no-repeat;
-                background-size: 100%;
+                background-size: cover;
             }
         }
-
-        // BUG: here are two Popups in ModelPage
-        // BUGFIXING
-        .popup-container {
-            height: 0;
-            margin: 0;
-            & .popup-button {
-                display: none;
-            }
-        }
-
-        .popup-mask {
-            opacity: 0.4 !important;
-        }
-        // BUGFIXING
 
         .popup {
             width: 30vw;

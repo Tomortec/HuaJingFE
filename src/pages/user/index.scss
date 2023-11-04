@@ -207,18 +207,31 @@
             max-width: 1800px;
 
             .collection-header {
+                line-height: $collections-header-font-size;
                 margin-left: 1rem;
                 text-align: left;
 
                 &::before {
                     width: calc(5 * $collections-header-font-size);
                     margin: initial;
-                    transform: translateY(calc($collections-header-font-size) * 1.75) translateX(-0.55rem);
+                    transform: translateY(calc($collections-header-font-size + 0.75rem)) translateX(-0.55rem);
+                }
+
+                &::after {
+                    content: "";
+                    display: block;
+                    width: 70vw; // same as #hj-user-collections
+                    height: 1px;
+
+                    background: rgba($color: white, $alpha: 0.1);
+
+                    transform: translateY(calc(0.75rem - 1px)) translateX(-0.55rem);
                 }
             }
 
             .collections-container {
                 margin-top: 5vh;
+                padding: 0 0.5rem;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 2vw;
 

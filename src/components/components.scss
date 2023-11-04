@@ -278,14 +278,25 @@
         .top-frame-container {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
 
-            min-height: 40vh;
+            height: calc(35vw - 1rem);
 
             user-select: text;
 
+            .frame-container {
+                position: relative;
+                display: flex;
+                align-items: center;
+                max-width: calc(35vw - 1rem);
+            }
+
             .basic-info-container {
+                width: calc(35vw - 1rem);
                 row-gap: 0;
                 background-color: transparent;
+                padding: 5vh 2rem;
 
                 .basic-info {
                     align-items: flex-start;
