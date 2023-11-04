@@ -139,6 +139,7 @@ interface RawPorcelainData {
     bottom_desc: string;
     specification_desc: string;
     poster: string;
+    introduction: string;
     threed_img?: string;
     threed_exposure?: string;
 }
@@ -159,6 +160,7 @@ export const getAllPorcelainData = async (token: string): Promise<PorcelainData[
             bottomStamp: data.bottom_desc,
             sizeIntroduction: data.specification_desc,
             description: data.poster,
+            descriptionText: data.introduction,
             images: [data.cover_img, ...data.image.split(",")],
             model: data.threed_img || "",
             exposure: data.threed_exposure || 1.0
@@ -197,6 +199,7 @@ export const createPorcelain = async (token: string, porcelain: PorcelainData): 
         "category": PorcelainCategoryMapper(porcelain),
         "years": porcelain.age,
         "poster": porcelain.description || "",
+        "introduction": porcelain.descriptionText || "",
         "bottom_desc": porcelain.bottomStamp || "",
         "specification_desc": porcelain.sizeIntroduction || "",
         "threed_img": porcelain.model || "",
@@ -221,6 +224,7 @@ export const updatePorcelain = async (token: string, porcelain: PorcelainData): 
         "category": PorcelainCategoryMapper(porcelain),
         "years": porcelain.age,
         "poster": porcelain.description || "",
+        "introduction": porcelain.descriptionText || "",
         "bottom_desc": porcelain.bottomStamp || "",
         "specification_desc": porcelain.sizeIntroduction || "",
         "threed_img": porcelain.model || "",

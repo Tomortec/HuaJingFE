@@ -109,6 +109,7 @@ export const PorcelainTable = () => {
             { data: "bottomStamp", title: "底款" },
             { data: "sizeIntroduction", title: "规格" },
             { data: "description", title: "介绍" },
+            { data: "descriptionText", title: "介绍文字" },
             { data: "images", title: "藏品图" },
             { data: "model", title: "模型" },
             { data: "exposure", title: "模型曝光度" },
@@ -127,12 +128,12 @@ export const PorcelainTable = () => {
             },
             {
                 // sizeIntroduction, model, exposure
-                targets: [5, 8, 9],
+                targets: [5, 9, 10],
                 className: "large-column"
             },
             {
                 // description
-                targets: [6],
+                targets: [6, 7],
                 className: "xlarge-column"
             },
             {
@@ -153,8 +154,13 @@ export const PorcelainTable = () => {
                 }
             },
             {
-                // images
+                // descriptionText
                 targets: 7,
+                defaultContent: "-"
+            },
+            {
+                // images
+                targets: 8,
                 render: (data, type) => {
                     if(type == "display") {
                         const links = data as string[];
@@ -169,7 +175,7 @@ export const PorcelainTable = () => {
             },
             {
                 // model
-                targets: 8,
+                targets: 9,
                 render: (data, type) => {
                     if(type == "display") {
                         const link = data as string;

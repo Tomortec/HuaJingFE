@@ -27,6 +27,7 @@ export interface PorcelainData {
     bottomStamp?: string;
     sizeIntroduction?: string;
     description?: string;
+    descriptionText?: string;
 
     images: string[];   
     
@@ -36,7 +37,7 @@ export interface PorcelainData {
 export const defaultPorcelainData: PorcelainData = {
     id: "", name: "", age: "",
     classification: "", bottomStamp: "",
-    sizeIntroduction: "", description: "",
+    sizeIntroduction: "", description: "", descriptionText: "",
     images: [], model: "", exposure: 1
 };
 

@@ -149,6 +149,12 @@ export const PorcelainModal = () => {
                                 value={state.sizeIntroduction} onChange={(e) => setState({ sizeIntroduction: e.currentTarget.value })} />
                         </div>
                         <div className="mb-3">
+                            <label htmlFor="descriptionTextInput">介绍文字</label>
+                            <input type="text" className="form-control"
+                                id="descriptionTextInput" placeholder="40个字符以内（20个汉字）"
+                                value={state.descriptionText} onChange={(e) => setState({ descriptionText: e.currentTarget.value })} />
+                        </div>
+                        <div className="mb-3">
                             <label htmlFor="descriptionInput">介绍</label><br />
                             { state.description && <img style={{ width: "100%" }} src={state.description} alt="" /> }
                             <ImageUploader maxFiles={1} filesDroppedHandler={(urls, files) => {
