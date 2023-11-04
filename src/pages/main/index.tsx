@@ -220,7 +220,7 @@ export const MainPage = () => {
                     <img className="logo-wall" src={isDesktop ? assets.logoWallImageForDesktop : assets.logoWallImage} />
                     <div className="qrcode-container">
                         <span>扫码添加公众号</span>
-                        <DynamicImage src={assets.qrcodeImage} anim={DynamicImageAnim.ScaleUpFromCenter} lazy />
+                        <img src={assets.qrcodeImage} alt="" loading={"eager"} />
                     </div>
                     <div className="footer-info-container">
                         <span>阿特姆科技（海南）有限公司 版权所有</span>
