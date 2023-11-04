@@ -36,6 +36,9 @@
     $login-form-btn-font-size: $login-form-label-font-size;
     $login-form-btn-font-weight: $login-form-label-font-weight;
 
+    width: 100%;
+    margin-left: 0;
+
     overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -48,8 +51,9 @@
         justify-content: center;
         align-items: center;
     
-        width: 100%;
+        width: 90%;
         height: $login-poster-height;
+        margin-left: 5%;
 
         .poster-image {
             position: absolute;
@@ -95,10 +99,11 @@
         flex-direction: column;
         justify-content: flex-start;
 
-        width: 100%;
+        width: 90%;
         height: $login-form-height;
         max-height: $login-form-max-height;
 
+        margin-left: 5%;
         padding: 0 $login-form-horizon-padding;
         transform: translateY($login-form-offset);
         
@@ -186,15 +191,27 @@
             }
         }
 
+        #agreementCheck + label {
+            a {
+                text-decoration: underline;
+            }
+
+            a:hover {
+                color: rgba($color: white, $alpha: 0.8);
+            }
+        }
+
         & > div:has(.submit-btn) {
             display: flex;
             justify-content: center;
         }
 
-        .submit-btn {
+        .submit-btn, .submit-btn-mask {
             width: $login-form-btn-width;
             height: $login-form-btn-height;
+        }
 
+        .submit-btn {
             color: $login-form-btn-tint-color;
             font-size: $login-form-btn-font-size;
             font-weight: $login-form-btn-font-weight;
@@ -203,6 +220,76 @@
 
             // when disabled, Bootstrap will apply `opacity`
             transition: opacity 0.5s;
+        }
+
+        .submit-btn-mask {
+            position: absolute;
+        }
+
+        .user-agreement-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-5vw, -50vh);
+            z-index: 99;
+
+            animation: fadeInAnimation ease 0.3s 1;
+
+            .mask {
+                width: 100%;
+                height: 100%;
+                background-color: rgba(#161616, 0.4);
+            }
+
+            .text-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+
+                position: absolute;
+                top: 50%;
+                left: 50%;
+
+                width: min(80vw, 24rem);
+                height: min(30rem, 70vh);
+                color: #161616;
+                background-color: white;
+                padding: 1rem 2rem 0.5rem 2rem;
+                border-radius: 8px;
+
+                transform: translate(-50%, -45%);
+
+                .header {
+                    font-size: 2rem;
+                }
+
+                .content {
+                    overflow-y: scroll;
+                    user-select: text;
+                    &::selection {
+                        color: white;
+                        background-color: #161616;
+                    }
+                }
+
+                .agree-btn {
+                    @include desktop-cursor();
+
+                    max-width: 10rem;
+                    width: 50%;
+
+                    padding: 0.35rem 0;
+                    margin: 0.5rem 0;
+                    border-radius: 4px;                    
+                    border: 1px solid #161616;
+
+                    font-size: 0.9rem;
+                    text-align: center;
+                }
+            }
         }
     }
 }
@@ -331,6 +418,12 @@
                         box-shadow: none;
                     }
                 }
+            }
+
+            .user-agreement-container {
+                width: 100%;
+                height: 100%;
+                transform: none;
             }
         }
     }
