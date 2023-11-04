@@ -34,10 +34,11 @@ export const Page = (props: PageProps) => {
             $(".bg-image").css({ top: $("#hj-navbar").outerHeight() });
         }
 
-        if(!props.resetScroll && (scrollState as number)) {
+        if(!props.resetScroll && !isDesktop && (scrollState as number)) {
             gsap.to(`#${props.pageName}`, {
                 scrollTo: scrollState as number,
-                duration: isDesktop ? 1.0 : 0.5
+                duration: 0.0001,
+                ease: "power2.out",
             });
         }
 
