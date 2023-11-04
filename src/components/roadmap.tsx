@@ -133,7 +133,9 @@ export const Roadmap = forwardRef((props: {
                 <span className="en-light-text">ROAD</span>
                 <div>
                     <span className="en-light-text">MAP</span>
-                    <span className="zh-serif-text">发展路线</span>
+                    {/* here used to have text `发展路线`, but simply removing the element causes unexpected style
+                        for SASS uses :last-child to style it */}
+                    <span className="zh-serif-text"></span> 
                 </div>
             </div>
             <img className="roadmap-bg" src={isDesktop ? roadmapBgImageForDesktop : roadmapBgImage} alt="" />
