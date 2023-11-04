@@ -50,6 +50,7 @@ interface RawSolidPorcelainData {
     poster: string;
     threed_img: string;
     threed_exposure: number;
+    introduction: string;
 }
 
 const getSolidPorcelainData = async (id: string): Promise<SolidPorcelainData> => {
@@ -71,6 +72,7 @@ const getSolidPorcelainData = async (id: string): Promise<SolidPorcelainData> =>
             bottomStamp: rawData.bottom_desc,
             sizeIntroduction: rawData.specification_desc,
             description: rawData.poster,
+            descriptionText: rawData.introduction,
             model: rawData.threed_img,
             poster: rawData.cover_img,
             exposure: rawData.threed_exposure

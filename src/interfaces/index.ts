@@ -19,15 +19,17 @@ export interface PorcelainData {
     id: string;
     title: string;
     age: string;
-    classification?: string;
-    bottomStamp?: string;
-    sizeIntroduction?: string;
-    description?: string;
+    classification: string;
+    bottomStamp: string;
+    sizeIntroduction: string;
+    description: string;
+    descriptionText?: string;
 }
 export const defaultPorcelainData: PorcelainData = {
     id: "", title: "瓷器", age: "未知",
     classification: "未知", bottomStamp: "未知",
-    sizeIntroduction: "未知", description: "未知"
+    sizeIntroduction: "未知", description: "未知",
+    descriptionText: "未知"
 };
 
 /* ----------------- PlanePorcelainData ------------------ */

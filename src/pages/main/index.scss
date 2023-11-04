@@ -434,6 +434,11 @@
                         margin-bottom: 2rem;
                     }
 
+                    .model-description {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
                     .header {
                         position: relative;
                         font-size: 0.8rem;

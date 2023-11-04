@@ -38,7 +38,7 @@ const ModelLinkCard = (props: { info: ModelInfo }) => {
                 </div>
                 <div className="model-description">
                     <span className="header">介绍</span>
-                    <span></span>
+                    <span>{props.info.descriptionText}</span>
                 </div>
             </div>
         </div>

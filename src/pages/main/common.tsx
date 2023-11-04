@@ -9,6 +9,7 @@ export interface ModelInfo {
     title: string, image: string, 
     link: string, age: string, 
     classification: string,
+    descriptionText: string,
     /**
      * if reversed, the image will be on the right
      */

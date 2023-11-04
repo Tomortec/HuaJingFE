@@ -132,6 +132,7 @@ export const MainPage = () => {
                 link: `/model/${v.id.toString() || "0"}`,
                 age: v.age ?? "未知",
                 classification: v.classification ?? "未知",
+                descriptionText: v.descriptionText ?? "未知",
                 reversed: i % 2 ? false : true
             }))
         ),
