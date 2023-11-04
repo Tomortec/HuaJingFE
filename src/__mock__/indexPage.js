@@ -4,7 +4,7 @@
 module.exports = () => ({
     "data": {
         "banner_info": [],
-        "skus|3": [
+        "skus|5": [
             {
                 "id": () => Math.ceil(Math.random() * 100000 + 2),
                 "title": "@ctitle(2, 10)",

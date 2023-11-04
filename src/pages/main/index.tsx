@@ -16,6 +16,7 @@ import { MediaWrapper } from "../../components";
 import { DynamicImage, DynamicImageAnim, Roadmap, RoadmapItemData } from "../../components";
 import { useDesktop } from "../../hooks/useDesktop";
 import { useCacheImages } from "../../hooks/useCacheImages";
+import { defaultSolidPorcelainData } from "../../interfaces";
 import {
     getAllSolidPorcelainData,
     getAllSolidPorcelainDataApiKey
@@ -136,7 +137,7 @@ export const MainPage = () => {
                 reversed: i % 2 ? false : true
             }))
         ),
-        placeholderData: [],
+        placeholderData: Array(5).fill(defaultSolidPorcelainData),
         staleTime: Infinity
     });
 
@@ -146,7 +147,7 @@ export const MainPage = () => {
 
     // Apply GSAP Scroller to Roadmap
     useEffect(() => {
-        // wait for assets to load?
+        // wait for assets to load
         setTimeout(() => {
             roadmapRef?.current?.initializeRoadmap();
 

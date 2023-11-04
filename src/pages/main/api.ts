@@ -10,33 +10,46 @@ interface RawIndexPorcelainData {
 }
 
 const getSolidPorcelainIds = async (): Promise<string[]> => {
-    const keyName = "SOLID_PORCELAINS";
-    const getStoredIds = () => {
-        try {
-            const value = window.localStorage.getItem(keyName);
-            if(value) return JSON.parse(value);
-        } catch(error) {
-            globalThis.log.error(error);
-            return null;
-        }
-    };
-
-    const ids = getStoredIds();
-    if(ids) return ids;
-    else {
-        try {
-            const result = await axios.get("/api/index/square");
-            const resultData = result["data"];
-            globalThis.log.info("getSolidPorcelainIds", resultData);
-            const rawData = resultData["data"]["skus"] as RawIndexPorcelainData[];
-            const ids = rawData.map((v) => v.id.toString());    
-            window.localStorage.setItem(keyName, JSON.stringify(ids));
-            return ids;
-        } catch(error) {
-            globalThis.log.error(error);
-            return null;
-        }
+    try {
+        const result = await axios.get("/api/index/square");
+        const resultData = result["data"];
+        globalThis.log.info("getSolidPorcelainIds", resultData);
+        const rawData = resultData["data"]["skus"] as RawIndexPorcelainData[];
+        const ids = rawData.map((v) => v.id.toString());    
+        // window.localStorage.setItem(keyName, JSON.stringify(ids));
+        return ids;
+    } catch(error) {
+        globalThis.log.error(error);
+        return null;
     }
+    // BUG?: what if here are more porcelains added to db
+    // const keyName = "SOLID_PORCELAINS";
+    // const getStoredIds = () => {
+    //     try {
+    //         const value = window.localStorage.getItem(keyName);
+    //         if(value) return JSON.parse(value);
+    //     } catch(error) {
+    //         globalThis.log.error(error);
+    //         return null;
+    //     }
+    // };
+
+    // const ids = getStoredIds();
+    // if(ids) return ids;
+    // else {
+    //     try {
+    //         const result = await axios.get("/api/index/square");
+    //         const resultData = result["data"];
+    //         globalThis.log.info("getSolidPorcelainIds", resultData);
+    //         const rawData = resultData["data"]["skus"] as RawIndexPorcelainData[];
+    //         const ids = rawData.map((v) => v.id.toString());    
+    //         window.localStorage.setItem(keyName, JSON.stringify(ids));
+    //         return ids;
+    //     } catch(error) {
+    //         globalThis.log.error(error);
+    //         return null;
+    //     }
+    // }
 };
 
 interface RawSolidPorcelainData {
