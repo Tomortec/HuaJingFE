@@ -26,7 +26,7 @@ export const getUserData = async (token: string): Promise<UserData> => {
 
     try {
         const result = await axios.get("/api/user/info", {
-            params: { "token": token }
+            headers: { "token": token }
         });
         const resultData = result["data"];
 
@@ -51,7 +51,7 @@ export const getCollectionsData = async (token: string): Promise<CollectionData[
 
     try {
         const result = await axios.get("/api/user/my_sku", {
-            params: { "token": token }
+            headers: { "token": token }
         });
         const resultData = result["data"];
 

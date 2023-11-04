@@ -2,7 +2,7 @@
  * @url /api/user/info
  */
 module.exports = (req) => {
-    if(req.query.token) {
+    if(req.headers.token) {
         return {
             "data": {
                 "id": 96972, 

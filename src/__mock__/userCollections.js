@@ -11,7 +11,7 @@
             ]
 */
 module.exports = (req) => {
-    if(req.query.token) {
+    if(req.headers.token) {
         return {
             "data|0-12": [
                 {
