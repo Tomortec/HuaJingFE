@@ -47,7 +47,7 @@ const checkNavbarState = (): NavbarState => {
 };
 
 const configRemoteLogger = () => {
-    // TODO
+    // DEVELOPMENT
     !isDevelopmentMode().isDevelopment && remote.apply(log, {
         url: "/api/log/console",
         level: "warn",

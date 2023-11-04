@@ -22,11 +22,11 @@ module.exports = (req) => {
         const models = [
             {
                 "p": "https://z1.ax1x.com/2023/10/18/piPfy1e.png",
-                "m": "https://modelviewer.dev/shared-assets/models/Horse.glb"
+                "m": "https://testingmodels.blob.core.windows.net/models/HuaPing_03.glb"
             },
             {
                 "p": "https://z1.ax1x.com/2023/10/18/piPf66H.png",
-                "m": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+                "m": "https://testingmodels.blob.core.windows.net/models/HuaPing_01.glb"
             }
         ];
         const target = models[Math.floor(Math.random() * models.length)];
