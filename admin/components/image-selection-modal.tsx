@@ -1,5 +1,5 @@
 
-import React, { useLayoutEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { clamp } from "lodash";
 
 import { ImageUploader } from "./image-uploader";
@@ -39,6 +39,7 @@ const ImageSelector = (props: {
 
 export const ImageSelectionModal = () => {
     const modalId = ImageSelectionModalId;
+    const tableId = "hj-porcelain-table";
     const { auth } = useContext(AuthContext);
 
     const { payload, hideModal }: {
@@ -53,7 +54,8 @@ export const ImageSelectionModal = () => {
     const [model, setModel] = useState<string>(null);
     const [modelFile, setModelFile] = useState<File>(null);
     const [exposure, setExposure] = useState(1);
-    useLayoutEffect(() => {
+    const [isRequesting, setIsRequesting] = useState(false);
+    useEffect(() => {
         if(payload) {
             setCoverIndex(0);
             setImages(payload.images);
@@ -61,6 +63,13 @@ export const ImageSelectionModal = () => {
             setModel(payload.model);
             setModelFile(null);
             setExposure(payload.exposure ?? 1.0);
+        } else {
+            setCoverIndex(0);
+            setImages(null);
+            setNewImages(null);
+            setModel(null);
+            setModelFile(null);
+            setExposure(1.0);
         }
     }, [payload]);
 
@@ -71,12 +80,21 @@ export const ImageSelectionModal = () => {
         );
     };
 
+    const updateTableData = (newData: PorcelainData) => {
+        if(!globalThis.dataTables || !globalThis.dataTables[tableId]) return;
+        const dataTable = globalThis.dataTables[tableId];
+        dataTable.row((_, data) => data.id == newData.id).data(newData).draw();
+        $(dataTable.row((_, data) => data.id == newData.id).node())
+            .children("td").last().attr("data-row-object", JSON.stringify(newData));
+    }
+
     const onImageSelected = (i: number) => { setCoverIndex(i); };
     const onImagesDropped = (urls: string[], files: File[]) => { setImages(images.concat(urls)); setNewImages(files); };
     const onConfirm = async () => {
         if(!auth || !auth.token) {
             alert("未登录！\n请刷新页面");
         } else {
+            setIsRequesting(true);
             let newPorcelain = payload;
             // delete image
             newPorcelain.images = images;
@@ -86,7 +104,7 @@ export const ImageSelectionModal = () => {
             }
             // add images
             if((newImages && newImages.length > 0)) {
-                newPorcelain = await uploadPorcelainImage(auth.token, newPorcelain, newImages, false);
+                newPorcelain = await uploadPorcelainImage(auth.token, newPorcelain, newImages);
             }
             // change cover image
             if(coverIndex != 0) {
@@ -98,7 +116,8 @@ export const ImageSelectionModal = () => {
                 newPorcelain.exposure = exposure;
                 await updatePorcelain(auth.token, newPorcelain);
             }
-            console.log(newPorcelain);
+            updateTableData(newPorcelain);
+            setIsRequesting(false);
         }
         hideDialog();
     };
@@ -157,7 +176,7 @@ export const ImageSelectionModal = () => {
                         }
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={onConfirm}>保存</button>
+                        <button type="button" className="btn btn-primary" disabled={isRequesting} onClick={onConfirm}>保存</button>
                         <button type="button" className="btn" onClick={hideDialog}>关闭</button>
                     </div>
                 </div>

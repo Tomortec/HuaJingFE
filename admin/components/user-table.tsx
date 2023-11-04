@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { Tooltip } from "bootstrap";
 
@@ -16,6 +16,7 @@ import { UserModalId } from "./user-modal";
 
 export const UserTable = () => {
     const tableId = "hj-user-table";
+    const [dataTable, setDataTable] = useState<DataTables.Api>(null);
 
     const { auth } = useContext(AuthContext);
     const { showModal } = useModal();
@@ -38,7 +39,9 @@ export const UserTable = () => {
         `);
     };
 
-    const bindButtonsEvents = () => {
+    const afterDataTableRendered = (dataTable: DataTables.Api) => {
+        setDataTable(dataTable);
+
         const getRowData = (
             event: JQuery.ClickEvent | JQuery.MouseOverEvent
         ): UserData => {
@@ -81,6 +84,7 @@ export const UserTable = () => {
                 if(rawData && showDeletionConfirm(rawData)) {
                     const res = await deleteUser(auth.token, rawData);
                     alert(res ? "删除用户成功！" : "发生错误");
+                    res && dataTable.row((_, data) => data.id == rawData.id).remove().draw();
                 }    
             }
         });
@@ -119,10 +123,6 @@ export const UserTable = () => {
     };
 
     const dataTableOptions: DataTables.Settings = {
-        // ajax: {
-        //     url: "/adminApi/userData",
-        //     dataSrc: "data"
-        // },
         responsive: true,
         columns: [
             { data: "id", title: "用户 ID" },
@@ -135,10 +135,12 @@ export const UserTable = () => {
         ],
         columnDefs: [
             {
+                // name
                 targets: 1,
                 type: "chinese-string"
             },
             {
+                // porcelainIds
                 targets: 4,
                 render: (data, type) => {
                     if(type == "display" && (data as string[])) {
@@ -146,6 +148,16 @@ export const UserTable = () => {
                     }
                     return data;
                 } 
+            },
+            {
+                // lastLoginTime
+                targets: 5,
+                render: (data, type) => {
+                    if(type == "display" && data) {
+                        return new Date(data).toLocaleString();
+                    }
+                    return data;
+                }
             },
             {
                 data: null,
@@ -171,7 +183,7 @@ export const UserTable = () => {
                 newButtonCaption="新增用户" 
                 newButtonHandler={showDialog}
                 dataTableOptions={dataTableOptions}
-                afterRender={bindButtonsEvents} />
+                afterRender={afterDataTableRendered} />
         </>
     )
 };

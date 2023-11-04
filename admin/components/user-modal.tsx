@@ -5,7 +5,6 @@ import { UserData, defaultUserData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
 import { AuthContext } from "../hooks/authContext";
 import { createUser, updateUser } from "../api";
-import { Modal } from "bootstrap";
 
 export const UserModalId = "user-modal";
 
@@ -18,7 +17,9 @@ enum ModalMode {
 
 export const UserModal = () => {
     const modalId = UserModalId;
+    const tableId = "hj-user-table";
     const { auth } = useContext(AuthContext);
+
     const { payload, hideModal }: {
         payload?: UserData,
         hideModal: (id: string) => void
@@ -30,6 +31,7 @@ export const UserModal = () => {
         (state, newState) => ({...state, ...newState}),
         defaultUserData
     );
+    const [isRequesting, setIsRequesting] = useState(false);
 
     useEffect(() => {
         if(payload) {
@@ -41,17 +43,36 @@ export const UserModal = () => {
         }
     }, [payload]);
 
+    const updateTableData = (newData: UserData) => {
+        if(!globalThis.dataTables || !globalThis.dataTables[tableId]) return;
+        const dataTable = globalThis.dataTables[tableId] as DataTables.Api;
+        switch(mode) {
+            case ModalMode.Creating:
+                dataTable.row.add(newData).draw();
+                break;
+            case ModalMode.Updating:
+                dataTable.row((_, data) => data.id == newData.id).data(newData).draw();
+                break;
+        }
+        $(dataTable.row((_, data) => data.id == newData.id).node())
+            .children("td").last().attr("data-row-object", JSON.stringify(newData));
+    };
+
     const handleSaveBtnClicked = async () => {
         if(!auth || !auth.token) {
             alert("未登录！\n请刷新页面");
         } else {
+            setIsRequesting(true);
             if(mode == ModalMode.Updating) {
                 const res = await updateUser(auth.token, state);
                 alert(res ? "更新用户成功！" : "发生错误");
+                res && updateTableData(state);
             } else {
                 const res = await createUser(auth.token, state);
                 alert(res ? "创建用户成功！" : "发生错误");
+                res && updateTableData(state);
             }
+            setIsRequesting(false);
         }
         hideDialog();
     };
@@ -100,7 +121,7 @@ export const UserModal = () => {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={handleSaveBtnClicked}>保存</button>
+                        <button type="button" className="btn btn-primary" disabled={isRequesting} onClick={handleSaveBtnClicked}>保存</button>
                         <button type="button" className="btn" onClick={hideDialog}>关闭</button>
                     </div>
                 </div>

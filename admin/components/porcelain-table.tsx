@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { Tooltip } from "bootstrap";
 
@@ -15,6 +15,7 @@ import { deletePorcelain, getAllPorcelainData } from "../api";
 
 export const PorcelainTable = () => {
     const tableId = "hj-porcelain-table";
+    const [dataTable, setDataTable] = useState<DataTables.Api>(null);
 
     const { auth } = useContext(AuthContext);
     const { showModal } = useModal();
@@ -38,7 +39,9 @@ export const PorcelainTable = () => {
         `);
     };
 
-    const bindButtonsEvents = () => {
+    const afterDataTableRendered = (dataTable: DataTables.Api) => {
+        setDataTable(dataTable);
+
         const getRowData = (
             event: JQuery.ClickEvent | JQuery.MouseOverEvent
         ): PorcelainData => {
@@ -53,13 +56,14 @@ export const PorcelainTable = () => {
             }
         };
 
+        // bindButtonsEvents
         $(document).on("click", `#${tableId} .info-modify-btn`, (event) => {
             showDialog(getRowData(event));
         });
 
         $(document).on("click", `#${tableId} .images-modify-btn`, (event) => {
             const rowData = getRowData(event);
-            if(rowData && rowData.id && rowData.images) {
+            if(rowData) {
                 showModal(`#${ImageSelectionModalId}`, rowData);
             }
         });
@@ -89,6 +93,7 @@ export const PorcelainTable = () => {
                 if(rawData && showDeletionConfirm(rawData)) {
                     const res = await deletePorcelain(auth.token, rawData);
                     alert(res ? "删除藏品成功！" : "发生错误");
+                    res && dataTable.row((_, data) => data.id == rawData.id).remove().draw();
                 }
             }
         });
@@ -199,7 +204,7 @@ export const PorcelainTable = () => {
                 newButtonCaption="新增藏品"
                 newButtonHandler={showDialog}
                 dataTableOptions={dataTableOptions}
-                afterRender={bindButtonsEvents} />
+                afterRender={afterDataTableRendered} />
         </>
     )
 };

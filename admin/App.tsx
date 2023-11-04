@@ -58,11 +58,11 @@ export const App = () => {
         }
     });
 
-    useEffect(() => {
-        if(useDevelopmentMode().isDevelopment) {
-            axios.defaults.baseURL = "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io";
-        }
-    }, []);
+    // useEffect(() => {
+    //     if(useDevelopmentMode().isDevelopment) {
+    //         axios.defaults.baseURL = "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io";
+    //     }
+    // }, []);
 
     const tabConfig: TabConfig[] = [
         {

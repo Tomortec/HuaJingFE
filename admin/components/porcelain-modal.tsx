@@ -28,6 +28,8 @@ enum ModalMode {
  */
 export const PorcelainModal = () => {
     const modalId = PorcelainModalId;
+    const tableId = "hj-porcelain-table";
+
     const { auth } = useContext(AuthContext);
 
     const { payload, hideModal }: {
@@ -42,6 +44,7 @@ export const PorcelainModal = () => {
         (state, newState) => ({...state, ...newState}),
         defaultPorcelainData
     );
+    const [isRequesting, setIsRequesting] = useState(false);
 
     useEffect(() => {
         if(payload) {
@@ -51,28 +54,50 @@ export const PorcelainModal = () => {
             setMode(ModalMode.Creating);
             setState(defaultPorcelainData);
         }
+        setNewDescriptionImage(null);
     }, [payload]);
+
+    const updateTableData = (newData: PorcelainData) => {
+        if(!globalThis.dataTables || !globalThis.dataTables[tableId]) return;
+        const dataTable = globalThis.dataTables[tableId];
+        switch(mode) {
+            case ModalMode.Creating:
+                dataTable.row.add(newData).draw();
+                break;
+            case ModalMode.Updating:
+                dataTable.row((_, data) => data.id == newData.id).data(newData).draw();
+                break;
+        }
+        $(dataTable.row((_, data) => data.id == newData.id).node())
+            .children("td").last().attr("data-row-object", JSON.stringify(newData));
+    }
 
     const handleSaveBtnClicked = async () => {
         if(!auth || !auth.token) {
             alert("未登录！\n请刷新页面");
         } else {
+            setIsRequesting(true);
             if(mode == ModalMode.Updating) {
                 let res = false;
+                let newPorcelain = state;
                 if(newDescriptionImage) {
-                    const newPorcelain = await uploadPorcelainImage(auth.token, state, [newDescriptionImage], true);
-                    res = await updatePorcelain(auth.token, newPorcelain);
+                    newPorcelain = await uploadPorcelainImage(auth.token, state, [newDescriptionImage], { isDescription: true });
                 }
+                res = await updatePorcelain(auth.token, newPorcelain);
+                res && updateTableData(newPorcelain);
                 alert(res ? "更新藏品成功！" : "发生错误");
             } else {
                 if(newDescriptionImage) {
-                    const newPorcelain = await uploadPorcelainImage(auth.token, state, [newDescriptionImage], true);
+                    const newPorcelain = await uploadPorcelainImage(auth.token, state, [newDescriptionImage], { isDescription: true  });
+                    console.log(newPorcelain);
                     const res = await createPorcelain(auth.token, newPorcelain);
                     alert(res ? "创建藏品成功！" : "发生错误");
+                    res && updateTableData(newPorcelain);
                 } else {
                     alert("没有上传介绍图片");
                 }
             }
+            setIsRequesting(false);
         }
         hideDialog();
     };
@@ -109,7 +134,7 @@ export const PorcelainModal = () => {
                             <label htmlFor="classificationInput">品类</label>
                             <input type="text" className="form-control" 
                                 id="classificationInput" placeholder="40个字符以内（20个汉字）" 
-                                value={state.description} onChange={(e) => setState({ description: e.currentTarget.value })} />
+                                value={state.classification} onChange={(e) => setState({ classification: e.currentTarget.value })} />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="stampInput">底款</label>
@@ -125,16 +150,16 @@ export const PorcelainModal = () => {
                         </div>
                         <div className="mb-3">
                             <label htmlFor="descriptionInput">介绍</label><br />
-                            { state.images.length > 0 && <img style={{ width: "100%" }} src={state.images[0]} alt="" /> }
+                            { state.description && <img style={{ width: "100%" }} src={state.description} alt="" /> }
                             <ImageUploader maxFiles={1} filesDroppedHandler={(urls, files) => {
-                                setState({ images: [urls[0]] });
+                                setState({ description: urls[0] });
                                 setNewDescriptionImage(files[0]);
                             }} />
                             { state.images.length > 0 && <i>* 上传新图片后将会覆盖原图片</i> }
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={handleSaveBtnClicked}>保存</button>
+                        <button type="button" className="btn btn-primary" disabled={isRequesting} onClick={handleSaveBtnClicked}>保存</button>
                         <button type="button" className="btn" onClick={hideDialog}>关闭</button>
                     </div>
                 </div>

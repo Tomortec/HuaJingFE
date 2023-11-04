@@ -12,6 +12,7 @@ export const requestVerificationCode = async (phoneNumber: string): Promise<bool
         const result = await axios.post("/api/user/verification_code", {
             "phone": phoneNumber
         });
+        console.log("requestVerificationCode", result.data);
         return result.status == 200;
     } catch(error) {
         console.error(error);
@@ -28,8 +29,7 @@ export const requestForLogginIn = async (phoneNumber: string, vcode: string): Pr
             "code": vcode
         });
         const resultData = result.data;
-
-        // TODO: handle error
+        console.log("requestForLogginIn", resultData);
         const rawData = resultData["data"];
         return rawData["token"] || "";
     } catch(error) {
@@ -50,12 +50,31 @@ interface RawUserData {
 export const getAllUserData = async (token: string): Promise<UserData[]> => {
     if(!token) return [];
     try {
+        // TMP: fetch all data without pagination
         const result = await axios.get("/admin/user/page", {
-            headers: { "token": token }
+            headers: { "token": token },
+            params: { "page_size": "1", "page_num": "1" }
         });
         const resultData = result.data;
-        const rawData = resultData["data"];
-        // TODO: rawData["total"] ???
+        console.log("getAllUserData.total", resultData);
+        const totalPages = resultData["data"]["total"] as number;
+        if(totalPages > 0) {
+            const result = await axios.get("/admin/user/page", {
+                headers: { "token": token },
+                params: { "page_size": totalPages.toString(), "page_num": "1" }
+            });
+            const resultData = result.data;
+            console.log("getAllUserData", resultData);
+            const rawData = resultData["data"]["data"] as RawUserData[];
+            return rawData ? rawData.map((data) => ({
+                id: data.id.toString(),
+                phoneNumber: data.phone,
+                lastLoginTime: new Date(data.login_time),
+                name: data.name,
+                level: data.vip_level,
+                porcelainIds: data.sku_ids.split(",") || []
+            } as UserData)) : [];
+        }
         return [];
     } catch(error) {
         console.error(error);
@@ -65,14 +84,15 @@ export const getAllUserData = async (token: string): Promise<UserData[]> => {
 
 const userManagementPost = async (
     url: string, data: any,
-    token: string, user: UserData
+    token: string, user: UserData,
+    /* DEVELOPMENT */ funcName?: string
 ): Promise<boolean> => {
     if(!token || !user) return false;
-    console.log(url, user);
     try {
         const result = await axios.post(url, data, {
             headers: { "token": token }
         });
+        console.log(funcName, result.data);
         return result.status == 200;
     } catch(error) {
         console.error(url, error);
@@ -85,8 +105,8 @@ export const createUser = async (token: string, user: UserData): Promise<boolean
         "phone": user.phoneNumber,
         "name": user.name,
         "vip_level": user.level,
-        "sku_ids": user.porcelainIds.join(",") || ""    // TODO: ?
-    }, token, user);
+        "sku_ids": user.porcelainIds.join(",") || ""
+    }, token, user, "createUser");
 };
 
 export const deleteUser = async (token: string, user: UserData): Promise<boolean> => {
@@ -94,7 +114,7 @@ export const deleteUser = async (token: string, user: UserData): Promise<boolean
     if(Number.isNaN(id)) return false;
     return await userManagementPost("/admin/user/delete", {
         "id": id
-    }, token, user);
+    }, token, user, "deleteUser");
 };
 
 export const updateUser = async (token: string, user: UserData): Promise<boolean> => {
@@ -105,7 +125,7 @@ export const updateUser = async (token: string, user: UserData): Promise<boolean
         "name": user.name,
         "vip_level": user.level,
         "sku_ids": user.porcelainIds.join(",") || ""    // TODO: ?
-    }, token, user);
+    }, token, user, "updateUser");
 };
 
 /* ----------------- Porcelain Management ------------------ */
@@ -129,8 +149,9 @@ export const getAllPorcelainData = async (token: string): Promise<PorcelainData[
             headers: { "token": token }
         });
         const resultData = result.data;
+        console.log("getAllPorcelainData", resultData);
         const rawData = resultData["data"] as RawPorcelainData[];
-        return rawData ? [] : rawData.map((data) => ({
+        return rawData ? rawData.map((data) => ({
             id: data.id.toString(),
             name: data.title,
             age: data.years,
@@ -141,7 +162,7 @@ export const getAllPorcelainData = async (token: string): Promise<PorcelainData[
             images: [data.cover_img, ...data.image.split(",")],
             model: data.threed_img || "",
             exposure: data.threed_exposure || 1.0
-        } as PorcelainData));
+        } as PorcelainData)) : [];
     } catch(error) {
         console.error(error);
         return [];
@@ -151,7 +172,8 @@ export const getAllPorcelainData = async (token: string): Promise<PorcelainData[
 const porcelainManagementPost = async (
     url: string, data: any,
     token: string, porcelain: PorcelainData,
-    headers?: any
+    headers?: any,
+    /* DEVELOPMENT */ funcName?: string
 ): Promise<boolean> => {
     if(!token || !porcelain) return false;
     try {
@@ -161,10 +183,11 @@ const porcelainManagementPost = async (
                 ...headers
             }
         });
+        console.log(funcName, result.data);
         return result.status == 200;
     } catch(error) {
         console.error(url, error);
-        return false
+        return false;
     }
 };
 
@@ -178,7 +201,7 @@ export const createPorcelain = async (token: string, porcelain: PorcelainData): 
         "specification_desc": porcelain.sizeIntroduction || "",
         "threed_img": porcelain.model || "",
         "threed_exposure": (porcelain.exposure || 0).toString()
-    }, token, porcelain);
+    }, token, porcelain, {}, "createPorcelain");
 };
 
 export const deletePorcelain = async (token: string, porcelain: PorcelainData): Promise<boolean> => {
@@ -186,7 +209,7 @@ export const deletePorcelain = async (token: string, porcelain: PorcelainData): 
     if(Number.isNaN(id)) return false;
     return await porcelainManagementPost("/admin/sku/delete", {
         "id": id
-    }, token, porcelain);
+    }, token, porcelain, {}, "deletePorcelain");
 };
 
 export const updatePorcelain = async (token: string, porcelain: PorcelainData): Promise<boolean> => {
@@ -202,7 +225,7 @@ export const updatePorcelain = async (token: string, porcelain: PorcelainData): 
         "specification_desc": porcelain.sizeIntroduction || "",
         "threed_img": porcelain.model || "",
         "threed_exposure": (porcelain.exposure || 1).toString()
-    }, token, porcelain);
+    }, token, porcelain, {}, "updatePorcelain");
 };
 
 const checkLocalBlobRegx = /^blob:(?<origin>[\w\+]+:\/\/(?=.{1,254}(?::|$))(?:(?!\d|-)(?![a-z0-9\-]{1,62}-(?:\.|:|$))[a-z0-9\-]{1,63}\b(?!\.$)\.?)+(:\d+)?)\/(?<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/;
@@ -220,18 +243,21 @@ export const updatePorcelainImage = async (token: string, porcelain: PorcelainDa
         "id": id,
         "cover_img": images[0] || "",
         "images": images.slice(1) || []
-    }, token, porcelain);
+    }, token, porcelain, {}, "updatePorcelainImage");
 };
 
 /**
  * @param replaceImages whether replace the whole `images` property with newly uploaded images' urls
- * @warning replace **local files(local bloc)** in `images` property autoly
+ * @warning replace **local files(local blob)** in `images` property autoly
  */
 export const uploadPorcelainImage = async (
     token: string, 
     porcelain: PorcelainData, 
     files: File[],
-    replaceImages: boolean
+    options: {
+        replaceImages?: boolean,
+        isDescription?: boolean,
+    } = { replaceImages: false, isDescription: false  }
 ): Promise<PorcelainData> => {
     const id = toNumber(porcelain.id);
     if(Number.isNaN(id) || !files) return porcelain; // return original one
@@ -246,16 +272,22 @@ export const uploadPorcelainImage = async (
                 "Content-Type": "multipart/form-data"
             }
         });
+        console.log("uploadPorcelainImage", result.data);
         uploadedImages.push(result.data["data"]["filePath"] || "");
     }
 
     const localBlobFilteredImages = porcelain.images.filter((url) =>
         !checkLocalBlobRegx.test(url)
     );
-    return Object.assign({}, {
-        images: replaceImages ? uploadedImages.filter(Boolean) : 
-            [...localBlobFilteredImages, uploadedImages.filter(Boolean)]
-    }, porcelain);
+    if(options.isDescription) {
+        return Object.assign({}, porcelain, {
+            description: uploadedImages.filter(Boolean)[0] || "",
+        });
+    }
+    return Object.assign({}, porcelain, {
+        images: options.replaceImages ? uploadedImages.filter(Boolean) : 
+            [...localBlobFilteredImages, ...uploadedImages.filter(Boolean)]
+    });
 };
 
 /**
@@ -277,11 +309,12 @@ export const uploadPorcelainModel = async (
             "Content-Type": "multipart/form-data"
         }
     });
+    console.log("uploadPorcelainModel", result.data);
     const filePath = result.data["data"]["filePath"] || "";
     if(filePath) {
-        return Object.assign({}, {
+        return Object.assign({}, porcelain, {
             model: filePath
-        }, porcelain);
+        });
     } else {
         return porcelain;
     }

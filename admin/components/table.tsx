@@ -18,27 +18,32 @@ interface TableProps {
     newButtonCaption: string,
     newButtonHandler: Function,
     dataTableOptions: DataTables.Settings,
-    afterRender?: Function
+    afterRender?: (dataTable: DataTables.Api) => void
 }
 
 export class Table extends Component<TableProps> {
+
+    dataTable: DataTables.Api;
 
     shouldComponentUpdate = () => false
 
     componentDidMount() {
         this.props.dataLoader().then((data) => {
-            const dataTable =  $(`#${this.props.id}`).DataTable(Object.assign({
+            this.dataTable =  $(`#${this.props.id}`).DataTable(Object.assign({
                 data: data,
                 language,
                 ordering: true
             }, this.props.dataTableOptions));
+
+            globalThis.dataTables = globalThis.dataTables || {};
+            globalThis.dataTables[this.props.id] = this.dataTable;
             
-            dataTable.on("draw", () => {
-                const body = $(dataTable.table(`#${this.props.id}`).body());
+            this.dataTable.on("draw", () => {
+                const body = $(this.dataTable.table(`#${this.props.id}`).body());
     
                 body.unhighlight();
-                if(dataTable.rows({ filter: "applied" }).data().length) {
-                    body.highlight(dataTable.search());
+                if(this.dataTable.rows({ filter: "applied" }).data().length) {
+                    body.highlight(this.dataTable.search());
                 }
             });
     
@@ -56,7 +61,7 @@ export class Table extends Component<TableProps> {
                 .on("click", "button", () => { this.props.newButtonHandler(); })
                 .insertBefore(".dt-row");
     
-            this.props.afterRender && this.props.afterRender();    
+            this.props.afterRender && this.props.afterRender(this.dataTable);    
         });
     }
 
