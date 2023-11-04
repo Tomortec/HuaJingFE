@@ -1,7 +1,5 @@
 
 const cacheImage = async (src: string) => {
-    if(caches.has(src)) { return; }
-
     return new Promise((resolve, reject) => {
         var image = new Image();
         image.src = src;
