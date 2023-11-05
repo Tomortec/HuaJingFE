@@ -10,7 +10,7 @@ export interface UserData {
     avatar?: string;
 }
 export const defaultUserData: UserData = {
-    name: "", level: 0, porcelainIds: [], avatar: userAvatar
+    name: "用户", level: 0, porcelainIds: [], avatar: userAvatar
 };
 
 /* ----------------- PorcelainData ------------------ */

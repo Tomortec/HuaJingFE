@@ -9,7 +9,7 @@ import {
     modelBgImage
 } from "../common";
 
-export const SingleModelPageForDesktop = (props: { id: string, data: SolidPorcelainData }) => {
+export const SingleModelPageForDesktop = (props: { id: string, data: SolidPorcelainData, isReady: boolean }) => {
     const modelViewerId = "hj-model-viewer" + props.id.replace(/\s/g, "-");
     
     // according to the docs https://modelviewer.dev/docs/index.html#entrydocs-stagingandcameras-attributes-cameraOrbit
@@ -40,7 +40,7 @@ export const SingleModelPageForDesktop = (props: { id: string, data: SolidPorcel
     return (
         <div className="single-page">
             <div className="content-container">
-                <InfoContainer pageId="model-page" info={props.data} itemFrame={
+                <InfoContainer pageId="model-page" info={props.data} isReady={props.isReady} itemFrame={
                     <model-viewer
                         id={modelViewerId}
                         src={props.data.model}

@@ -28,7 +28,7 @@ import qrcodeImage from "../../assets/image-qrcode.png";
 export const ModelPage = () => {
     const { modelId } = useParams();
     const [swiper, setSwiper] = useState(null);
-    const { data: allModelData, status } = useQuery({
+    const { data: allModelData, isSuccess, isPlaceholderData } = useQuery({
         queryKey: [getAllPorcelainDataApiKey],
         queryFn: () => getAllPorcelainData(),
         // if you are using `Array(3).fill` here, it will return a type of `any[]`
@@ -60,8 +60,8 @@ export const ModelPage = () => {
                             allModelData.map((data, i) => (
                                 <SwiperSlide key={i}>
                                     <MediaWrapper>
-                                        <SingleModelPageForDesktop id={data.id} data={data} />
-                                        <SingleModelPageForMobile id={data.id} data={data} />
+                                        <SingleModelPageForDesktop id={data.id} data={data} isReady={isSuccess && !isPlaceholderData} />
+                                        <SingleModelPageForMobile id={data.id} data={data} isReady={isSuccess && !isPlaceholderData} />
                                     </MediaWrapper>
                                 </SwiperSlide>
                             ))

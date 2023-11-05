@@ -100,6 +100,18 @@ module.exports = {
                 ]
             },
             {
+                test: /\.css$/i,
+                use: [
+                    MiniCssExtractPlugin.loader, 
+                    {
+                        loader: "css-loader",
+                        options: {
+                            url: false
+                        }
+                    }
+                ]
+            },
+            {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: "asset/resource",
                 parser: {

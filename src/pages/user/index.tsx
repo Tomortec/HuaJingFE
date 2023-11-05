@@ -3,6 +3,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
+import ReactPlaceholder from "react-placeholder";
+import "react-placeholder/lib/reactPlaceholder.css";
+
 import { UserData, defaultUserData, CollectionData } from "../../interfaces";
 import { useAuth } from "../../hooks/useAuth";
 import { isDevelopmentMode } from "../../hooks/useDevelopmentMode";
@@ -25,7 +28,7 @@ import userBgImageForDesktop from "../../assets/user/desktop/image-user-bg.png";
 import collectionBgImage from "../../assets/user/image-user-collection-bg.png";
 import collectionEmptyImage from "../../assets/user/image-user-empty.png"
 
-const UserInfoComponent = (props: { info: UserData }) => {
+const UserInfoComponent = (props: { info: UserData, isReady: boolean }) => {
     return (
         <>
             <div className="avatar-container">
@@ -33,7 +36,11 @@ const UserInfoComponent = (props: { info: UserData }) => {
                 {/* <span className="badge">VIP{props.info.level}</span> */}
                 { props.info.level > 0 && <span className="badge">VIP</span> }
             </div>
-            <span className="name-container">{props.info.name}</span>
+            <ReactPlaceholder ready={props.isReady}
+                showLoadingAnimation type="rect"
+                style={{ width: "6rem", height: "1.5rem", marginRight: "0" }}>
+                <span className="name-container">{props.info.name}</span>
+            </ReactPlaceholder>
         </>
     )
 };
@@ -68,13 +75,21 @@ export const UserPage = () => {
 
     const isDesktop = useDesktop();
 
-    const { data: userInfo, status: userInfoStatus } = useQuery({
+    const { 
+        data: userInfo, 
+        isSuccess: isUserDataSuccess, 
+        isPlaceholderData: isUserDataPlaceholder 
+    } = useQuery({
         queryKey: [getUserDataApiKey],
         queryFn: () => getUserData(user),
         placeholderData: defaultUserData,
         staleTime: Infinity // https://stackoverflow.com/a/70294211/16835189
     });
-    const { data: collections, status: collectionsStatus } = useQuery({
+    const { 
+        data: collections, 
+        isSuccess: isCollectionsDataSuccess,
+        isPlaceholderData: isCollectionsDataPlaceholder
+    } = useQuery({
         queryKey: [getCollectionsDataApiKey],
         queryFn: () => getCollectionsData(user),
         placeholderData: [],
@@ -87,21 +102,25 @@ export const UserPage = () => {
                 { isDesktop && <img className="bg-image" src={userBgImageForDesktop} alt="" /> }
                 <div>
                     <div id="hj-user-info">
-                        <UserInfoComponent info={userInfo} />
+                        <UserInfoComponent info={userInfo} isReady={isUserDataSuccess && !isUserDataPlaceholder} />
                     </div>
                     <div id="hj-user-collections">
                         <span className="collection-header">我的藏品</span>
-                        {
-                            collections.length > 0 ?
-                            <div className="collections-container">
+                        <ReactPlaceholder ready={isCollectionsDataSuccess && !isCollectionsDataPlaceholder}
+                            showLoadingAnimation type="text" rows={5}
+                            style={{ width: "100%", height: "400px", marginTop: "5vh" }}>
                             {
-                                collections.map((info, i) => 
-                                    <CollectionComponent info={info} key={i}></CollectionComponent>
-                                )
+                                collections.length > 0 ?
+                                <div className="collections-container">
+                                {
+                                    collections.map((info, i) => 
+                                        <CollectionComponent info={info} key={i}></CollectionComponent>
+                                    )
+                                }
+                                </div> :
+                                <EmptyCollectionPrompt />
                             }
-                            </div> :
-                            <EmptyCollectionPrompt />
-                        }
+                        </ReactPlaceholder>
                     </div>
                     {
                         isDevelopmentMode().isDevelopment &&

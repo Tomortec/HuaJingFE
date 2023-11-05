@@ -14,7 +14,7 @@ import {
     modelBgImage 
 } from "../common";
 
-export const SingleModelPageForMobile = (props: { id: string, data: SolidPorcelainData }) => {
+export const SingleModelPageForMobile = (props: { id: string, data: SolidPorcelainData, isReady: boolean }) => {
     const modelViewerId = "hj-model-viewer" + props.id.replace(/\s/g, "-");
     const swiper = useSwiper();
     const transitionSpeed = 500; // in ms
@@ -138,7 +138,7 @@ export const SingleModelPageForMobile = (props: { id: string, data: SolidPorcela
             <div className="content-container">
                 <SwiperNavigator title={props.data.title} buttonsNeeded
                     onSlideToPrev={toPrevPage} onSlideToNext={toNextPage} />
-                <InfoContainer pageId="model-page" info={props.data} />
+                <InfoContainer pageId="model-page" info={props.data} isReady={props.isReady} />
             </div>
         </div>
     )

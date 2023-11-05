@@ -123,8 +123,9 @@ export const MainPage = () => {
 
     const isDesktop = useDesktop();
 
-    const { data: modelInfo } = useQuery({
+    const { data: modelInfo, isSuccess, isPlaceholderData } = useQuery({
         queryKey: [getAllSolidPorcelainDataApiKey],
+        refetchOnMount: false,
         queryFn: () => getAllSolidPorcelainData(),
         select: (data) => (
             data.map((v, i): ModelInfo => ({
@@ -204,8 +205,8 @@ export const MainPage = () => {
                     <SectionHeader text="数字臻品" enText="DIGITAL MASTERPIECE" />
                     <div className="model-cards-container">
                         <MediaWrapper>
-                            <ModelLinkCardForDesktop info={modelInfo} />
-                            <ModelLinkCardForMobile info={modelInfo} />
+                            <ModelLinkCardForDesktop info={modelInfo} isReady={isSuccess && !isPlaceholderData} />
+                            <ModelLinkCardForMobile info={modelInfo} isReady={isSuccess && !isPlaceholderData} />
                         </MediaWrapper>
                     </div>
                 </div>

@@ -16,9 +16,19 @@ export const PorcelainPage = () => {
     const { porcelainId } = useParams();
     const [data, setData] = useState(defaultPlanePorcelainData);
 
+    const [isReady, setIsReady] = useState(false);
+
+    // TODO: the first time I'm not using `useQuery` here 
+    // is for that I used to consider that the user may visit this page
+    // too many times and causing large cache
+    // BUT, I seems to be ok to cache the data here
+
     useEffect(() => {
         getPorcelainData(porcelainId)
-            .then((res) => setData(res));
+            .then((res) => {
+                setData(res);
+                setIsReady(true);
+            });
     }, []);
 
     const isDesktop = useDesktop();
@@ -38,6 +48,7 @@ export const PorcelainPage = () => {
                     <InfoContainer 
                         pageId="porcelain-page" 
                         info={data}
+                        isReady={isReady}
                         itemFrame={isDesktop ? <SwiperForDesktop data={data} /> : null} />
                 </div>
             </div>
