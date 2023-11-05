@@ -1,0 +1,1105 @@
+{
+	"info": {
+		"_postman_id": "c8fd65e2-13ec-45bd-8c4f-3d0f6a9c956c",
+		"name": "AppMock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20163169",
+		"_collection_link": "https://lunar-trinity-38236.postman.co/workspace/fdabf3bc-6b3e-4b15-9bff-a693b9a83a19/collection/20163169-c8fd65e2-13ec-45bd-8c4f-3d0f6a9c956c?action=share&source=collection_link&creator=20163169"
+	},
+	"item": [
+		{
+			"name": "api/user/verification_code",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\":\"13521837263\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/user/verification_code",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"verification_code"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone\":\"13521837263\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/user/verification_code",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"verification_code"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "api/user/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\":\"13521837263\",\n    \"code\":879790\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/user/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone\":\"13521837263\",\n    \"code\":879790\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/user/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 16 Oct 2023 10:46:03 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content-Length",
+							"value": "48"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=2265b02c4d15dd49"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=9c83020e2a39b3cb"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "118"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1697453194"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"30-ewssRnThtujRgaDGUSnZJ13RIOk\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\t\"data\": {\n\t\t\"token\": \"5a8058b0a2233d913be09df870f466e2\"\n\t},\n\t\"errmsg\": \"success\",\n\t\"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/user/page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/user/page",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"user",
+						"page"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/admin/user/page?page_size=1&page_num=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"page"
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "1"
+								},
+								{
+									"key": "page_num",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": 96972,\n                \"phone\": \"13521837263\",\n                \"token\": \"5a8058b0a2233d913be09df870f466e2\",\n                \"login_time\": 1697205566,\n                \"name\": \"feixb\",\n                \"vip_level\": 0,\n                \"is_delete\": 0,\n                \"sku_ids\": \"3\",\n                \"create_time\": \"2023-10-13T13:32:16+08:00\",\n                \"update_time\": \"2023-10-13T14:40:11+08:00\"\n            }\n        ],\n        \"total\": 1\n    },\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/user/detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/user/detail",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"user",
+						"detail"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/admin/user/detail?id=96972",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "96972"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": 96972,\n        \"phone\": \"13521837263\",\n        \"token\": \"5a8058b0a2233d913be09df870f466e2\",\n        \"login_time\": 1697205566,\n        \"name\": \"feixb\",\n        \"vip_level\": 0,\n        \"is_delete\": 0,\n        \"sku_ids\": \"3\",\n        \"create_time\": \"2023-10-13T13:32:16+08:00\",\n        \"update_time\": \"2023-10-13T14:40:11+08:00\"\n    },\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/user/update",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "5a8058b0a2233d913be09df870f466e2",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/admin/user/update",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"user",
+						"update"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 96973,\n    \"name\": \"feixb33\",\n    \"vip_level\": 4,\n    \"sku_ids\": \"3,4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/user/update",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"update"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\t\"data\": null,\n\t\"errmsg\": \"success\",\n\t\"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/user/delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/user/delete",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"user",
+						"delete"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 96973\n}"
+						},
+						"url": {
+							"raw": "{{url}}/admin/user/delete?token=5a8058b0a2233d913be09df870f466e2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "5a8058b0a2233d913be09df870f466e2"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "admin/user/create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/user/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone\": \"15658815200\",\n    \"name\": \"feixb33\",\n    \"vip_level\": 2,\n    \"sku_ids\": \"3\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/admin/user/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"create"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n\t\"data\": {\n\t\t\"id\": 96973,\n\t\t\"phone\": \"15658815200\",\n\t\t\"token\": \"\",\n\t\t\"login_time\": 0,\n\t\t\"name\": \"feixb33\",\n\t\t\"vip_level\": 2,\n\t\t\"is_delete\": 0,\n\t\t\"sku_ids\": \"3\",\n\t\t\"create_time\": \"2023-10-13T23:16:55.007859+08:00\",\n\t\t\"update_time\": \"2023-10-13T23:16:55.007859+08:00\"\n\t},\n\t\"errmsg\": \"success\",\n\t\"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/sku/list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/sku/list",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"sku",
+						"list"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/admin/sku/list",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"sku",
+								"list"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"title\": \"青花瓷222\",\n            \"cover_img\": \"https://placehold.co/800\",\n            \"image\": \"https://placehold.co/400,https://placehold.co/600\",\n            \"category\": 1,\n            \"years\": \"光绪年间的假货\",\n            \"poster\": \"https://placehold.co/400x600\",\n            \"bottom_desc\": \"大人物疯狂可谓方法可看完咖啡\",\n            \"introduction\": \"的的微风微风微风分为位访问\",\n            \"specification_desc\": \"sad文如其人\",\n            \"is_delete\": 0,\n            \"create_time\": \"2023-10-13T22:25:03+08:00\",\n            \"update_time\": \"2023-10-13T22:35:04+08:00\"\n        }\n    ],\n    \"errmsg\": \"success\",\n    \"errno\": 200\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/sku/delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/sku/delete",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"sku",
+						"delete"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/sku/delete",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"sku",
+								"delete"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": null,\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/file/upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/file/upload",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"file",
+						"upload"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "jvtzgdQg-/20231101-214604.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/admin/file/upload",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"file",
+								"upload"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"filePath\": \"https://placehold.co/1200\"\n    },\n    \"errmsg\": \"成功\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/sku/create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/sku/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"sku",
+						"create"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "461f751d2e9bd26a551a816e35054a8b",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\":\"青花瓷\",\n    \"category\":1,\n    \"years\":\"光绪年\",\n    \"poster\":\"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n    \"bottom_desc\":\"大人物疯狂可谓方法可看完咖啡\",\n    \"threed_img\":\"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n    \"threed_exposure\":\"223243444\",\n    \"specification_desc\":\"sad文如其人\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/sku/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"sku",
+								"create"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": null,\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/sku/update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/sku/update",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"sku",
+						"update"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":3,\n    \"title\":\"青花瓷222\",\n    \"category\":1,\n    \"years\":\"光绪年间的假货\",\n    \"poster\":\"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n    \"threed_img\": \"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n\t\"threed_exposure\": \"223243444\",\n    \"bottom_desc\":\"大人物疯狂可谓方法可看完咖啡\",\n    \"introduction\":\"的的微风微风微风分为位访问\",\n    \"specification_desc\":\"sad文如其人\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/sku/update",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"sku",
+								"update"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": null,\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "admin/sku/update_image",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/admin/sku/update_image",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"sku",
+						"update_image"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sku_id\":3,\n    \"cover_img\": \"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n    \"images\": [\"image/da2f4057405446eba469c2cbd84fea2a.jpeg\", \"image/da2f4057405446eba469c2cbd84fea233a.jpeg\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/admin/sku/update_image",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"admin",
+								"sku",
+								"update_image"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": null,\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "api/user/info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/user/info",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"info"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "5a8058b0a2233d913be09df870f466e2",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/user/info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"info"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": 96972,\n        \"phone\": \"13521837263\",\n        \"token\": \"5a8058b0a2233d913be09df870f466e2\",\n        \"login_time\": 1697205566,\n        \"name\": \"feixb\",\n        \"vip_level\": 0,\n        \"is_delete\": 0,\n        \"sku_ids\": \"3\",\n        \"create_time\": \"2023-10-13T13:32:16+08:00\",\n        \"update_time\": \"2023-10-13T14:40:11+08:00\"\n    },\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "api/sku/detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/sku/detail",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"sku",
+						"detail"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/sku/detail?sku_id=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"sku",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "sku_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"title\": \"青花瓷\",\n        \"cover_img\": \"https://www.atmhn.cn/static/\",\n        \"image\": [],\n        \"category\": 1,\n        \"category_desc\": \"粉彩瓷器\",\n        \"years\": \"光绪年\",\n        \"poster\": \"https://www.atmhn.cn/static/image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n        \"introduction\": \"的的微风微风微风分为位访问\", \n        \"bottom_desc\": \"大人物疯狂可谓方法可看完咖啡\",\n        \"threed_img\": \"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n        \"threed_exposure\": \"223243444\",\n        \"specification_desc\": \"sad文如其人\",\n        \"create_time\": \"2023-10-14T21:04:48+08:00\",\n        \"update_time\": \"2023-10-14T21:04:48+08:00\"\n    },\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "api/index/square",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/index/square",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"index",
+						"square"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/index/square",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"index",
+								"square"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"banner_info\": [\n            {\n                \"id\": 4,\n                \"title\": \"这是个banner\",\n                \"url\": \"www.baidu.com\",\n                \"poster\": \"..image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n                \"create_time\": \"2023-10-13T14:46:21+08:00\",\n                \"update_time\": \"2023-10-13T14:46:21+08:00\"\n            }\n        ],\n        \"skus\": [\n            {\n                \"id\": 3,\n                \"title\": \"青花瓷222\",\n                \"cover_img\": \"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n                \"image\": \"image/da2f4057405446eba469c2cbd84fea2a.jpeg,image/da2f4057405446eba469c2cbd84fea233a.jpeg\",\n                \"category\": 1,\n                \"category_desc\": \"wdwjjjee\",\n                \"years\": \"光绪年间的假货\",\n                \"poster\": \"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n                \"bottom_desc\": \"大人物疯狂可谓方法可看完咖啡\",\n                \"introduction\": \"的的微风微风微风分为位访问\",\n                \"specification_desc\": \"sad文如其人\",\n                \"is_delete\": 0,\n                \"create_time\": \"2023-10-13T22:25:03+08:00\",\n                \"update_time\": \"2023-10-13T22:35:04+08:00\"\n            }\n        ]\n    },\n    \"errmsg\": \"成功\",\n    \"errno\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "api/user/my_sku",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/user/my_sku",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"my_sku"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "461f751d2e9bd26a551a816e35054a8b",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/user/my_sku",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"my_sku"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"青花瓷\",\n            \"cover_img\": \"https://www.atmhn.cn/static/https://www.atmhn.cn/static/\",\n            \"image\": [],\n            \"category\": 1,\n            \"category_desc\": \"粉彩瓷器\",\n            \"years\": \"光绪年\",\n            \"poster\": \"https://www.atmhn.cn/static/image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n            \"bottom_desc\": \"大人物疯狂可谓方法可看完咖啡\",\n            \"threed_img\": \"image/da2f4057405446eba469c2cbd84fea2a.jpeg\",\n            \"threed_exposure\": \"223243444\",\n            \"specification_desc\": \"sad文如其人\",\n            \"create_time\": \"2023-10-14T21:04:48+08:00\",\n            \"update_time\": \"2023-10-14T21:04:48+08:00\"\n        }\n    ],\n    \"errmsg\": \"success\",\n    \"errno\": 0\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io"
+		}
+	]
+}
