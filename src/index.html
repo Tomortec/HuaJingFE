@@ -9,9 +9,18 @@
 </head>
 <body>
     <script>
+        let link = document.createElement("link");
+        link.rel = "preload";
+        link.fetchpriority = "high";
+        link.as = "image";
+        link.type = "image/png";
         if(window.matchMedia("(min-width: 768px)").matches) {
             document.title = "华境-共享共建的艺术品数字化交流平台";
+            link.href = require('./assets/home/desktop/image-home-bg.png');
+        } else {
+            link.href = require('./assets/home/image-home-bg.png');
         }
+        document.head.appendChild(link);
     </script>
 </body>
 </html>

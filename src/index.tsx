@@ -1,5 +1,5 @@
 
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import { createRoot } from "react-dom/client"
 import {
     createBrowserRouter,
@@ -14,18 +14,9 @@ globalThis.log = log;
 import { App } from './App';
 import './App.scss';
 
-import {
-    MainPage,
-    introductionPagePaths,
-
-    // InstructionsPage,
-    // IntroductionPage,
-    // LoginPage,
-    // ModelPage,
-    // PorcelainPage,
-    // UserPage
-} from "./pages";
-import { LoadingPage, ProtectedRoute } from "./components";
+import MainPage from "./pages/main";
+import { introductionPagePaths } from "./pages/introduction/index";
+import { ProtectedRoute } from "./components";
 const LoginPage = lazy(() => import("./pages/login/index"));
 const InstructionsPage = lazy(() => import("./pages/instructions/index"));
 const IntroductionPage = lazy(() => import("./pages/introduction/index"));
@@ -82,9 +73,7 @@ const router = createBrowserRouter([
 root.render(
     // <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <Suspense fallback={<LoadingPage />}>
-                <RouterProvider router={router} />
-            </Suspense>
+            <RouterProvider router={router} />
         </QueryClientProvider>
     // </React.StrictMode>
 );
