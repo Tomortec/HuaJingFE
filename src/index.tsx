@@ -17,12 +17,13 @@ import './App.scss';
 import MainPage from "./pages/main";
 import { introductionPagePaths } from "./pages/introduction/index";
 import { ProtectedRoute } from "./components";
-const LoginPage = lazy(() => import("./pages/login/index"));
-const InstructionsPage = lazy(() => import("./pages/instructions/index"));
-const IntroductionPage = lazy(() => import("./pages/introduction/index"));
-const ModelPage = lazy(() => import("./pages/model/index"));
-const PorcelainPage = lazy(() => import("./pages/porcelain/index"));
-const UserPage = lazy(() => import("./pages/user/index"));
+
+const LoginPage =        lazy(() => import(/* webpackChunkName: "LoginPage" */ "./pages/login/index"));
+const InstructionsPage = lazy(() => import(/* webpackChunkName: "InstructionsPage" */ "./pages/instructions/index"));
+const IntroductionPage = lazy(() => import(/* webpackChunkName: "IntroductionPage" */ "./pages/introduction/index"));
+const ModelPage =        lazy(() => import(/* webpackChunkName: "ModelPage" */ "./pages/model/index"));
+const PorcelainPage =    lazy(() => import(/* webpackChunkName: "PorcelainPage" */ "./pages/porcelain/index"));
+const UserPage =         lazy(() => import(/* webpackChunkName: "UserPage" */ "./pages/user/index"));
 
 const rootElement = document.createElement('div');
 rootElement.id = 'root';

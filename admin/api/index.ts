@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import { PorcelainData, PorcelainCategoryMapper, UserData, PorcelainCategoryDescMapper } from "../interfaces";
-import { toNumber } from "lodash";
+import _toNumber from "lodash/toNumber";
 
 /* ----------------- Login Module ------------------ */
 
@@ -110,7 +110,7 @@ export const createUser = async (token: string, user: UserData): Promise<boolean
 };
 
 export const deleteUser = async (token: string, user: UserData): Promise<boolean> => {
-    const id = toNumber(user.id);
+    const id = _toNumber(user.id);
     if(Number.isNaN(id)) return false;
     return await userManagementPost("/admin/user/delete", {
         "id": id
@@ -118,7 +118,7 @@ export const deleteUser = async (token: string, user: UserData): Promise<boolean
 };
 
 export const updateUser = async (token: string, user: UserData): Promise<boolean> => {
-    const id = toNumber(user.id);
+    const id = _toNumber(user.id);
     if(Number.isNaN(id)) return false;
     return await userManagementPost("/admin/user/update", {
         "id": id,
@@ -208,7 +208,7 @@ export const createPorcelain = async (token: string, porcelain: PorcelainData): 
 };
 
 export const deletePorcelain = async (token: string, porcelain: PorcelainData): Promise<boolean> => {
-    const id = toNumber(porcelain.id);
+    const id = _toNumber(porcelain.id);
     if(Number.isNaN(id)) return false;
     return await porcelainManagementPost("/admin/sku/delete", {
         "id": id
@@ -216,7 +216,7 @@ export const deletePorcelain = async (token: string, porcelain: PorcelainData): 
 };
 
 export const updatePorcelain = async (token: string, porcelain: PorcelainData): Promise<boolean> => {
-    const id = toNumber(porcelain.id);
+    const id = _toNumber(porcelain.id);
     if(Number.isNaN(id)) return false;
     return await porcelainManagementPost("/admin/sku/update", {
         "id": id,
@@ -238,7 +238,7 @@ const checkLocalBlobRegx = /^blob:(?<origin>[\w\+]+:\/\/(?=.{1,254}(?::|$))(?:(?
  * to prevent local URLs in data of updating to DB
  */
 export const updatePorcelainImage = async (token: string, porcelain: PorcelainData): Promise<boolean> => {
-    const id = toNumber(porcelain.id);
+    const id = _toNumber(porcelain.id);
     if(Number.isNaN(id)) return false;
     const images = porcelain.images.filter((url) => {
         !checkLocalBlobRegx.test(url)
@@ -263,7 +263,7 @@ export const uploadPorcelainImage = async (
         isDescription?: boolean,
     } = { replaceImages: false, isDescription: false  }
 ): Promise<PorcelainData> => {
-    const id = toNumber(porcelain.id);
+    const id = _toNumber(porcelain.id);
     if(Number.isNaN(id) || !files) return porcelain; // return original one
     
     const uploadedImages: string[] = [];
@@ -302,7 +302,7 @@ export const uploadPorcelainModel = async (
     porcelain: PorcelainData,
     model: File
 ): Promise<PorcelainData> => {
-    const id = toNumber(porcelain.id);
+    const id = _toNumber(porcelain.id);
     if(Number.isNaN(id) || !model) return porcelain; // return original one
 
     const formData = new FormData();

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { range } from "lodash";
+import _range from "lodash/range";
 
 import { Page } from "../page";
 import { DynamicImage, DynamicImageAnim } from "../../components";
@@ -37,7 +37,7 @@ const locationConfig: LocationConfiguration = {
 
 export const assetsSource = (isDesktop: boolean): string[] => {
     return Object.values(locationConfig).reduce((prev, cnt) => (
-        [...prev, ...range(cnt[isDesktop ? "desktopImageNum" : "imageNum"]).map((i) => (
+        [...prev, ..._range(cnt[isDesktop ? "desktopImageNum" : "imageNum"]).map((i) => (
             require(`../../assets/introduction${isDesktop ? "/desktop" : ""}/image-introduction-${cnt.name}-${i}.png`)
         ))]
     ), [] as string[]);
@@ -62,7 +62,7 @@ export const IntroductionPage = () => {
         <Page pageName={config.name + "Page"} noTopPadding={noTopPadding}>
             <div>
                 {
-                    range(imageNum).map((i) => (
+                    _range(imageNum).map((i) => (
                         <DynamicImage key={i} src={require(`../../assets/introduction${imageDir}/image-introduction-${config.name}-${i}.png`)}
                             anim={DynamicImageAnim.SlideInFromBottom} lazy />
                     ))

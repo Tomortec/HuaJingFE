@@ -1,6 +1,6 @@
 
 import React from "react";
-import { range } from "lodash";
+import _range from "lodash/range";
 
 import { Page } from "../page";
 import { DynamicImage, DynamicImageAnim } from "../../components";
@@ -9,7 +9,7 @@ import { useDesktop } from "../../hooks/useDesktop";
 import "./index.scss";
 
 export const assetsSource = (isDesktop: boolean): string[] => {
-    return range(isDesktop ? 3 : 5).map((i) => (
+    return _range(isDesktop ? 3 : 5).map((i) => (
         require(`../../assets/instructions${isDesktop ? "/desktop" : ""}/image-instructions-${i}.png`)
     ));
 };

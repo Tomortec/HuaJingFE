@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useContext } from "react";
-import { clamp } from "lodash";
+import _clamp from "lodash/clamp";
 
 import { ImageUploader } from "./image-uploader";
 import { useModal } from "../hooks/useModal";
@@ -74,7 +74,7 @@ export const ImageSelectionModal = () => {
     }, [payload]);
 
     const removeImage = (i: number) => {
-        setCoverIndex(clamp(coverIndex, 0, images.length - 2));
+        setCoverIndex(_clamp(coverIndex, 0, images.length - 2));
         setImages(
             images.slice(0, i).concat(images.slice(i + 1, images.length))
         );

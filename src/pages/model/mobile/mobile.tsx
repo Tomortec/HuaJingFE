@@ -1,7 +1,7 @@
 
 import React, { useRef, useEffect } from "react";
 
-import { clamp } from "lodash";
+import _clamp from "lodash/clamp";
 
 import { useSwiper } from "swiper/react";
 
@@ -72,11 +72,11 @@ export const SingleModelPageForMobile = (props: { id: string, data: SolidPorcela
                 const initialRadius = Number(modelViewer.getAttribute("data-initial-radius"));
                 const baseFactor = Math.max(modelViewer.getCameraOrbit().radius, initialRadius) * Math.log(modelViewer.getMaximumFieldOfView());
                 const vw = $(window).width();
-                const translationX = clamp(deltaX1 * baseFactor * 0.0005, vw * 0.01);
-                const translationY = clamp(deltaY1 * baseFactor * 0.0005, vw * 0.01);
+                const translationX = _clamp(deltaX1 * baseFactor * 0.0005, vw * 0.01);
+                const translationY = _clamp(deltaY1 * baseFactor * 0.0005, vw * 0.01);
                 if(Math.abs(translationX) < 0.5 && Math.abs(translationY) < 0.5) { return; }
-                translationDelta.current.x = clamp(translationDelta.current.x + translationX, -0.5 * vw, 0.5 * vw);
-                translationDelta.current.y = clamp(translationDelta.current.y + translationY, -0.5 * vw, 0.5 * vw);
+                translationDelta.current.x = _clamp(translationDelta.current.x + translationX, -0.5 * vw, 0.5 * vw);
+                translationDelta.current.y = _clamp(translationDelta.current.y + translationY, -0.5 * vw, 0.5 * vw);
                 $(modelViewer).css({
                     transform: `translate(${translationDelta.current.x}px, ${translationDelta.current.y}px)`
                 });

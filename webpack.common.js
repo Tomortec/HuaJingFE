@@ -30,15 +30,29 @@ module.exports = {
         }),
         new FaviconsWebpackPlugin({
             logo: "./src/assets/image-logo.png",
-            prefix: "favicons/"
+            prefix: "favicons/",
+            favicons: {
+                icons: {
+                    android: false,
+                    appleIcon: false,
+                    appleStartup: false,
+                    coast: false,
+                    favicons: true,
+                    firefox: false,
+                    windows: false,
+                    yandex: false
+                }
+            }
         })
     ],
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "[name].bundle.js",
+        chunkFilename: "[name].bundle.js",
         clean: true,
     },
     optimization: {
+        minimize: true,
         splitChunks: {
             chunks: "all",
             cacheGroups: {
@@ -62,21 +76,42 @@ module.exports = {
                     name: "jquery",
                     chunks: "all"
                 },
+                gsap: {
+                    test: /[\\/]node_modules[\\/]gsap[\\/]/,
+                    name: "gsap",
+                    chunks: "all"
+                },
+                swiper: {
+                    test: /[\\/]node_modules[\\/]swiper[\\/]/,
+                    name: "swiper",
+                    chunks: "all"
+                },
             }
         },
     },
     module: {
         rules: [
             {
+                test: /\.tsx?$/,
+                use: [
+                    {
+                        loader: "babel-loader",
+                        options: {
+                            plugins: ["lodash"],
+                            presets: [["@babel/env", { modules: false }]]
+                        }
+                    },
+                    {
+                        loader: "ts-loader",
+                    }
+                ],
+                exclude: "/node_modules/",
+            },
+            {
                 test: /\.m?js$/,
                 resolve: {
                     fullySpecified: false
                 }
-            },
-            {
-                test: /\.tsx?$/,
-                use: "ts-loader",
-                exclude: "/node_modules/",
             },
             {
                 test: /\.s[ac]ss$/i,
