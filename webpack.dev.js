@@ -13,8 +13,8 @@ module.exports = merge(common, {
         static: "./dist",
         hot: true,
         proxy: {
-            "/admin": "http://localhost:3000/",
-            "/api": "http://localhost:3001/"
+            "/admin": "http://localhost:6060/",
+            "/api": "http://localhost:6060/"
         }
     },
     output: {
