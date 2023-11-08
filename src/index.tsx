@@ -1,5 +1,5 @@
 
-import React, { lazy } from "react";
+import React, { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client"
 import {
     createBrowserRouter,
@@ -15,10 +15,16 @@ import { App } from './App';
 import './App.scss';
 
 import MainPage from "./pages/main";
+import LoginPage from "./pages/login";
+// import InstructionsPage from "./pages/instructions";
+// import IntroductionPage from "./pages/introduction";
+// import ModelPage from "./pages/model";
+// import PorcelainPage from "./pages/porcelain";
+// import UserPage from "./pages/user";
 import { introductionPagePaths } from "./pages/introduction/index";
-import { ProtectedRoute } from "./components";
+import { ProtectedRoute, LoadingPage } from "./components";
 
-const LoginPage =        lazy(() => import(/* webpackChunkName: "LoginPage" */ "./pages/login/index"));
+// const LoginPage =        lazy(() => import(/* webpackChunkName: "LoginPage" */ "./pages/login/index"));
 const InstructionsPage = lazy(() => import(/* webpackChunkName: "InstructionsPage" */ "./pages/instructions/index"));
 const IntroductionPage = lazy(() => import(/* webpackChunkName: "IntroductionPage" */ "./pages/introduction/index"));
 const ModelPage =        lazy(() => import(/* webpackChunkName: "ModelPage" */ "./pages/model/index"));
