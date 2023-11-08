@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
@@ -78,7 +78,8 @@ export const UserPage = () => {
     const { 
         data: userInfo, 
         isSuccess: isUserDataSuccess, 
-        isPlaceholderData: isUserDataPlaceholder 
+        isPlaceholderData: isUserDataPlaceholder,
+        isFetching: isUserDataFetching 
     } = useQuery({
         queryKey: [getUserDataApiKey],
         queryFn: () => getUserData(user),
@@ -88,7 +89,8 @@ export const UserPage = () => {
     const { 
         data: collections, 
         isSuccess: isCollectionsDataSuccess,
-        isPlaceholderData: isCollectionsDataPlaceholder
+        isPlaceholderData: isCollectionsDataPlaceholder,
+        isFetching: isCollectionsDataFetching
     } = useQuery({
         queryKey: [getCollectionsDataApiKey],
         queryFn: () => getCollectionsData(user),
@@ -96,19 +98,30 @@ export const UserPage = () => {
         staleTime: 60 * 3000 // 3 mins
     });
 
+    const [shouldShowPlaceholder, setShouldShowPlaceholder] = React.useState(false);
+
+    useEffect(() => {
+        if(isUserDataFetching || isCollectionsDataFetching) {
+            setShouldShowPlaceholder(true);
+        } else {
+            const timer = setTimeout(() => setShouldShowPlaceholder(false), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [isUserDataFetching, isCollectionsDataFetching]);
+
     return (
         <Page pageName="userPage" bgImage={ isDesktop ? "" : userBgImage }>
             <>
                 { isDesktop && <img className="bg-image" src={userBgImageForDesktop} alt="" /> }
                 <div>
                     <div id="hj-user-info">
-                        <UserInfoComponent info={userInfo} isReady={isUserDataSuccess && !isUserDataPlaceholder} />
+                        <UserInfoComponent info={userInfo} isReady={!shouldShowPlaceholder && isUserDataSuccess && !isUserDataPlaceholder} />
                     </div>
                     <div id="hj-user-collections">
                         <span className="collection-header">我的藏品</span>
-                        <ReactPlaceholder ready={isCollectionsDataSuccess && !isCollectionsDataPlaceholder}
+                        <ReactPlaceholder ready={!shouldShowPlaceholder && isCollectionsDataSuccess && !isCollectionsDataPlaceholder}
                             showLoadingAnimation type="text" rows={5}
-                            style={{ width: "100%", height: "400px", marginTop: "5vh" }}>
+                            style={{ width: "100%", height: "500px", marginTop: "5vh" }}>
                             {
                                 collections.length > 0 ?
                                 <div className="collections-container">

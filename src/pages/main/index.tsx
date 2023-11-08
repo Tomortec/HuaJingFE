@@ -123,7 +123,7 @@ export const MainPage = () => {
 
     const isDesktop = useDesktop();
 
-    const { data: modelInfo, isSuccess, isPlaceholderData } = useQuery({
+    const { data: modelInfo, isSuccess, isPlaceholderData, isFetching } = useQuery({
         queryKey: [getAllSolidPorcelainDataApiKey],
         refetchOnMount: false,
         queryFn: () => getAllSolidPorcelainData(),
@@ -141,6 +141,8 @@ export const MainPage = () => {
         placeholderData: Array(5).fill(defaultSolidPorcelainData),
         staleTime: Infinity
     });
+
+    const [shouldShowPlaceholder, setShouldShowPlaceholder] = useState(false);
 
     useLayoutEffect(() => {
         setPageHeight(`${$(".page-container").height()}px`);
@@ -170,6 +172,15 @@ export const MainPage = () => {
             }
         }, 500);
     }, []);
+
+    useEffect(() => {
+        if(isFetching) {
+            setShouldShowPlaceholder(true);
+        } else {
+            const timer = setTimeout(() => setShouldShowPlaceholder(false), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [isFetching]);
 
     // Cache Images
     useEffect(() => {
@@ -205,8 +216,8 @@ export const MainPage = () => {
                     <SectionHeader text="数字臻品" enText="DIGITAL MASTERPIECE" />
                     <div className="model-cards-container">
                         <MediaWrapper>
-                            <ModelLinkCardForDesktop info={modelInfo} isReady={isSuccess && !isPlaceholderData} />
-                            <ModelLinkCardForMobile info={modelInfo} isReady={isSuccess && !isPlaceholderData} />
+                            <ModelLinkCardForDesktop info={modelInfo} isReady={!shouldShowPlaceholder && isSuccess && !isPlaceholderData} />
+                            <ModelLinkCardForMobile  info={modelInfo} isReady={!shouldShowPlaceholder && isSuccess && !isPlaceholderData} />
                         </MediaWrapper>
                     </div>
                 </div>

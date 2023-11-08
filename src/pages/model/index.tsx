@@ -28,7 +28,7 @@ import qrcodeImage from "../../assets/image-qrcode.png";
 export const ModelPage = () => {
     const { modelId } = useParams();
     const [swiper, setSwiper] = useState(null);
-    const { data: allModelData, isSuccess, isPlaceholderData } = useQuery({
+    const { data: allModelData, isSuccess, isPlaceholderData, isFetching } = useQuery({
         queryKey: [getAllPorcelainDataApiKey],
         queryFn: () => getAllPorcelainData(),
         // if you are using `Array(3).fill` here, it will return a type of `any[]`
@@ -36,6 +36,7 @@ export const ModelPage = () => {
         placeholderData: [defaultSolidPorcelainData, defaultSolidPorcelainData, defaultSolidPorcelainData],
         staleTime: Infinity
     });
+    const [shouldShowPlaceholder, setShouldShowPlaceholder] = useState(false);
 
     // https://tanstack.com/query/v4/docs/react/guides/migrating-to-react-query-4#onsuccess-is-no-longer-called-from-setquerydata
     useEffect(() => {
@@ -45,6 +46,15 @@ export const ModelPage = () => {
             console.log(targetIndex);
         }
     }, [swiper, allModelData]);
+
+    useEffect(() => {
+        if(isFetching) {
+            setShouldShowPlaceholder(true);
+        } else {
+            const timer = setTimeout(() => setShouldShowPlaceholder(false), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [isFetching]);
 
     return (
         <Page pageName="modelPage" resetScroll>
@@ -60,8 +70,8 @@ export const ModelPage = () => {
                             allModelData.map((data, i) => (
                                 <SwiperSlide key={i}>
                                     <MediaWrapper>
-                                        <SingleModelPageForDesktop id={data.id} data={data} isReady={isSuccess && !isPlaceholderData} />
-                                        <SingleModelPageForMobile id={data.id} data={data} isReady={isSuccess && !isPlaceholderData} />
+                                        <SingleModelPageForDesktop id={data.id} data={data} isReady={!shouldShowPlaceholder && isSuccess && !isPlaceholderData} />
+                                        <SingleModelPageForMobile  id={data.id} data={data} isReady={!shouldShowPlaceholder && isSuccess && !isPlaceholderData} />
                                     </MediaWrapper>
                                 </SwiperSlide>
                             ))

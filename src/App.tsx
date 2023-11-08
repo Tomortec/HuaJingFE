@@ -195,7 +195,6 @@ export const App = () => {
                 }); 
 
                 wx.error((error) => {
-                    // alert(error);
                     globalThis.log.error(error);
                 });
             });
