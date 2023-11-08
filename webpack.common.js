@@ -114,6 +114,15 @@ module.exports = {
                 }
             },
             {
+                test: /\.html$/i,
+                loader: "html-loader",
+                exclude: [
+                    "/node_modules/", 
+                    path.resolve(__dirname, "./src/index.html"), 
+                    path.resolve(__dirname, "./admin/index.html")
+                ],
+            },
+            {
                 test: /\.s[ac]ss$/i,
                 use: [
                     MiniCssExtractPlugin.loader, 

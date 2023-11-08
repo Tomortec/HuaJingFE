@@ -7,12 +7,11 @@ import { requestForLoggingIn, requestVerificationCode } from "./api";
 const phoneNumberRegex = /^(?:\+?86)?1(?:3\d{3}|5[^4\D]\d{2}|8\d{3}|7(?:[0-35-9]\d{2}|4(?:0\d|1[0-2]|9\d))|9[0-35-9]\d{2}|6[2567]\d{2}|4[579]\d{2})\d{6}$/;
 const verificationCodeRegex = /^\d{6}$/;
 
-const userAgreementText = `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum`;
-
 export const LoginForm = (props: {
     login: (token: string) => void
 }) => {
 
+    const [userAgreementText, setUserAgreementText] = useState("加载中，请稍等...");
     const [agreementChecked, setAgreementChecked] = useState(false);
     const [isShowingAgreement, setIsShowingAgreement] = useState(false);
     const [readyForRequestCode, setReadyForRequestCode] = useState(false);
@@ -81,6 +80,11 @@ export const LoginForm = (props: {
             .attr("placeholder", "验证码错误").trigger("blur");
     };
 
+    const getUserAgreementText = () => {
+        import("./privacy.html")
+            .then((res) => res && res.default && setUserAgreementText(res.default));
+    };
+
     return (
         <div className="login-form">
             <div>
@@ -108,7 +112,10 @@ export const LoginForm = (props: {
                         className="form-check-input" checked={agreementChecked}
                         onChange={handleAgreementCheckChanged} />
                     <label htmlFor="agreementCheck" className="form-label">
-                        同意<a href="#" onClick={() => setIsShowingAgreement(true)}>用户协议</a>
+                        同意<a href="#" onClick={() => {
+                            setIsShowingAgreement(true);
+                            getUserAgreementText();
+                        }}>用户协议</a>
                     </label>
                 </div>
             </div>
@@ -126,8 +133,8 @@ export const LoginForm = (props: {
                 <div className="user-agreement-container">
                     <div className="mask" onClick={() => setIsShowingAgreement(false)}></div>
                     <div className="text-container">
-                        <div className="header">用户协议</div>
-                        <div className="content">{userAgreementText}</div>
+                        <div className="header">用户协议及隐私政策</div>
+                        <div className="content" dangerouslySetInnerHTML={{ __html: userAgreementText }}></div>
                         <div className="agree-btn" onClick={() => { setAgreementChecked(true); setIsShowingAgreement(false) }}>同意协议</div>
                     </div>
                 </div>

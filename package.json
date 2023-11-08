@@ -32,6 +32,7 @@
     "favicons": "^7.1.4",
     "favicons-webpack-plugin": "^6.0.1",
     "file-loader": "^6.2.0",
+    "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
