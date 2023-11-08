@@ -9,7 +9,7 @@ import { PorcelainTable } from "./components/porcelain-table";
 import { UserModal } from "./components/user-modal";
 import { PorcelainModal } from "./components/porcelain-modal";
 
-import { AuthContext, AuthContextType } from "./hooks/authContext";
+import { useAuth } from "./hooks/useAuth";
 import { ModalProvider } from "./hooks/useModal";
 import { useDevelopmentMode } from "./hooks/useDevelopmentMode";
 
@@ -44,7 +44,7 @@ const TabContent = (props: { tab: Tabs }) => {
 
 export const App = () => {
     const [cntTab, setCntTab] = useState(Tabs.UserData);
-    const [auth, setAuth] = useState(null);
+    const { auth } = useAuth();
 
     useEffect(() => {
         if($("#hj-navbar").length) {
@@ -58,12 +58,6 @@ export const App = () => {
         }
     });
 
-    // useEffect(() => {
-    //     if(useDevelopmentMode().isDevelopment) {
-    //         axios.defaults.baseURL = "https://ebbfcf54-9301-4d66-8be8-5a20d7cf90f9.mock.pstmn.io";
-    //     }
-    // }, []);
-
     const tabConfig: TabConfig[] = [
         {
             text: "管理用户",
@@ -75,14 +69,8 @@ export const App = () => {
         }
     ];
 
-    const authValue = useMemo((): AuthContextType => ({
-        auth: auth,
-        login(data) { setAuth(data) },
-        logout() { setAuth(null) },
-    }), [auth]);
-
     return (
-        <AuthContext.Provider value={authValue}>
+        <>
             {
                 auth ?
                 <>
@@ -95,6 +83,6 @@ export const App = () => {
                 </> :
                 <LoginModule />
             }
-        </AuthContext.Provider>
+        </>
     )
 };

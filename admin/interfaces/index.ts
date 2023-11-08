@@ -1,9 +1,4 @@
 
-export interface AuthData {
-    id: string;
-    phoneNumber: string;
-    token: string;
-}
 
 export interface UserData {
     readonly id: string;
