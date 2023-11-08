@@ -1,9 +1,7 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-const path = require('path');
 const webpack = require("webpack");
-const MockjsWebpackPlugin = require('mockjs-webpack-plugin');
 
 module.exports = merge(common, {
     mode: "development",
@@ -24,13 +22,5 @@ module.exports = merge(common, {
         new webpack.DefinePlugin({
             "process.env.NODE_ENV": JSON.stringify("development")
         }),
-        new MockjsWebpackPlugin({
-            path: path.join(__dirname, "./admin/__mock__"),
-            port: 3000
-        }),
-        new MockjsWebpackPlugin({
-            path: path.join(__dirname, "./src/__mock__"),
-            port: 3001
-        })
     ]
 });
