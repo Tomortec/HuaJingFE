@@ -19,13 +19,12 @@ import qrcodeImage from "../assets/image-qrcode.png";
 const BasicInfoTextComponent = (
     props: { 
         icon: string, title: string, 
-        text: string, shouldAlignLeft?: boolean,
-        isReady: boolean
+        text: string, isReady: boolean
     }
 ) => {
     return (
         <div className="basic-info">
-            <div className="header" style={props.shouldAlignLeft ? { "justifyContent": "flex-start" } : {}}>
+            <div className="header">
                 { 
                     props.icon.startsWith("bi") ? 
                     <i className={props.icon}></i> :
@@ -36,7 +35,9 @@ const BasicInfoTextComponent = (
             <ReactPlaceholder ready={props.isReady}
                 showLoadingAnimation type="rect"
                 style={{ width: "100%", height: "1.25rem" }}>
-                <span className="content" style={props.shouldAlignLeft ? { "textAlign": "left" } : {}}>{props.text}</span>
+                <div className="content-wrapper">
+                    <span className="content">{props.text}</span>
+                </div>
             </ReactPlaceholder>
         </div>
     )
@@ -77,9 +78,18 @@ export const InfoContainer = (props: {
                 <div className="basic-info-container">
                     { isDesktop && <span className="basic-info-title zh-serif-text">{data.title}</span> }
                     <BasicInfoTextComponent icon={ageIcon} title="年代" text={data.age} isReady={props.isReady} />
-                    <BasicInfoTextComponent icon={classIcon} title="品类" text={data.classification} isReady={props.isReady} />
-                    <BasicInfoTextComponent icon={bottomStampIcon} title="底款" text={data.bottomStamp} isReady={props.isReady} />
-                    <BasicInfoTextComponent icon={sizeIcon} title="尺寸说明" text={data.sizeIntroduction} shouldAlignLeft isReady={props.isReady} />
+                    {
+                        isDesktop ?
+                        <>
+                            <BasicInfoTextComponent icon={classIcon} title="品类" text={data.classification} isReady={props.isReady} />
+                            <BasicInfoTextComponent icon={bottomStampIcon} title="底款" text={data.bottomStamp} isReady={props.isReady} />
+                        </> :
+                        <>
+                            <BasicInfoTextComponent icon={bottomStampIcon} title="底款" text={data.bottomStamp} isReady={props.isReady} />
+                            <BasicInfoTextComponent icon={classIcon} title="品类" text={data.classification} isReady={props.isReady} />
+                        </>
+                    }
+                    <BasicInfoTextComponent icon={sizeIcon} title="尺寸说明" text={data.sizeIntroduction} isReady={props.isReady} />
                     { isDesktop && <QRCodePopup pageId={props.pageId} /> }
                 </div>
             </div>

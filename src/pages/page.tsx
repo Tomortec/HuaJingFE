@@ -51,7 +51,7 @@ export const Page = (props: PageProps) => {
     return (
         <>
             <div>
-                { props.bgImage && <DynamicImage src={props.bgImage} classNames="bg-image" anim={DynamicImageAnim.FadeIn} /> }
+                { props.bgImage && <DynamicImage src={props.bgImage} classNames="page-bg-image" anim={DynamicImageAnim.FadeIn} /> }
                 <div id={props.pageName} className="page-container">
                     {props.children}
                 </div>

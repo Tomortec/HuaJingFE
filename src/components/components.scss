@@ -185,8 +185,14 @@
         gap: $basic-info-container-row-gap $basic-info-container-column-gap;
 
         .basic-info {
+            width: fit-content;
             display: flex;
             flex-direction: column;
+
+            &:nth-of-type(1) { justify-self: flex-start; }
+            &:nth-of-type(2) { justify-self: center; }
+            &:nth-of-type(3) { justify-self: flex-end; }
+            &:nth-of-type(4) { justify-self: flex-start; align-items: flex-start; } 
 
             .header {
                 display: flex;
@@ -209,12 +215,17 @@
                 }
             }
 
-            .content {
-                word-break: break-word;
+            .content-wrapper {
+                display: flex;
+                .content {
+                    flex-grow: 1;
 
-                text-align: center;
-                font-size: $basic-info-content-font-size;
-                font-weight: $basic-info-content-font-weight;
+                    word-break: break-word;
+    
+                    text-align: center;
+                    font-size: $basic-info-content-font-size;
+                    font-weight: $basic-info-content-font-weight;
+                }
             }
 
             // &:first-child, &:nth-child(2) {
@@ -299,6 +310,7 @@
                 padding: 5vh 2rem;
 
                 .basic-info {
+                    justify-self: auto;
                     align-items: flex-start;
                     .content {
                         text-align: left

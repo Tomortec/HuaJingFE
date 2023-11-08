@@ -77,7 +77,7 @@ a {
     }
 }
 
-.bg-image:has(+ .page-container) {
+.page-bg-image {
     position: absolute;
     width: 100%;
 }
