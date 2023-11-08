@@ -1,7 +1,8 @@
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 import { Tooltip } from "bootstrap";
+import _toNumber from "lodash/toNumber";
 
 import "datatables.net-responsive-bs5";
 import "datatables.net-plugins/sorting/chinese-string";
@@ -9,8 +10,8 @@ import "datatables.net-plugins/sorting/chinese-string";
 import { Table } from "./table";
 import { UserData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
-import { AuthContext } from "../hooks/authContext";
-// import { getPorcelainById } from "../api";
+import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
 import { deleteUser, getAllUserData } from "../api";
 import { UserModalId } from "./user-modal";
 
@@ -18,8 +19,9 @@ export const UserTable = () => {
     const tableId = "hj-user-table";
     const [dataTable, setDataTable] = useState<DataTables.Api>(null);
 
-    const { auth } = useContext(AuthContext);
+    const { auth } = useAuth();
     const { showModal } = useModal();
+    const { showAlert } = useAlert();
 
     const showDialog = (info?: UserData) => {
         showModal(`#${UserModalId}`, info);
@@ -52,6 +54,7 @@ export const UserTable = () => {
                 ) as UserData;
             } catch(error) {
                 console.error(error);
+                showAlert(error, true);
                 return null;
             }
         };
@@ -77,13 +80,13 @@ export const UserTable = () => {
         });
 
         $(document).on("click", `#${tableId} .delete-btn`, async (event) => {
-            if(!auth || !auth.token) {
-                alert("未登录！\n请刷新页面");
+            if(!auth) {
+                showAlert("未登录！\n请刷新页面", true);
             } else {
                 const rawData = getRowData(event);
                 if(rawData && showDeletionConfirm(rawData)) {
-                    const res = await deleteUser(auth.token, rawData);
-                    alert(res ? "删除用户成功！" : "发生错误");
+                    const res = await deleteUser(auth, rawData);
+                    showAlert(res ? `删除用户${rawData.id}成功！` : "发生错误", !res);
                     res && dataTable.row((_, data) => data.id == rawData.id).remove().draw();
                 }    
             }
@@ -153,8 +156,10 @@ export const UserTable = () => {
                 // lastLoginTime
                 targets: 5,
                 render: (data, type) => {
-                    if(type == "display" && data) {
-                        return new Date(data).toLocaleString();
+                    const loginTime = _toNumber(data);
+                    if(type == "display" && loginTime) {
+                        // server returns seconds, but Date() accepts milliseconds
+                        return (new Date(loginTime * 1000)).toLocaleString("zh-CN");
                     }
                     return data;
                 }
@@ -179,7 +184,7 @@ export const UserTable = () => {
 
     return (
         <>
-            <Table dataLoader={() => getAllUserData(auth.token)} id={tableId} 
+            <Table dataLoader={() => getAllUserData(auth)} id={tableId} 
                 newButtonCaption="新增用户" 
                 newButtonHandler={showDialog}
                 dataTableOptions={dataTableOptions}

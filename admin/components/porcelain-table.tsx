@@ -8,7 +8,8 @@ import "datatables.net-plugins/sorting/chinese-string";
 import { Table } from "./table";
 import { PorcelainData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
-import { AuthContext } from "../hooks/authContext";
+import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
 import { PorcelainModalId } from "./porcelain-modal";
 import { ImageSelectionModalId } from "./image-selection-modal";
 import { deletePorcelain, getAllPorcelainData } from "../api";
@@ -17,8 +18,9 @@ export const PorcelainTable = () => {
     const tableId = "hj-porcelain-table";
     const [dataTable, setDataTable] = useState<DataTables.Api>(null);
 
-    const { auth } = useContext(AuthContext);
+    const { auth } = useAuth();
     const { showModal } = useModal();
+    const { showAlert } = useAlert();
 
     const showDialog = (info?: PorcelainData) => {
         showModal(`#${PorcelainModalId}`, info);
@@ -52,6 +54,7 @@ export const PorcelainTable = () => {
                 ) as PorcelainData;
             } catch(error) {
                 console.error(error);
+                showAlert(error, true);
                 return null;
             }
         };
@@ -86,13 +89,13 @@ export const PorcelainTable = () => {
         });
 
         $(document).on("click", `#${tableId} .delete-btn`, async (event) => {
-            if(!auth || !auth.token) {
-                alert("未登录！\n请刷新页面");
+            if(!auth) {
+                showAlert("未登录！\n请刷新页面", true);
             } else {
                 const rawData = getRowData(event);
                 if(rawData && showDeletionConfirm(rawData)) {
-                    const res = await deletePorcelain(auth.token, rawData);
-                    alert(res ? "删除藏品成功！" : "发生错误");
+                    const res = await deletePorcelain(auth, rawData);
+                    showAlert(res ? `删除藏品"${rawData.name}"成功！` : "发生错误", !res);
                     res && dataTable.row((_, data) => data.id == rawData.id).remove().draw();
                 }
             }
@@ -206,7 +209,7 @@ export const PorcelainTable = () => {
 
     return (
         <>
-            <Table dataLoader={() => getAllPorcelainData(auth.token)} id={tableId}
+            <Table dataLoader={() => getAllPorcelainData(auth)} id={tableId}
                 newButtonCaption="新增藏品"
                 newButtonHandler={showDialog}
                 dataTableOptions={dataTableOptions}

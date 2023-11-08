@@ -1,11 +1,16 @@
 
-import React, { useContext } from "react";
-import { AuthContext } from "../hooks/authContext";
+import React from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export const Navbar = () => {
-    const { auth } = useContext(AuthContext);
+    const { logout } = useAuth();
 
-    const showAuthInfo = () => alert(`用户ID: ${auth.id}\n用户手机号: ${auth.phoneNumber}`);
+    const logoutAuth = () => {
+        if(confirm("确定退出登录吗？")) {
+            logout();
+            window.location.reload();
+        }
+    };
 
     return (
         <nav id='hj-navbar' className='
@@ -16,7 +21,7 @@ export const Navbar = () => {
                 <span>华境</span>
                 <div className='d-flex'>
                     <i style={{ cursor: "pointer" }} className='bi-person-circle' 
-                        onClick={showAuthInfo}></i>
+                        onClick={logoutAuth}></i>
                 </div>
             </div>
         </nav>

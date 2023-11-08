@@ -16,6 +16,7 @@ export const requestVerificationCode = async (phoneNumber: string): Promise<bool
         return result.status == 200;
     } catch(error) {
         console.error(error);
+        alert(error);
         return false;
     }
 };
@@ -34,6 +35,7 @@ export const requestForLogginIn = async (phoneNumber: string, vcode: string): Pr
         return rawData["token"] || "";
     } catch(error) {
         console.error(error);
+        alert(error);
         return "";
     }
 };
@@ -78,6 +80,7 @@ export const getAllUserData = async (token: string): Promise<UserData[]> => {
         return [];
     } catch(error) {
         console.error(error);
+        alert(error);
         return [];
     }
 };
@@ -96,6 +99,7 @@ const userManagementPost = async (
         return result.status == 200;
     } catch(error) {
         console.error(url, error);
+        alert(`${url}: ${error}`);
         return false;
     }
 };
@@ -167,6 +171,7 @@ export const getAllPorcelainData = async (token: string): Promise<PorcelainData[
         } as PorcelainData)) : [];
     } catch(error) {
         console.error(error);
+        alert(error);
         return [];
     }
 };
@@ -189,6 +194,7 @@ const porcelainManagementPost = async (
         return result.status == 200;
     } catch(error) {
         console.error(url, error);
+        alert(`${url}: ${error}`);
         return false;
     }
 };

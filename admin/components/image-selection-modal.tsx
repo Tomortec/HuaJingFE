@@ -1,12 +1,13 @@
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import _clamp from "lodash/clamp";
 
 import { ImageUploader } from "./image-uploader";
 import { useModal } from "../hooks/useModal";
-import { AuthContext } from "../hooks/authContext";
 import { updatePorcelain, updatePorcelainImage, uploadPorcelainImage, uploadPorcelainModel } from "../api";
 import { PorcelainData } from "../interfaces";
+import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
 
 export const ImageSelectionModalId = "image-selection-modal";
 
@@ -40,13 +41,13 @@ const ImageSelector = (props: {
 export const ImageSelectionModal = () => {
     const modalId = ImageSelectionModalId;
     const tableId = "hj-porcelain-table";
-    const { auth } = useContext(AuthContext);
+    const { auth } = useAuth();
+    const { showAlert } = useAlert();
 
     const { payload, hideModal }: {
         payload: PorcelainData,
         hideModal: (id: string) => void
     } = useModal();
-    const hideDialog = () => hideModal(`#${modalId}`);
 
     const [images, setImages] = useState<string[]>(null);
     const [newImages, setNewImages] = useState<File[]>(null);
@@ -55,6 +56,9 @@ export const ImageSelectionModal = () => {
     const [modelFile, setModelFile] = useState<File>(null);
     const [exposure, setExposure] = useState(1);
     const [isRequesting, setIsRequesting] = useState(false);
+
+    const hideDialog = () => !isRequesting && hideModal(`#${modalId}`);
+
     useEffect(() => {
         if(payload) {
             setCoverIndex(0);
@@ -91,8 +95,8 @@ export const ImageSelectionModal = () => {
     const onImageSelected = (i: number) => { setCoverIndex(i); };
     const onImagesDropped = (urls: string[], files: File[]) => { setImages(images.concat(urls)); setNewImages(files); };
     const onConfirm = async () => {
-        if(!auth || !auth.token) {
-            alert("未登录！\n请刷新页面");
+        if(!auth) {
+            showAlert("未登录！\n请刷新页面", true);
         } else {
             setIsRequesting(true);
             let newPorcelain = payload;
@@ -100,22 +104,23 @@ export const ImageSelectionModal = () => {
             newPorcelain.images = images;
             // add or replace model
             if(model && model != payload.model && modelFile) {
-                newPorcelain = await uploadPorcelainModel(auth.token, newPorcelain, modelFile);
+                newPorcelain = await uploadPorcelainModel(auth, newPorcelain, modelFile);
             }
             // add images
             if((newImages && newImages.length > 0)) {
-                newPorcelain = await uploadPorcelainImage(auth.token, newPorcelain, newImages);
+                newPorcelain = await uploadPorcelainImage(auth, newPorcelain, newImages);
             }
             // change cover image
             if(coverIndex != 0) {
                 newPorcelain.images.unshift(newPorcelain.images.splice(coverIndex, 1)[0]);
-                await updatePorcelainImage(auth.token, newPorcelain);
+                await updatePorcelainImage(auth, newPorcelain);
             }
             // change exposure
-            if(exposure && exposure != 1) {
-                newPorcelain.exposure = exposure;
-                await updatePorcelain(auth.token, newPorcelain);
-            }
+            newPorcelain.exposure = exposure;
+
+            // overall update
+            await updatePorcelain(auth, newPorcelain);
+
             updateTableData(newPorcelain);
             setIsRequesting(false);
         }

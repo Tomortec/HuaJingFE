@@ -2,12 +2,14 @@
 import React, { useState, useContext } from "react";
 
 import { requestForLogginIn, requestVerificationCode } from "../api";
-import { AuthContext } from "../hooks/authContext";
+import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
 
 const phoneNumberRegex = /^(?:\+?86)?1(?:3\d{3}|5[^4\D]\d{2}|8\d{3}|7(?:[0-35-9]\d{2}|4(?:0\d|1[0-2]|9\d))|9[0-35-9]\d{2}|6[2567]\d{2}|4[579]\d{2})\d{6}$/;
 
 export const LoginModule = () => {
-    const { login } = useContext(AuthContext);
+    const { login } = useAuth();
+    const { showAlert } = useAlert();
     const [loginId, setLoginId] = useState("");
     const [loginNumber, setLoginNumber] = useState("");
     const [disableVCodeBtn, setDisableVCodeBtn] = useState(false);
@@ -15,7 +17,7 @@ export const LoginModule = () => {
 
     const requestForVCode = async () => {
         if(!phoneNumberRegex.test(loginId)) {
-            alert("手机号错误");
+            showAlert("手机号错误", true);
             return;
         }
         if(await requestVerificationCode(loginId)) {
@@ -28,11 +30,7 @@ export const LoginModule = () => {
         setIsRequesting(true);
         const token = await requestForLogginIn(loginId, loginNumber);
         if(token) {
-            login({
-                id: "0",
-                phoneNumber: loginId,
-                token: token
-            });
+            login(token);
         }
         setIsRequesting(false);
     };

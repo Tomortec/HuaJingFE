@@ -3,10 +3,11 @@ import React, { Reducer, useEffect, useReducer, useState, useContext } from "rea
 
 import { PorcelainData, defaultPorcelainData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
-import { AuthContext } from "../hooks/authContext";
 import { ImageUploader } from "./image-uploader";
 
 import { createPorcelain, updatePorcelain, uploadPorcelainImage } from "../api";
+import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
 
 export const PorcelainModalId = "porcelain-modal";
 
@@ -30,13 +31,13 @@ export const PorcelainModal = () => {
     const modalId = PorcelainModalId;
     const tableId = "hj-porcelain-table";
 
-    const { auth } = useContext(AuthContext);
+    const { auth } = useAuth();
+    const { showAlert } = useAlert();
 
     const { payload, hideModal }: {
         payload?: PorcelainData,
         hideModal: (id: string) => void
     } = useModal();
-    const hideDialog = () => { hideModal(`#${modalId}`) };
     
     const [mode, setMode] = useState(ModalMode.Creating);
     const [newDescriptionImage, setNewDescriptionImage] = useState<File>(null);
@@ -45,6 +46,8 @@ export const PorcelainModal = () => {
         defaultPorcelainData
     );
     const [isRequesting, setIsRequesting] = useState(false);
+
+    const hideDialog = () => !isRequesting && hideModal(`#${modalId}`);
 
     useEffect(() => {
         if(payload) {
@@ -73,28 +76,28 @@ export const PorcelainModal = () => {
     }
 
     const handleSaveBtnClicked = async () => {
-        if(!auth || !auth.token) {
-            alert("未登录！\n请刷新页面");
+        if(!auth) {
+            showAlert("未登录！\n请刷新页面", true);
         } else {
             setIsRequesting(true);
             if(mode == ModalMode.Updating) {
                 let res = false;
                 let newPorcelain = state;
                 if(newDescriptionImage) {
-                    newPorcelain = await uploadPorcelainImage(auth.token, state, [newDescriptionImage], { isDescription: true });
+                    newPorcelain = await uploadPorcelainImage(auth, state, [newDescriptionImage], { isDescription: true });
                 }
-                res = await updatePorcelain(auth.token, newPorcelain);
+                res = await updatePorcelain(auth, newPorcelain);
                 res && updateTableData(newPorcelain);
-                alert(res ? "更新藏品成功！" : "发生错误");
+                showAlert(res ? `更新藏品"${newPorcelain.name}"成功！` : "发生错误", !res);
             } else {
                 if(newDescriptionImage) {
-                    const newPorcelain = await uploadPorcelainImage(auth.token, state, [newDescriptionImage], { isDescription: true  });
+                    const newPorcelain = await uploadPorcelainImage(auth, state, [newDescriptionImage], { isDescription: true  });
                     console.log(newPorcelain);
-                    const res = await createPorcelain(auth.token, newPorcelain);
-                    alert(res ? "创建藏品成功！" : "发生错误");
+                    const res = await createPorcelain(auth, newPorcelain);
+                    showAlert(res ? `创建藏品"${newPorcelain.name}"成功！` : "发生错误", !res);
                     res && updateTableData(newPorcelain);
                 } else {
-                    alert("没有上传介绍图片");
+                    showAlert("没有上传介绍图片", true);
                 }
             }
             setIsRequesting(false);

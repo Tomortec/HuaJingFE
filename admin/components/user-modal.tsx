@@ -1,9 +1,10 @@
 
-import React, { useContext, useEffect, useState, Reducer, useReducer } from "react";
+import React, { useEffect, useState, Reducer, useReducer } from "react";
 
 import { UserData, defaultUserData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
-import { AuthContext } from "../hooks/authContext";
+import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
 import { createUser, updateUser } from "../api";
 
 export const UserModalId = "user-modal";
@@ -18,13 +19,13 @@ enum ModalMode {
 export const UserModal = () => {
     const modalId = UserModalId;
     const tableId = "hj-user-table";
-    const { auth } = useContext(AuthContext);
+    const { auth } = useAuth();
+    const { showAlert } = useAlert();
 
     const { payload, hideModal }: {
         payload?: UserData,
         hideModal: (id: string) => void
     } = useModal();
-    const hideDialog = () => { hideModal(`#${modalId}`) };
 
     const [mode, setMode] = useState(ModalMode.Creating);
     const [state, setState] = useReducer<Reducer<UserData, Partial<UserData>>>(
@@ -32,6 +33,8 @@ export const UserModal = () => {
         defaultUserData
     );
     const [isRequesting, setIsRequesting] = useState(false);
+
+    const hideDialog = () => !isRequesting && hideModal(`#${modalId}`);
 
     useEffect(() => {
         if(payload) {
@@ -59,17 +62,17 @@ export const UserModal = () => {
     };
 
     const handleSaveBtnClicked = async () => {
-        if(!auth || !auth.token) {
-            alert("未登录！\n请刷新页面");
+        if(!auth) {
+            showAlert("未登录！\n请刷新页面", true);
         } else {
             setIsRequesting(true);
             if(mode == ModalMode.Updating) {
-                const res = await updateUser(auth.token, state);
-                alert(res ? "更新用户成功！" : "发生错误");
+                const res = await updateUser(auth, state);
+                showAlert(res ? `更新用户"${state.id}"成功！` : "发生错误", !res);
                 res && updateTableData(state);
             } else {
-                const res = await createUser(auth.token, state);
-                alert(res ? "创建用户成功！" : "发生错误");
+                const res = await createUser(auth, state);
+                showAlert(res ? `创建用户"${state.id}"成功！` : "发生错误", !res);
                 res && updateTableData(state);
             }
             setIsRequesting(false);
@@ -84,6 +87,12 @@ export const UserModal = () => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5>{ payload ? "修改用户数据" : "新增用户" }</h5>
+                        {
+                            mode == ModalMode.Creating &&
+                            <button type="button" className="btn btn-reset" onClick={() => setState(defaultUserData)}>
+                                <i className="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        }
                     </div>
                     <div className="modal-body">
                         {
