@@ -1,5 +1,5 @@
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 import { Tooltip } from "bootstrap";
 
@@ -151,7 +151,8 @@ export const PorcelainTable = () => {
                         const link = data as string;
                         if(!link) return "-";
 
-                        return `<a href=${link} target='_blank'>${link}</a>`
+                        const parsedLink = link.startsWith("http") || link.startsWith("/static/") ? link : `/static/${link}`;
+                        return `<a href=${parsedLink} target='_blank'>${parsedLink}</a>`
                     }
                     return data;
                 }
@@ -163,15 +164,16 @@ export const PorcelainTable = () => {
             },
             {
                 // images
-                targets: 8,
+                targets: [8],
                 render: (data, type) => {
                     if(type == "display") {
                         const links = data as string[];
                         if(!links || !links.length) return "-";
                         
-                        return links.map((link) => 
-                            `<a href=${link} target='_blank'>${link}</a><br>`
-                        ).join("");
+                        return links.filter(Boolean).map((link) => {
+                            const parsedLink = link.startsWith("http") || link.startsWith("/static/") ? link : `/static/${link}`;
+                            return `<a href=${parsedLink} target='_blank'>${parsedLink}</a><br>`
+                        }).join("");
                     }
                     return data;
                 } 

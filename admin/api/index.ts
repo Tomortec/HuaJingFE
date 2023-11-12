@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import { PorcelainData, PorcelainCategoryMapper, UserData, PorcelainCategoryDescMapper } from "../interfaces";
+import { PorcelainData, UserData } from "../interfaces";
 import _toNumber from "lodash/toNumber";
 
 /* ----------------- Login Module ------------------ */
@@ -137,8 +137,8 @@ interface RawPorcelainData {
     id: number;
     title: string;
     cover_img: string;
-    image: string;
-    category: number;
+    image: string[];
+    category_desc: string;
     years: string;
     bottom_desc: string;
     specification_desc: string;
@@ -160,12 +160,12 @@ export const getAllPorcelainData = async (token: string): Promise<PorcelainData[
             id: data.id.toString(),
             name: data.title,
             age: data.years,
-            classification: PorcelainCategoryDescMapper(data.category),
+            classification: data.category_desc,
             bottomStamp: data.bottom_desc,
             sizeIntroduction: data.specification_desc,
             description: data.poster,
             descriptionText: data.introduction,
-            images: [data.cover_img, ...data.image.split(",")],
+            images: [data.cover_img].filter(Boolean).concat(data.image || []),
             model: data.threed_img || "",
             exposure: data.threed_exposure || 1.0
         } as PorcelainData)) : [];
@@ -202,7 +202,7 @@ const porcelainManagementPost = async (
 export const createPorcelain = async (token: string, porcelain: PorcelainData): Promise<boolean> => {
     return await porcelainManagementPost("/admin/sku/create", {
         "title": porcelain.name,
-        "category": PorcelainCategoryMapper(porcelain),
+        "category_desc": porcelain.classification || "",
         "years": porcelain.age,
         "poster": porcelain.description || "",
         "introduction": porcelain.descriptionText || "",
@@ -227,7 +227,7 @@ export const updatePorcelain = async (token: string, porcelain: PorcelainData): 
     return await porcelainManagementPost("/admin/sku/update", {
         "id": id,
         "title": porcelain.name,
-        "category": PorcelainCategoryMapper(porcelain),
+        "category_desc": porcelain.classification || "",
         "years": porcelain.age,
         "poster": porcelain.description || "",
         "introduction": porcelain.descriptionText || "",
@@ -246,13 +246,15 @@ const checkLocalBlobRegx = /^blob:(?<origin>[\w\+]+:\/\/(?=.{1,254}(?::|$))(?:(?
 export const updatePorcelainImage = async (token: string, porcelain: PorcelainData): Promise<boolean> => {
     const id = _toNumber(porcelain.id);
     if(Number.isNaN(id)) return false;
-    const images = porcelain.images.filter((url) => {
+    const images: string[] = porcelain.images.filter((url) =>
         !checkLocalBlobRegx.test(url)
-    });
+    );
+    console.log("Update Porcelain Image", id, typeof id, images, typeof images);
     return await porcelainManagementPost("/admin/sku/update_image", {
-        "id": id,
+        "sku_id": id,
         "cover_img": images[0] || "",
-        "images": images.slice(1) || []
+        // DEVELOPMENT: ask backend to fix this
+        "images": (images.slice(1) || []).map((url) => url.replace(/^https(.*)\/static\//i, ""))
     }, token, porcelain, {}, "updatePorcelainImage");
 };
 
@@ -283,7 +285,7 @@ export const uploadPorcelainImage = async (
             }
         });
         console.log("uploadPorcelainImage", result.data);
-        uploadedImages.push(result.data["data"]["filePath"] || "");
+        uploadedImages.push(result.data["data"]["url"] || "");
     }
 
     const localBlobFilteredImages = porcelain.images.filter((url) =>
@@ -320,7 +322,7 @@ export const uploadPorcelainModel = async (
         }
     });
     console.log("uploadPorcelainModel", result.data);
-    const filePath = result.data["data"]["filePath"] || "";
+    const filePath = result.data["data"]["url"] || "";
     if(filePath) {
         return Object.assign({}, porcelain, {
             model: filePath

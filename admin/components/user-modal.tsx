@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState, Reducer, useReducer } from "react";
 
+import _toNumber from "lodash/toNumber";
 import { UserData, defaultUserData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
 import { useAuth } from "../hooks/useAuth";
@@ -48,17 +49,22 @@ export const UserModal = () => {
 
     const updateTableData = (newData: UserData) => {
         if(!globalThis.dataTables || !globalThis.dataTables[tableId]) return;
-        const dataTable = globalThis.dataTables[tableId] as DataTables.Api;
+        const dataTable: DataTables.Api = globalThis.dataTables[tableId];
+        let trueData = newData;
         switch(mode) {
             case ModalMode.Creating:
-                dataTable.row.add(newData).draw();
+                const lastId = (dataTable.row(":last").data() as UserData)?.id;
+                if(lastId) {
+                    trueData = { ...newData, id: (_toNumber(lastId) + 1).toString() };
+                    dataTable.row.add(trueData).draw();
+                }
                 break;
             case ModalMode.Updating:
-                dataTable.row((_, data) => data.id == newData.id).data(newData).draw();
+                dataTable.row((_, data) => data.id == trueData.id).data(trueData).draw();
                 break;
         }
-        $(dataTable.row((_, data) => data.id == newData.id).node())
-            .children("td").last().attr("data-row-object", JSON.stringify(newData));
+        $(dataTable.row((_, data) => data.id == trueData.id).node())
+            .children("td").last().attr("data-row-object", JSON.stringify(trueData));
     };
 
     const handleSaveBtnClicked = async () => {

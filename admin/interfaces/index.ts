@@ -35,13 +35,3 @@ export const defaultPorcelainData: PorcelainData = {
     sizeIntroduction: "", description: "", descriptionText: "",
     images: [], model: "", exposure: 1
 };
-
-export const PorcelainCategoryMapper = (data: PorcelainData): number => {
-    return {
-        "": 0
-    }[data.classification] || 0;
-};
-
-export const PorcelainCategoryDescMapper = (num: number): string => {
-    return [""][num] || "";
-};

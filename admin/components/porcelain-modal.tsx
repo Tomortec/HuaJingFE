@@ -1,6 +1,7 @@
 
-import React, { Reducer, useEffect, useReducer, useState, useContext } from "react";
+import React, { Reducer, useEffect, useReducer, useState } from "react";
 
+import _toNumber from "lodash/toNumber";
 import { PorcelainData, defaultPorcelainData } from "../interfaces";
 import { useModal } from "../hooks/useModal";
 import { ImageUploader } from "./image-uploader";
@@ -62,17 +63,22 @@ export const PorcelainModal = () => {
 
     const updateTableData = (newData: PorcelainData) => {
         if(!globalThis.dataTables || !globalThis.dataTables[tableId]) return;
-        const dataTable = globalThis.dataTables[tableId];
+        const dataTable: DataTables.Api = globalThis.dataTables[tableId];
+        let trueData = newData;
         switch(mode) {
             case ModalMode.Creating:
-                dataTable.row.add(newData).draw();
+                const lastId = (dataTable.row(":last").data() as PorcelainData)?.id;
+                if(lastId) {
+                    trueData = { ...newData, id: (_toNumber(lastId) + 1).toString() };
+                    dataTable.row.add(trueData).draw();
+                }
                 break;
             case ModalMode.Updating:
-                dataTable.row((_, data) => data.id == newData.id).data(newData).draw();
+                dataTable.row((_, data) => data.id == trueData.id).data(trueData).draw();
                 break;
         }
-        $(dataTable.row((_, data) => data.id == newData.id).node())
-            .children("td").last().attr("data-row-object", JSON.stringify(newData));
+        $(dataTable.row((_, data) => data.id == trueData.id).node())
+            .children("td").last().attr("data-row-object", JSON.stringify(trueData));
     }
 
     const handleSaveBtnClicked = async () => {

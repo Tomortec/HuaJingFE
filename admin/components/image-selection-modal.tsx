@@ -113,11 +113,11 @@ export const ImageSelectionModal = () => {
             // change cover image
             if(coverIndex != 0) {
                 newPorcelain.images.unshift(newPorcelain.images.splice(coverIndex, 1)[0]);
-                await updatePorcelainImage(auth, newPorcelain);
             }
             // change exposure
             newPorcelain.exposure = exposure;
 
+            await updatePorcelainImage(auth, newPorcelain);
             // overall update
             await updatePorcelain(auth, newPorcelain);
 
