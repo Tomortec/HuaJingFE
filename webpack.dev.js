@@ -16,7 +16,9 @@ module.exports = merge(common, {
         }
     },
     output: {
-        publicPath: "/"
+        publicPath: "/",
+        filename: "[name].bundle.js",
+        chunkFilename: "[name].bundle.js",
     },
     plugins: [
         new webpack.DefinePlugin({
