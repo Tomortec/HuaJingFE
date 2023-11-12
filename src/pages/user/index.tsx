@@ -112,7 +112,7 @@ export const UserPage = () => {
     return (
         <Page pageName="userPage" bgImage={ isDesktop ? "" : userBgImage }>
             <>
-                { isDesktop && <img className="bg-image" src={userBgImageForDesktop} alt="" /> }
+                { isDesktop && <DynamicImage classNames="bg-image" src={userBgImageForDesktop} anim={DynamicImageAnim.FadeIn} /> }
                 <div>
                     <div id="hj-user-info">
                         <UserInfoComponent info={userInfo} isReady={!shouldShowPlaceholder && isUserDataSuccess && !isUserDataPlaceholder} />

@@ -40,8 +40,8 @@
     $model-card-height: $introduction-link-card-height;
     $model-card-padding: 3vh 8vw;
     $model-card-gap: 5vw;
-    $model-card-image-width: 50%;
-    $model-card-text-container-gap: 30%, 7%, 2%, 24%;
+    $model-card-image-width: 55%;
+    $model-card-text-container-gap: 0, 5%, 2%, 15%;
     $model-card-header-font-size: 1.5rem;
     $model-card-header-font-weight: 400;
     $model-card-content-font-size: 0.9rem;
@@ -403,7 +403,7 @@
                 padding: 0;
 
                 .model-image {
-                    width: 50%;
+                    width: min(calc(50vh * 0.85), calc(0.4 * 75vw));
                     aspect-ratio: 1;
                     object-fit: contain;
                     background-position: center;
@@ -415,7 +415,7 @@
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
-                    width: 50%;
+                    width: min(calc(50vh * 0.85), calc(0.4 * 75vw));
 
                     .model-title-container {
                         .model-title {

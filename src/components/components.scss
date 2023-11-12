@@ -142,7 +142,7 @@
     $description-container-content-line-height: calc($description-container-content-font-size * 1.8);
     $description-container-content-border-radius: 8px;
 
-    @mixin grid-border($placement, $extra-height: 1rem) {
+    @mixin grid-border($placement, $width, $extra-height: 1rem) {
         & {
             position: relative;
         }
@@ -151,7 +151,7 @@
             content: "";
             position: absolute;
             display: block;                
-            width: 100%;
+            width: $width;
 
             @if $placement == top {            
                 border-top: $basic-info-container-inner-border;
@@ -237,7 +237,7 @@
                 grid-column-start: 1;
                 grid-column-end: 4;
                 
-                @include grid-border(top);
+                @include grid-border(top, calc(90vw - 2 * $container-padding));
             }
         }
     }

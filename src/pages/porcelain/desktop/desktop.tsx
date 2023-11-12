@@ -20,8 +20,6 @@ export const SwiperForDesktop = (props: { data: PlanePorcelainData }) => {
     const [thumbnailSwiper, setThumbnailSwiper] = useState<SwiperClass>(null);
 
     useLayoutEffect(() => {
-        $(".swiper-prev-btn, .swiper-next-btn")
-            .width($(".thumbnail-wrapper").width());
         const spaceBetween = $(".thumbnail-wrapper").height() - $(".thumbnail-wrapper img").height();
         $(".swiper-next-btn")
             .css("transform", `translateY(-${spaceBetween}px)`)

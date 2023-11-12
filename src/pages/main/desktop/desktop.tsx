@@ -26,7 +26,7 @@ const ModelLinkCard = (props: { info: ModelInfo, isReady: boolean }) => {
             <ReactPlaceholder ready={props.isReady}
                 showLoadingAnimation type="rect"
                 style={{ width: "20rem", height: "20rem" }}>
-                <img src={modelBgImage} alt="model-bg" />
+                <img className="model-image" style={{ backgroundImage: `url(${modelBgImage})` }} src={props.info.image} alt="model-bg" />
             </ReactPlaceholder>
             <div className="model-info-container">
                 <div className="model-title-container">
