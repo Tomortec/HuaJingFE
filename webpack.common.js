@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const { ProvidePlugin } = require("webpack");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -23,7 +24,9 @@ module.exports = {
             filename: "admin.html",
             chunks: ["admin"]
         }),
-        new MiniCssExtractPlugin(),
+        new MiniCssExtractPlugin({
+            filename: "css/[name].css"
+        }),
         new ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -51,6 +54,14 @@ module.exports = {
     },
     optimization: {
         minimize: true,
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+            terserOptions: {
+                format: {
+                    comments: false,
+                },
+            },
+        })],
         splitChunks: {
             chunks: "all",
             cacheGroups: {
